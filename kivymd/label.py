@@ -45,9 +45,10 @@ class MaterialLabel(ThemableBehavior, Label):
 		info = self._font_styles[style]
 		self.font_name = info[0]
 		self.bold = info[1]
-		self.font_size = \
-			sp(info[3]) if info[3] is not None and DEVICE_TYPE == 'desktop' \
-				else info[2]
+		if DEVICE_TYPE == 'desktop' and info[3] is not None:
+			self.font_size = sp(info[3])
+		else:
+			self.font_size = sp(info[2])
 
 	def on_theme_text_color(self, instance, value):
 		if value == 'Primary':

@@ -21,20 +21,15 @@ Builder.load_string('''
 		size_hint: (None, None)
 		height: dp(48)
 		x: root.x + root.theme_cls.horizontal_margins - dp(12)
-		y: root.y + root.height - dp(8) - self.height
+		y: root.y + root.height - (root.theme_cls.standard_increment - self.height)/2 - self.height
 	BoxLayout:
 		id: right_actions
 		orientation: 'horizontal'
 		size_hint: (None, None)
 		height: dp(48)
 		x: root.width - root.theme_cls.horizontal_margins + dp(12) - self.width
-		y: root.y + root.height - dp(8) - self.height
+		y: root.y + root.height - (root.theme_cls.standard_increment - self.height)/2 - self.height
 	MaterialLabel:
-		canvas:
-			Color:
-				rgba: 1,0,0,1
-			Line:
-				points: self.x,self.y, self.x+self.width,self.y, self.x+self.width,self.y+self.height, self.x,self.y+self.height, self.x,self.y
 		size_hint_x: None
 		width: right_actions.x - self.x - dp(12)
 		x: root.x + left_actions.width + dp(24)

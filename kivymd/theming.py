@@ -197,6 +197,11 @@ class ThemeManager(Widget):
 
 	error_color = AliasProperty(_get_error_color)
 
+	def _get_ripple_color(self):
+		return self.accent_color
+	# FIXME: I should be a real property and just default to accent_color
+	ripple_color = AliasProperty(_get_ripple_color)
+
 	def _determine_device_orientation(self, _, window_size):
 		if window_size[0] > window_size[1]:
 			self.device_orientation = 'landscape'
