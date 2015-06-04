@@ -1,0 +1,63 @@
+# -*- coding: utf-8 -*-
+from kivy.lang import Builder
+from kivy.metrics import sp
+from kivy.properties import OptionProperty, DictProperty
+from kivy.uix.label import Label
+from kivymd.material_resources import DEVICE_TYPE
+from kivymd.theming import ThemableBehavior
+
+Builder.load_string('''
+<MaterialLabel>
+	disabled_color: self.theme_cls.disabled_hint_text_color
+	text_size: (self.width, None)
+''')
+
+
+class MaterialLabel(ThemableBehavior, Label):
+
+	font_style = OptionProperty(
+		'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
+		                  'Headline', 'Display1', 'Display2', 'Display3',
+		                  'Display4', 'Button', 'Icon'])
+
+	# Font, Bold, Mobile size, Desktop size (None if same as Mobile)
+	_font_styles = DictProperty({'Body1':['Roboto', False, 14, 13],
+	                             'Body2':['Roboto', True, 14, 13],
+	                             'Caption':['Roboto', False, 12, None],
+	                             'Subhead':['Roboto', False, 16, 15],
+	                             'Title':['Roboto', True, 20, None],
+	                             'Headline':['Roboto', False, 24, None],
+	                             'Display1':['Roboto', False, 34, None],
+	                             'Display2':['Roboto', False, 45, None],
+	                             'Display3':['Roboto', False, 56, None],
+	                             'Display4':['RobotoLight', False, 112, None],
+	                             'Button':['Roboto', True, 14, None],
+	                             'Icon':['Icons', False, 24, None]})
+
+	theme_text_color = OptionProperty(None, allownone=True,
+		options=['Primary', 'Secondary', 'Hint', 'Error'])
+
+	def __init__(self, **kwargs):
+		super(MaterialLabel, self).__init__(**kwargs)
+		self.theme_cls.bind(theme_style=self._update_color_on_theme)
+
+	def on_font_style(self, instance, style):
+		info = self._font_styles[style]
+		self.font_name = info[0]
+		self.bold = info[1]
+		self.font_size = \
+			sp(info[3]) if info[3] is not None and DEVICE_TYPE == 'desktop' \
+				else info[2]
+
+	def on_theme_text_color(self, instance, value):
+		if value == 'Primary':
+			self.color = self.theme_cls.text_color
+		elif value == 'Secondary':
+			self.color = self.theme_cls.secondary_text_color
+		elif value == 'Hint':
+			self.color = self.theme_cls.disabled_hint_text_color
+		elif value == 'Error':
+			self.color = self.theme_cls.error_color
+
+	def _update_color_on_theme(self, instance, theme):
+		self.on_theme_text_color(self, self.theme_text_color)
