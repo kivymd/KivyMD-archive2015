@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from kivy.properties import ListProperty, NumericProperty, StringProperty, BooleanProperty
+from kivy.properties import ListProperty, NumericProperty, StringProperty, \
+	BooleanProperty
 from kivy.animation import Animation
 from kivy.graphics import Color, Ellipse, StencilPush, StencilPop, StencilUse, \
 	StencilUnUse, Rectangle
@@ -67,7 +68,7 @@ class CommonRipple(object):
 				ripple_rad=self.finish_rad,
 				t='linear',
 				duration=self.ripple_duration_in_slow)
-			anim.bind(on_complete=self.fade_out)
+			anim.bind(on_complete=lambda x, y: self.fade_out())
 			self.doing_ripple = True
 			anim.start(self)
 

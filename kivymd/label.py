@@ -39,7 +39,6 @@ class MaterialLabel(ThemableBehavior, Label):
 
 	def __init__(self, **kwargs):
 		super(MaterialLabel, self).__init__(**kwargs)
-		self.theme_cls.bind(theme_style=self._update_color_on_theme)
 
 	def on_font_style(self, instance, style):
 		info = self._font_styles[style]
@@ -51,14 +50,18 @@ class MaterialLabel(ThemableBehavior, Label):
 			self.font_size = sp(info[2])
 
 	def on_theme_text_color(self, instance, value):
+		t = self.theme_cls
+		op = self.opposite_colors
 		if value == 'Primary':
-			self.color = self.theme_cls.text_color
+			self.color = t.text_color if not op else t.opposite_text_color
 		elif value == 'Secondary':
-			self.color = self.theme_cls.secondary_text_color
+			self.color = t.secondary_text_color if not op else \
+				t.opposite_secondary_text_color
 		elif value == 'Hint':
-			self.color = self.theme_cls.disabled_hint_text_color
+			self.color = t.disabled_hint_text_color if not op else \
+				t.opposite_disabled_hint_text_color
 		elif value == 'Error':
 			self.color = self.theme_cls.error_color
 
-	def _update_color_on_theme(self, instance, theme):
+	def on_opposite_colors(self, instance, value):
 		self.on_theme_text_color(self, self.theme_text_color)
