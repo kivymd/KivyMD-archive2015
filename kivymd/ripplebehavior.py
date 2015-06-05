@@ -2,8 +2,8 @@
 from kivy.properties import ListProperty, NumericProperty, StringProperty, \
 	BooleanProperty
 from kivy.animation import Animation
-from kivy.graphics import Color, Ellipse, StencilPush, StencilPop, StencilUse, \
-	StencilUnUse, Rectangle
+from kivy.graphics import Color, Ellipse, StencilPush, StencilPop, \
+	StencilUse, StencilUnUse, Rectangle
 
 
 class CommonRipple(object):
@@ -14,7 +14,7 @@ class CommonRipple(object):
 	ripple_alpha = NumericProperty(.5)
 	ripple_scale = NumericProperty(None)
 	ripple_duration_in_fast = NumericProperty(.3)
-	# FIXME: This speeds should be calculated based on widget size in dp
+	# FIXME: These speeds should be calculated based on widget size in dp
 	ripple_duration_in_slow = NumericProperty(2)
 	ripple_duration_out = NumericProperty(.5)
 	ripple_func_in = StringProperty('out_quad')
@@ -36,13 +36,15 @@ class CommonRipple(object):
 			Animation.cancel_all(self, 'ripple_rad', 'ripple_color',
 			                     'rect_color')
 
-			if hasattr(self, 'theme_cls'):
+			if self.ripple_color != []:
+				pass
+			elif hasattr(self, 'theme_cls'):
 				self.ripple_color = self.theme_cls.ripple_color
-				self.ripple_color[3] = self.ripple_alpha
 			else:
 				# If no theme, set Grey 300
 				self.ripple_color = [0.8784313725490196, 0.8784313725490196,
 				                     0.8784313725490196, self.ripple_alpha]
+			self.ripple_color[3] = self.ripple_alpha
 
 			self.lay_canvas_instructions()
 			self.finish_rad = max(self.width, self.height) * self.ripple_scale
@@ -153,7 +155,8 @@ class CircularRippleBehavior(CommonRipple):
 			StencilUnUse()
 			Ellipse(pos=self.pos, size=self.size)
 			StencilPop()
-			self.bind(ripple_color=self._set_color, ripple_rad=self._set_ellipse)
+			self.bind(ripple_color=self._set_color,
+			          ripple_rad=self._set_ellipse)
 
 	def _set_ellipse(self, instance, value):
 		super(CircularRippleBehavior, self)._set_ellipse(instance, value)

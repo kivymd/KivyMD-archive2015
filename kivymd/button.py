@@ -2,11 +2,11 @@
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import StringProperty, BoundedNumericProperty, \
-	ObjectProperty
+from kivy.properties import StringProperty, BoundedNumericProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
+from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.ripplebehavior import CircularRippleBehavior, \
 	RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
@@ -46,7 +46,7 @@ class MaterialIconButton(CircularRippleBehavior, ButtonBehavior, BoxLayout):
 
 
 class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
-                         ButtonBehavior, AnchorLayout):
+                         ButtonBehavior, BackgroundColorBehavior, AnchorLayout):
 	width = BoundedNumericProperty(dp(64), min=dp(64), max=None,
 	                               errorhandler=lambda x: dp(64))
 
@@ -58,7 +58,12 @@ class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
 			texture_size=self.update_width_on_label_texture))
 
 	def update_width_on_label_texture(self, instance, value):
-		self.ids._label.width = value[0]
+		self.ids['_label'].width = value[0]
 
 	def on_text(self, instance, value):
 		self.ids['_label'].text = value.upper()
+
+
+class MaterialRaisedButton(MaterialFlatButton):
+	# FIXME: Add elevation behavior
+	pass
