@@ -2,7 +2,8 @@
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import StringProperty, BoundedNumericProperty
+from kivy.properties import StringProperty, BoundedNumericProperty, \
+	BooleanProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -22,6 +23,7 @@ Builder.load_string('''
 		id: _label
 		font_style: 'Icon'
 		text: u"{}".format(md_icons[root.icon])
+		opposite_colors: root.opposite_colors
 
 <MaterialFlatButton>
 	size_hint: (None, None)
@@ -43,6 +45,7 @@ Builder.load_string('''
 
 class MaterialIconButton(CircularRippleBehavior, ButtonBehavior, BoxLayout):
 	icon = StringProperty('md-lens')
+	opposite_colors = BooleanProperty(False)
 
 
 class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
