@@ -49,6 +49,7 @@ class CommonRipple(object):
 			self.lay_canvas_instructions()
 			self.finish_rad = max(self.width, self.height) * self.ripple_scale
 			self.start_ripple()
+		return super(CommonRipple, self).on_touch_down(touch)
 
 	def lay_canvas_instructions(self):
 		raise NotImplementedError
