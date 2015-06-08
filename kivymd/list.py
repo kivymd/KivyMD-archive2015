@@ -19,9 +19,9 @@ Builder.load_string('''
 
 <ListItem>
 	size_hint_y: None
-	_left_container: _left_container
+	left_container: _left_container
 	_text_container: _text_container
-	_right_container: _right_container
+	right_container: _right_container
 	canvas:
 		Color:
 			rgba: self.theme_cls.divider_color
@@ -33,12 +33,12 @@ Builder.load_string('''
 		x: root.x + dp(16)
 		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
 		size: (0,0) if root.left_container_size is None else ((dp(40), dp(40)) if root.left_container_size is 'big' else (dp(24), dp(24)))
-		canvas:
-			Color:
-				rgba: 1,0,1,1
-			Rectangle:
-				size: self.size
-				pos: self.pos
+		#canvas:
+		#	Color:
+		#		rgba: 1,0,1,1
+		#	Rectangle:
+		#		size: self.size
+		#		pos: self.pos
 	BoxLayout:
 		#canvas:
 		#	Color:
@@ -71,14 +71,12 @@ Builder.load_string('''
 		size: (dp(24),dp(24))
 		opacity: 0 if root.right_container_size is None else 1
 		disabled: True if root.right_container_size is None else False
-		canvas:
-			Color:
-				rgba: 0,1,1,1
-			Rectangle:
-				size: self.size
-				pos: self.pos
-		Button:
-			size: _right_container.size
+		#canvas:
+		#	Color:
+		#		rgba: 0,1,1,1
+		#	Rectangle:
+		#		size: self.size
+		#		pos: self.pos
 ''')
 
 
@@ -147,8 +145,8 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 	_txt_top_pad = NumericProperty()
 	_txt_bot_pad = NumericProperty()
 	_txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
-	_left_container = ObjectProperty()
-	_right_container = ObjectProperty()
+	left_container = ObjectProperty()
+	right_container = ObjectProperty()
 
 	def __init__(self, **kwargs):
 		super(ListItem, self).__init__(**kwargs)
