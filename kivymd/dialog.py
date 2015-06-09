@@ -9,7 +9,7 @@ from theming import ThemableBehavior
 from elevationbehaviour import ElevationBehaviour
 from kivymd.button import MaterialFlatButton
 
-dialog_kv = '''
+Builder.load_string('''
 <Dialog>:
 	canvas:
 		Color:
@@ -57,10 +57,8 @@ dialog_kv = '''
 				width:			self.minimum_width
 '''
 
-Builder.load_string(dialog_kv)
 
 class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
-
 	title = StringProperty('')
 
 	content = ObjectProperty(None)
@@ -74,7 +72,8 @@ class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
 	def __init__(self, **kwargs):
 		super(Dialog, self).__init__(**kwargs)
 		self.bind(_action_buttons=self._update_action_buttons,
-				  auto_dismiss=lambda *x: setattr(self.shadow, 'on_release', self.shadow.dismiss if self.auto_dismiss else None))
+				  auto_dismiss=lambda *x: setattr(self.shadow, 'on_release',
+												  self.shadow.dismiss if self.auto_dismiss else None))
 
 	def add_action_button(self, text, action=None):
 		"""Add an :class:`FlatButton` to the right of the action area.

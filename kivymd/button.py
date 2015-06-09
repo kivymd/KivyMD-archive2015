@@ -67,17 +67,17 @@ Builder.load_string('''
 	anchor_y:			'center'
 	MaterialLabel:
 		id: label
-		font_style: 	'Button'
-		text:			root._text
-		size_hint:		None, None
-		width:			root.width
-		text_size:		self.width, None
-		height:			self.texture_size[1]
-		theme_style:	root.theme_style
-		text_color:		root.text_color
-		disabled:		root.disabled
-		halign:			'center'
-		valign:			'middle'
+		font_style: 		'Button'
+		text:				root._text
+		size_hint:			None, None
+		width:				root.width
+		text_size:			self.width, None
+		height:				self.texture_size[1]
+		theme_text_color:	'Primary'
+		opposite_colors:	root.opposite_colors
+		disabled:			root.disabled
+		halign:				'center'
+		valign:				'middle'
 ''')
 
 
@@ -86,9 +86,9 @@ class MaterialIconButton(CircularRippleBehavior, ButtonBehavior, BoxLayout):
 
 
 class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
-                         ButtonBehavior, BackgroundColorBehavior, AnchorLayout):
+						 ButtonBehavior, BackgroundColorBehavior, AnchorLayout):
 	width = BoundedNumericProperty(dp(64), min=dp(64), max=None,
-	                               errorhandler=lambda x: dp(64))
+								   errorhandler=lambda x: dp(64))
 
 	text_color = ListProperty()
 
@@ -96,6 +96,7 @@ class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
 
 	_text = StringProperty('')
 	_bg_color_down = ListProperty([0, 0, 0, 0])
+
 	def __init__(self, **kwargs):
 		super(MaterialFlatButton, self).__init__(**kwargs)
 		self._bg_color_down = get_color_from_hex(colors[self.theme_cls.theme_style]['FlatButtonDown'])
@@ -110,9 +111,10 @@ class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
 		self._text = value.upper()
 
 
-class MaterialRaisedButton(ThemableBehavior, RectangularRippleBehavior, ElevationBehaviour, ButtonBehavior, AnchorLayout):
-
+class MaterialRaisedButton(ThemableBehavior, RectangularRippleBehavior, ElevationBehaviour, ButtonBehavior,
+						   AnchorLayout):
 	_bg_color_down = ListProperty([])
+
 	def _get_bg_color_down(self):
 		return self._bg_color_down
 
@@ -125,9 +127,10 @@ class MaterialRaisedButton(ThemableBehavior, RectangularRippleBehavior, Elevatio
 			self._bg_color_down = color
 
 	background_color_down = AliasProperty(_get_bg_color_down, _set_bg_color_down,
-										  bind=('_bg_color_down', ))
+										  bind=('_bg_color_down',))
 
 	_bg_color_disabled = ListProperty([])
+
 	def _get_bg_color_disabled(self):
 		return self._bg_color_disabled
 
@@ -138,31 +141,30 @@ class MaterialRaisedButton(ThemableBehavior, RectangularRippleBehavior, Elevatio
 				self._bg_color_disabled[3] = alpha
 		elif len(color) == 4:
 			self._bg_color_disabled = color
+
 	background_color_disabled = AliasProperty(_get_bg_color_disabled, _set_bg_color_disabled,
-											  bind=('_bg_color_disabled', ))
-
-	theme_style = OptionProperty(None, options=['Light', 'Dark', 'Custom'], allownone=True)
-
-	text_color = ListProperty(None, allownone=True)
+											  bind=('_bg_color_disabled',))
 
 	_elev_norm = NumericProperty(2)
+
 	def _get_elev_norm(self):
 		return self._elev_norm
 
 	def _set_elev_norm(self, value):
 		self._elev_norm = value if value <= 12 else 12
-		self._elev_raised = (value + 6) if value + 6 <=12 else 12
+		self._elev_raised = (value + 6) if value + 6 <= 12 else 12
 
-	elevation_normal = AliasProperty(_get_elev_norm, _set_elev_norm, bind=('_elev_norm', ))
+	elevation_normal = AliasProperty(_get_elev_norm, _set_elev_norm, bind=('_elev_norm',))
 
 	_elev_raised = NumericProperty(8)
+
 	def _get_elev_raised(self):
 		return self._elev_raised
 
 	def _set_elev_raised(self, value):
 		self._elev_raised = value if value + self._elev_norm <= 12 else 12
 
-	elevation_raised = AliasProperty(_get_elev_raised, _set_elev_raised, bind=('_elev_raised', ))
+	elevation_raised = AliasProperty(_get_elev_raised, _set_elev_raised, bind=('_elev_raised',))
 
 	text = StringProperty()
 
