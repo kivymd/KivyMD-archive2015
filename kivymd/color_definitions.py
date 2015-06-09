@@ -314,14 +314,16 @@ colors = {
 		'StatusBar': 'E0E0E0',
 		'AppBar': 'F5F5F5',
 		'Background': 'FAFAFA',
-		'CardsDialogs': 'FFFFFF'
+		'CardsDialogs': 'FFFFFF',
+		'FlatButtonDown': 'cccccc'
 	},
 
 	'Dark': {
 		'StatusBar': '000000',
 		'AppBar': '212121',
 		'Background': '303030',
-		'CardsDialogs': '424242'
+		'CardsDialogs': '424242',
+		'FlatButtonDown': '999999'
 	}
 }
 

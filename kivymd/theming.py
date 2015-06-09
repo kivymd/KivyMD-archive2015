@@ -8,8 +8,10 @@ from kivy.properties import OptionProperty, AliasProperty, ObjectProperty, \
 	StringProperty, ListProperty, BooleanProperty
 from kivy.uix.widget import Widget
 from kivy.utils import get_color_from_hex
+from kivy.atlas import Atlas
 from kivymd.color_definitions import colors
 from kivymd.material_resources import FONTS, DEVICE_TYPE
+from kivymd import images_path
 
 for font in FONTS:
 	LabelBase.register(**font)
@@ -318,10 +320,10 @@ class ThemeManager(Widget):
 
 	def __init__(self, **kwargs):
 		super(ThemeManager, self).__init__(**kwargs)
-		self.rec_shadow = Atlas('{}/rec_shadow.atlas'.format(images_path))
-		self.rec_st_shadow = Atlas('{}/rec_st_shadow.atlas'.format(images_path))
-		self.quad_shadow = Atlas('{}/quad_shadow.atlas'.format(images_path))
-		self.round_shadow = Atlas('{}/round_shadow.atlas'.format(images_path))
+		self.rec_shadow = Atlas('{}rec_shadow.atlas'.format(images_path))
+		self.rec_st_shadow = Atlas('{}rec_st_shadow.atlas'.format(images_path))
+		self.quad_shadow = Atlas('{}quad_shadow.atlas'.format(images_path))
+		self.round_shadow = Atlas('{}round_shadow.atlas'.format(images_path))
 		Clock.schedule_once(lambda x: self.on_theme_style(0, self.theme_style))
 		self._determine_device_orientation(None, Window.size)
 		Window.bind(size=self._determine_device_orientation)
