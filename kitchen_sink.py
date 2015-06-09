@@ -10,6 +10,7 @@ from kivymd.dialog import Dialog
 main_widget_kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
+#:import MaterialCheckBox kivymd.selectioncontrols.MaterialCheckBox
 RelativeLayout:
 	Toolbar:
 		title: 'KivyMD Kitchen Sink'
@@ -23,9 +24,28 @@ RelativeLayout:
 	MaterialRaisedButton:
 		id: raised_button
 		text: "Open Dialog"
+		elevation_normal: 2
+		opposite_colors: True
 		size_hint: None, None
 		size: dp(110), dp(36)
 		pos_hint: {'center_x': 0.75, 'center_y': 0.75}
+	MaterialCheckBox:
+		id:			chkbox
+		size_hint:	None, None
+		size:		dp(48), dp(48)
+		pos_hint:	{'center_x': 0.3, 'center_y': 0.65}
+	MaterialCheckBox:
+		id:			grp_chkbox_1
+		group:		'test'
+		size_hint:	None, None
+		size:		dp(48), dp(48)
+		pos_hint:	{'center_x': 0.5, 'center_y': 0.65}
+	MaterialCheckBox:
+		id:			grp_chkbox_2
+		group:		'test'
+		size_hint:	None, None
+		size:		dp(48), dp(48)
+		pos_hint:	{'center_x': 0.6, 'center_y': 0.65}
 '''
 
 

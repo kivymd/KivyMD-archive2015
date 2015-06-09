@@ -155,6 +155,7 @@ class MaterialRaisedButton(ThemableBehavior, RectangularRippleBehavior, Elevatio
 	def _set_elev_norm(self, value):
 		self._elev_norm = value if value <= 12 else 12
 		self._elev_raised = (value + 6) if value + 6 <= 12 else 12
+		self.elevation = self._elev_norm
 
 	elevation_normal = AliasProperty(_get_elev_norm, _set_elev_norm, bind=('_elev_norm',))
 
@@ -173,13 +174,13 @@ class MaterialRaisedButton(ThemableBehavior, RectangularRippleBehavior, Elevatio
 	_text = StringProperty()
 
 	def __init__(self, **kwargs):
-		self.elevation = self.elevation_normal
 		super(MaterialRaisedButton, self).__init__(**kwargs)
 		self.background_color = self.theme_cls.primary_color
 		self.background_color_down = self.theme_cls.primary_dark
 		self.background_color_disabled = self.theme_cls.divider_color
 		self.elevation_press_anim = Animation(elevation=self.elevation_raised, duration=.2, t='out_quad')
 		self.elevation_release_anim = Animation(elevation=self.elevation_normal, duration=.2, t='out_quad')
+		#self.elevation = self.elevation_normal
 
 	def on_disabled(self, instance, value):
 		if value:

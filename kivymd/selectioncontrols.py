@@ -48,6 +48,15 @@ class MaterialCheckBox(ThemableBehavior, CircularRippleBehavior, ToggleButtonBeh
 		self.check_anim_in.bind(on_complete=self._set_state)
 		self.check_anim_out.bind(on_complete=lambda *x: self.check_anim_in.start(self))
 
+	def on_group(self, *largs):
+		if self.group:
+			self._icon_normal = u"{}".format(md_icons['md-radio-button-off'])
+			self._icon_active = u"{}".format(md_icons['md-radio-button-on'])
+		else:
+			self._icon_normal = u"{}".format(md_icons['md-check-box-outline-blank'])
+			self._icon_active = u"{}".format(md_icons['md-check-box'])
+		super(MaterialCheckBox, self).on_group(*largs)
+
 	def on_release(self):
 		Animation.cancel_all(self, '_size')
 		self.check_anim_out.start(self)

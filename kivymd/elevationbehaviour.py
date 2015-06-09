@@ -6,7 +6,7 @@ from kivy.properties import (ListProperty, ObjectProperty, NumericProperty)
 from kivy.properties import AliasProperty
 from kivy.metrics import dp
 
-elevation_kv = '''
+Builder.load_string('''
 <ElevationBehaviour>
 	canvas.before:
 		Color:
@@ -24,9 +24,23 @@ elevation_kv = '''
 		Color:
 			a: 1
 
-
-'''
-Builder.load_string(elevation_kv)
+<RoundElevationBehaviour>
+	canvas.before:
+		Color:
+			a: self._soft_shadow_a
+		Rectangle:
+			texture: self._soft_shadow_texture
+			size: self._soft_shadow_size
+			pos: self._soft_shadow_pos
+		Color:
+			a: self._hard_shadow_a
+		Rectangle:
+			texture: self._hard_shadow_texture
+			size: self._hard_shadow_size
+			pos: self._hard_shadow_pos
+		Color:
+			a: 1
+''')
 
 
 class ElevationBehaviour(object):
@@ -63,8 +77,8 @@ class ElevationBehaviour(object):
 			ratio = self.width / self.height
 			if ratio > -2 and ratio < 2:
 				self._shadow = App.get_running_app().theme_cls.quad_shadow
-				width = self.width * 1.9
-				height = self.height * 1.9
+				width = soft_width = self.width * 1.9
+				height = soft_height = self.height * 1.9
 			elif ratio <= -2:
 				self._shadow = App.get_running_app().theme_cls.rec_st_shadow
 				ratio = abs(ratio)
@@ -73,8 +87,9 @@ class ElevationBehaviour(object):
 				else:
 					ratio = ratio * 11.5
 
-				width = self.width * 1.9
+				width = soft_width = self.width * 1.9
 				height = self.height + dp(ratio)
+				soft_height = self.height + dp(ratio) + dp(self.elevation) * .5
 			else:
 				self._shadow = App.get_running_app().theme_cls.rec_shadow
 				ratio = abs(ratio)
@@ -84,49 +99,27 @@ class ElevationBehaviour(object):
 					ratio = ratio * 11.5
 
 				width = self.width + dp(ratio)
-				height = self.height * 1.9
+				soft_width = self.width + dp(ratio) + dp(self.elevation) * .9
+				height = soft_height = self.height * 1.9
 
 			x = self.center_x - width / 2
-			self._soft_shadow_size = (width, height)
+			soft_x = self.center_x - soft_width / 2
+			self._soft_shadow_size = (soft_width, soft_height)
 			self._hard_shadow_size = (width, height)
 
-			y = self.center_y - height / 2 - dp(.1 * 1.5 ** self.elevation)
-			self._soft_shadow_pos = (x, y)
-			self._soft_shadow_a = 0.1 * 1.11 ** self.elevation
+			y = self.center_y - soft_height / 2 - dp(.1 * 1.5 ** self.elevation)
+			self._soft_shadow_pos = (soft_x, y)
+			self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
 			self._soft_shadow_texture = self._shadow.textures[str(int(round(self.elevation * 2 - 1)))]
 
-			y = self.center_y - height / 2 - dp(.5 * 1.2 ** self.elevation)
+			y = self.center_y - height / 2 - dp(.5 * 1.18 ** self.elevation)
 			self._hard_shadow_pos = (x, y)
-			self._hard_shadow_a = .5 * .88 ** self.elevation
+			self._hard_shadow_a = .4 * .9 ** self.elevation
 			self._hard_shadow_texture = self._shadow.textures[str(int(round(self.elevation - 1)))]
 
 		else:
 			self._soft_shadow_a = 0
 			self._hard_shadow_a = 0
-
-
-round_elevation_kv = '''
-<RoundElevationBehaviour>
-	canvas.before:
-		Color:
-			a: self._soft_shadow_a
-		Rectangle:
-			texture: self._soft_shadow_texture
-			size: self._soft_shadow_size
-			pos: self._soft_shadow_pos
-		Color:
-			a: self._hard_shadow_a
-		Rectangle:
-			texture: self._hard_shadow_texture
-			size: self._hard_shadow_size
-			pos: self._hard_shadow_pos
-		Color:
-			a: 1
-
-
-'''
-Builder.load_string(round_elevation_kv)
-
 
 class RoundElevationBehaviour(object):
 	_elevation = NumericProperty(1)
