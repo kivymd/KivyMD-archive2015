@@ -28,6 +28,8 @@ Builder.load_string('''
 		id: _label
 		font_style: 'Icon'
 		text: u"{}".format(md_icons[root.icon])
+		halign: 'center'
+		valign: 'middle'
 
 <MaterialFlatButton>
 	canvas:

@@ -115,9 +115,8 @@ class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
 			Logger.warning('ModalView: cannot open view, no window found.')
 			return self
 		self._window.add_widget(self)
-		self._window.bind(
-			on_resize=self._align_center,
-			on_keyboard=self._handle_keyboard)
+		self._window.bind(on_resize=self._align_center,
+						  on_keyboard=self._handle_keyboard)
 		self.center = self._window.center
 		self.bind(size=self._update_center)
 		a = Animation(_anim_alpha=1., d=self._anim_duration)
