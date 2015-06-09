@@ -55,8 +55,7 @@ Builder.load_string('''
 				size_hint:		None, None if len(root._action_buttons) > 0 else 1
 				height:			dp(36) if len(root._action_buttons) > 0 else 0
 				width:			self.minimum_width
-'''
-
+''')
 
 class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
 	title = StringProperty('')

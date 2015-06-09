@@ -14,15 +14,9 @@ from kivymd.icon_definitions import md_icons
 from theming import ThemableBehavior
 
 Builder.load_string('''
-<MaterialCheckbox>:
+<MaterialCheckBox>:
 	canvas:
 		Clear
-		Color:
-			rgba: self.background_color_disabled if self.disabled else \
-			(self.background_color if self.active else self.background_color_down)
-		Rectangle:
-			size: 		self.size
-			pos: 		self.pos
 		Color:
 			rgba: 		self.color
 		Rectangle:
@@ -37,39 +31,10 @@ Builder.load_string('''
 	halign:			'center'
 	valign:			'middle'
 
-'''
+''')
+
 
 class MaterialCheckBox(ThemableBehavior, CircularRippleBehavior, ToggleButtonBehavior, Label):
-
-	_bg_color_down = ListProperty([1, 1, 1, 0])
-	def _get_bg_color_down(self):
-		return self._bg_color_down
-
-	def _set_bg_color_down(self, color, alpha=None):
-		if len(color) == 2:
-			self._bg_color_down = get_color_from_hex(colors[color[0]][color[1]])
-			if alpha:
-				self._bg_color_down[3] = alpha
-		elif len(color) == 4:
-			self._bg_color_down = color
-
-	background_color_down = AliasProperty(_get_bg_color_down, _set_bg_color_down,
-										  bind=('_bg_color_down', ))
-
-	_bg_color_disabled = ListProperty([1, 1, 1, 0])
-	def _get_bg_color_disabled(self):
-		return self._bg_color_disabled
-
-	def _set_bg_color_disabled(self, color, alpha=None):
-		if len(color) == 2:
-			self._bg_color_disabled = get_color_from_hex(colors[color[0]][color[1]])
-			if alpha:
-				self._bg_color_down[3] = alpha
-		elif len(color) == 4:
-			self._bg_color_disabled = color
-	background_color_disabled = AliasProperty(_get_bg_color_disabled, _set_bg_color_disabled,
-											  bind=('_bg_color_disabled', ))
-
 	active = BooleanProperty(False)
 
 	_icon_normal = StringProperty(u"{}".format(md_icons['md-check-box-outline-blank']))
