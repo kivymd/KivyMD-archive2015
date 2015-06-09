@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from kivy.lang import Builder
 from kivy.metrics import sp
-from kivy.properties import OptionProperty, DictProperty
+from kivy.properties import OptionProperty, DictProperty, ListProperty
 from kivy.uix.label import Label
 from kivymd.material_resources import DEVICE_TYPE
 from kivymd.theming import ThemableBehavior
+from kivymd.color_definitions import colors
 
 Builder.load_string('''
 <MaterialLabel>
@@ -35,7 +36,9 @@ class MaterialLabel(ThemableBehavior, Label):
 	                             'Icon':['Icons', False, 24, None]})
 
 	theme_text_color = OptionProperty(None, allownone=True,
-		options=['Primary', 'Secondary', 'Hint', 'Error'])
+		options=['Primary', 'Secondary', 'Hint', 'Error', 'Custom'])
+
+	text_color = ListProperty(None, allownone=True)
 
 	def __init__(self, **kwargs):
 		super(MaterialLabel, self).__init__(**kwargs)
@@ -62,6 +65,12 @@ class MaterialLabel(ThemableBehavior, Label):
 				t.opposite_disabled_hint_text_color
 		elif value == 'Error':
 			self.color = self.theme_cls.error_color
+		elif value == 'Custom':
+			self.color = self.text_color if self.text_color else (0, 0, 0, 1)
+
+	def on_text_color(self, *args):
+		if self.theme_text_color == 'Custom':
+			self.color = self.text_color
 
 	def on_opposite_colors(self, instance, value):
 		self.on_theme_text_color(self, self.theme_text_color)

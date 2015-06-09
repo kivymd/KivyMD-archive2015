@@ -7,6 +7,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.button import MaterialIconButton
 from kivymd.theming import ThemableBehavior
+from kivymd.elevationbehaviour import ElevationBehaviour
 
 Builder.load_string('''
 #:import m_res kivymd.material_resources
@@ -15,6 +16,7 @@ Builder.load_string('''
 	pos_hint: {'center_y': 0.5}
 	height: root.theme_cls.standard_increment
 	background_color: root.theme_cls.primary_color
+	elevation: 6
 	BoxLayout:
 		id: left_actions
 		orientation: 'horizontal'
@@ -39,7 +41,7 @@ Builder.load_string('''
 ''')
 
 
-class Toolbar(ThemableBehavior, BackgroundColorBehavior, RelativeLayout):
+class Toolbar(ThemableBehavior, ElevationBehaviour, BackgroundColorBehavior, RelativeLayout):
 
 	left_action_items = ListProperty()
 	"""The icons on the left of the toolbar.
