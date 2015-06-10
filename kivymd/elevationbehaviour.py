@@ -110,16 +110,17 @@ class ElevationBehaviour(object):
 			y = self.center_y - soft_height / 2 - dp(.1 * 1.5 ** self.elevation)
 			self._soft_shadow_pos = (soft_x, y)
 			self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
-			self._soft_shadow_texture = self._shadow.textures[str(int(round(self.elevation * 2 - 1)))]
+			self._soft_shadow_texture = self._shadow.textures[str(int(round(self.elevation - 1)))]
 
 			y = self.center_y - height / 2 - dp(.5 * 1.18 ** self.elevation)
 			self._hard_shadow_pos = (x, y)
 			self._hard_shadow_a = .4 * .9 ** self.elevation
-			self._hard_shadow_texture = self._shadow.textures[str(int(round(self.elevation - 1)))]
+			self._hard_shadow_texture = self._shadow.textures[str(int(round(self.elevation)))]
 
 		else:
 			self._soft_shadow_a = 0
 			self._hard_shadow_a = 0
+
 
 class RoundElevationBehaviour(object):
 	_elevation = NumericProperty(1)
@@ -164,7 +165,7 @@ class RoundElevationBehaviour(object):
 			y = self.center_y - height / 2 - dp(.1 * 1.5 ** self.elevation)
 			self._soft_shadow_pos = (x, y)
 			self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
-			self._soft_shadow_texture = self._shadow.textures[str(int(round(self.elevation * 2 - 1)))]
+			self._soft_shadow_texture = self._shadow.textures[str(int(round(self.elevation)))]
 
 			y = self.center_y - height / 2 - dp(.5 * 1.18 ** self.elevation)
 			self._hard_shadow_pos = (x, y)
