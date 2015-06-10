@@ -3,8 +3,8 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
-from kivy.properties import (StringProperty, BoundedNumericProperty, ListProperty,
-							 AliasProperty, OptionProperty, NumericProperty)
+from kivy.properties import StringProperty, BoundedNumericProperty, \
+	ListProperty, AliasProperty, BooleanProperty, NumericProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
