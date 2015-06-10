@@ -2,7 +2,7 @@
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty, StringProperty, OptionProperty, \
-	NumericProperty
+	NumericProperty, ListProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
@@ -33,18 +33,7 @@ Builder.load_string('''
 		x: root.x + dp(16)
 		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
 		size: (0,0) if root.left_container_size is None else ((dp(40), dp(40)) if root.left_container_size is 'big' else (dp(24), dp(24)))
-		#canvas:
-		#	Color:
-		#		rgba: 1,0,1,1
-		#	Rectangle:
-		#		size: self.size
-		#		pos: self.pos
 	BoxLayout:
-		#canvas:
-		#	Color:
-		#		rgba: 0,1,1,.8
-		#	Line:
-		#		points: root._txt_left_pad,root._txt_bot_pad, self.width-root._txt_right_pad,root._txt_bot_pad, self.width-root._txt_right_pad,self.height-root._txt_top_pad, root._txt_left_pad,self.height-root._txt_top_pad, root._txt_left_pad,root._txt_bot_pad
 		id: _text_container
 		orientation: 'vertical'
 		pos: root.pos
@@ -68,15 +57,7 @@ Builder.load_string('''
 		size_hint: (None, None)
 		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
 		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
-		size: (dp(24),dp(24))
-		opacity: 0 if root.right_container_size is None else 1
-		disabled: True if root.right_container_size is None else False
-		#canvas:
-		#	Color:
-		#		rgba: 0,1,1,1
-		#	Rectangle:
-		#		size: self.size
-		#		pos: self.pos
+		size: (0,0) if root.right_container_size is None else (dp(24),dp(24))
 ''')
 
 
@@ -145,42 +126,31 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 	_txt_top_pad = NumericProperty()
 	_txt_bot_pad = NumericProperty()
 	_txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
-	left_container = ObjectProperty()
-	right_container = ObjectProperty()
+	_touchable_widgets = ListProperty()
 
 	def __init__(self, **kwargs):
 		super(ListItem, self).__init__(**kwargs)
 		self.on_left_container_size(None, self.left_container_size)
 
 	def on_touch_down(self, touch):
-		if self.propagate_touch_to_container_children(touch, 'down'):
+		if self.propagate_touch_to_touchable_widgets(touch, 'down'):
 			return
 		super(ListItem, self).on_touch_down(touch)
 
 	def on_touch_move(self, touch, *args):
-		if self.propagate_touch_to_container_children(touch, 'move', *args):
+		if self.propagate_touch_to_touchable_widgets(touch, 'move', *args):
 			return
 		super(ListItem, self).on_touch_move(touch, *args)
 
 	def on_touch_up(self, touch):
-		if self.propagate_touch_to_container_children(touch, 'up'):
+		if self.propagate_touch_to_touchable_widgets(touch, 'up'):
 			return
 		super(ListItem, self).on_touch_up(touch)
 
-	def propagate_touch_to_container_children(self, touch, touch_event, *args):
-		children = []
+	def propagate_touch_to_touchable_widgets(self, touch, touch_event, *args):
 		triggered = False
-		try:
-			children.append(self.ids['_left_container'].children[0])
-		except:
-			pass
-		try:
-			children.append(self.ids['_right_container'].children[0])
-		except:
-			pass
-		for i in children:
-			if issubclass(i.__class__, ButtonBehavior) and \
-					i.collide_point(touch.x, touch.y):
+		for i in self._touchable_widgets:
+			if i.collide_point(touch.x, touch.y):
 				triggered = True
 				if touch_event == 'down':
 					i.on_touch_down(touch)
@@ -192,6 +162,12 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 			return True
 		else:
 			return False
+
+	def remove_widget(self, widget):
+		super(ListItem, self).remove_widget(widget)
+		if widget in self._touchable_widgets:
+			self._touchable_widgets.remove(widget)
+		widget.post_removal_cleanup(self)
 
 	def on_type(self, instance, value):
 		if value == 'one-line':
@@ -236,3 +212,42 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 
 	def select(self, selection_tracker):
 		pass
+
+
+class ListItemBody(object):
+
+	_container_owner = ObjectProperty()
+
+	def on_parent(self, instance, parent):
+		if not issubclass(parent.__class__, ListItem):
+			raise Exception('ListItemBody objects can only be fathered by a '
+			                'ListItem object')
+		if issubclass(self.__class__, ButtonBehavior):
+			parent._touchable_widgets.append(self)
+
+	def bind_to_container(self, container):
+		self.size_hint = (None, None)
+		container.bind(pos=self.setter('pos'),
+		               size=self.setter('size'))
+		self.pos = container.pos
+		self.size = container.size
+		self._container_owner = container
+
+
+	def post_removal_cleanup(self, parent):
+		self._container_owner.unbind(pos=self.setter('pos'),
+		                             size=self.setter('size'))
+
+
+class LeftListItemBody(ListItemBody):
+
+	def on_parent(self, instance, parent):
+		super(LeftListItemBody, self).on_parent(instance, parent)
+		self.bind_to_container(parent.ids['_left_container'])
+
+
+class RightListItemBody(ListItemBody):
+
+	def on_parent(self, instance, parent):
+		super(RightListItemBody, self).on_parent(instance, parent)
+		self.bind_to_container(parent.ids['_right_container'])
