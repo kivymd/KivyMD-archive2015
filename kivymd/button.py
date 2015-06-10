@@ -29,6 +29,7 @@ Builder.load_string('''
 		font_style: 'Icon'
 		text: u"{}".format(md_icons[root.icon])
 		halign: 'center'
+		opposite_colors: root.opposite_colors
 		valign: 'middle'
 
 <MaterialFlatButton>
@@ -110,6 +111,7 @@ Builder.load_string('''
 
 class MaterialIconButton(CircularRippleBehavior, ButtonBehavior, BoxLayout):
 	icon = StringProperty('md-lens')
+	opposite_colors = BooleanProperty(False)
 
 
 class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
