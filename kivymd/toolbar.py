@@ -37,6 +37,7 @@ Builder.load_string('''
 		x: root.x + left_actions.width + dp(24)
 		y: root.y
 		font_style: 'Title'
+		opposite_colors: True
 		text: root.title
 ''')
 
@@ -81,5 +82,6 @@ class Toolbar(ThemableBehavior, ElevationBehaviour, BackgroundColorBehavior, Rel
 		for item in action_bar_items:
 			new_width += dp(48)
 			action_bar.add_widget(MaterialIconButton(icon=item[0],
-			                                         on_release=item[1]))
+			                                         on_release=item[1],
+			                                         opposite_colors=True))
 		action_bar.width = new_width

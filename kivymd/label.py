@@ -42,6 +42,9 @@ class MaterialLabel(ThemableBehavior, Label):
 
 	def __init__(self, **kwargs):
 		super(MaterialLabel, self).__init__(**kwargs)
+		self.on_theme_text_color(None, self.theme_text_color)
+		self.on_font_style(None, self.font_style)
+		self.on_opposite_colors(None, self.opposite_colors)
 
 	def on_font_style(self, instance, style):
 		info = self._font_styles[style]
