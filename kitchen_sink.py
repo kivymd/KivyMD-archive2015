@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from kivy.app import App
+from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivymd.theming import ThemeManager
@@ -10,6 +11,7 @@ main_widget_kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
 #:import ThemeManager kivymd.theming.ThemeManager
 #:import MaterialCheckBox kivymd.selectioncontrols.MaterialCheckBox
+#:import MaterialSwitch kivymd.selectioncontrols.MaterialSwitch
 #:import MaterialList kivymd.list.MaterialList
 #:import ListItem kivymd.list.ListItem
 RelativeLayout:
@@ -34,19 +36,33 @@ RelativeLayout:
 		id:			chkbox
 		size_hint:	None, None
 		size:		dp(48), dp(48)
-		pos_hint:	{'center_x': 0.3, 'center_y': 0.65}
+		pos_hint:	{'center_x': 0.2, 'center_y': 0.65}
 	MaterialCheckBox:
 		id:			grp_chkbox_1
 		group:		'test'
 		size_hint:	None, None
 		size:		dp(48), dp(48)
-		pos_hint:	{'center_x': 0.5, 'center_y': 0.65}
+		pos_hint:	{'center_x': 0.4, 'center_y': 0.65}
 	MaterialCheckBox:
 		id:			grp_chkbox_2
 		group:		'test'
 		size_hint:	None, None
 		size:		dp(48), dp(48)
-		pos_hint:	{'center_x': 0.6, 'center_y': 0.65}
+		pos_hint:	{'center_x': 0.5, 'center_y': 0.65}
+	MaterialSwitch:
+		size_hint:	None, None
+		size:		dp(36), dp(48)
+		pos_hint:	{'center_x': 0.7, 'center_y': 0.65}
+		active:		False
+	FloatingActionButton:
+		id:					float_act_btn
+		icon:				'md-android'
+		size_hint:			None, None
+		size:				dp(56), dp(56)
+		opposite_colors:	True
+		elevation_normal:	8
+		pos_hint:			{'center_x': 0.85, 'center_y': 0.1}
+
 	ScrollView:
 		do_scroll_x: False
 		pos_hint: {'center_x': 0.3, 'center_y': 0.3}
@@ -148,6 +164,7 @@ class KitchenSink(App):
 
 	def build(self):
 		main_widget = Builder.load_string(main_widget_kv)
+		# self.theme_cls.theme_style = 'Dark'
 		content = MaterialLabel(font_style='Body1',
 								theme_text_color='Secondary',
 								text="This is a Dialog with a title and some text. That's pretty awesome right!",

@@ -142,8 +142,8 @@ class MaterialFlatButton(ThemableBehavior, RectangularRippleBehavior,
 
 class MaterialRaisedButton(ThemableBehavior, RectangularRippleBehavior, ElevationBehaviour, ButtonBehavior,
 						   AnchorLayout):
-	_bg_color_down = ListProperty([])
 
+	_bg_color_down = ListProperty([])
 	def _get_bg_color_down(self):
 		return self._bg_color_down
 
@@ -255,25 +255,30 @@ class FloatingActionButton(ThemableBehavior, CircularRippleBehavior, RoundElevat
 
 	def _set_bg_color_down(self, color, alpha=None):
 		if len(color) == 2:
-			self._bg_color_down = get_rgba_color(color, control_alpha=alpha)
+			self._bg_color_down = get_color_from_hex(colors[color[0]][color[1]])
+			if alpha:
+				self._bg_color_down[3] = alpha
 		elif len(color) == 4:
 			self._bg_color_down = color
 
 	background_color_down = AliasProperty(_get_bg_color_down, _set_bg_color_down,
-										  bind=('_bg_color_down', ))
+										  bind=('_bg_color_down',))
 
 	_bg_color_disabled = ListProperty([])
+
 	def _get_bg_color_disabled(self):
 		return self._bg_color_disabled
 
 	def _set_bg_color_disabled(self, color, alpha=None):
 		if len(color) == 2:
-			self._bg_color_disabled = get_rgba_color(color, control_alpha=alpha)
+			self._bg_color_disabled = get_color_from_hex(colors[color[0]][color[1]])
+			if alpha:
+				self._bg_color_disabled[3] = alpha
 		elif len(color) == 4:
 			self._bg_color_disabled = color
-	background_color_disabled = AliasProperty(_get_bg_color_disabled, _set_bg_color_disabled,
-											  bind=('_bg_color_disabled', ))
 
+	background_color_disabled = AliasProperty(_get_bg_color_disabled, _set_bg_color_disabled,
+											  bind=('_bg_color_disabled',))
 	icon = StringProperty('md-android')
 
 	_elev_norm = NumericProperty(6)
