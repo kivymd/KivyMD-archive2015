@@ -22,10 +22,9 @@ Builder.load_string('''
 			size: root.size
 			pos: root.pos
 	Image:
-		id: header_bg
+		id: _header_bg
 		size_hint_y: None
-		height: 9 * self.width / 16
-		source: '/home/mixedcase/temp/kivymd/kivymd/images/PLACEHOLDER_BG.jpg'
+		height: 0 if self.source == '' or self.source == None else 9 * self.width / 16
 		x: root.x
 		y: root.height - self.height
 		mipmap: True
@@ -33,7 +32,7 @@ Builder.load_string('''
 		keep_ratio: False
 	ScrollView:
 		size_hint_y: None
-		height: root.height - header_bg.height - dp(8)
+		height: root.height - _header_bg.height - dp(8)
 		pos: root.pos
 		MaterialList:
 			id: _list
@@ -46,12 +45,16 @@ class NavigationDrawer(SlidingPanel, ThemableBehavior, ElevationBehaviour):
 	header_img = StringProperty()
 
 	_list = ObjectProperty()
+	_header_bg = ObjectProperty()
 
 	def add_widget(self, widget, index=0):
 		if issubclass(widget.__class__, NavigationDrawerCategory):
 			self._list.add_widget(widget, index)
 		else:
 			super(NavigationDrawer, self).add_widget(widget, index)
+
+	def on_header_img(self, instance, value):
+		self._header_bg.source = value
 
 
 class NavigationDrawerCategory(MaterialList):
