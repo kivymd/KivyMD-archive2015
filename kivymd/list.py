@@ -93,8 +93,8 @@ class MaterialList(GridLayout):
 	def resize(self):
 		new_height = self._min_list_height
 		for i in self.children:
-			if type(i) == ListItem:
-				new_height += i.height
+			#if issubclass(i.__class__, ListItem):
+			new_height += i.height
 		self.height = new_height
 
 

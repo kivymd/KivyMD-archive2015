@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from kivy.app import App
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivymd.theming import ThemeManager
@@ -13,11 +12,13 @@ main_widget_kv = '''
 #:import MaterialCheckBox kivymd.selectioncontrols.MaterialCheckBox
 #:import MaterialSwitch kivymd.selectioncontrols.MaterialSwitch
 #:import MaterialList kivymd.list.MaterialList
+#:import NavigationDrawer kivymd.navigationdrawer.NavigationDrawer
 #:import ListItem kivymd.list.ListItem
 RelativeLayout:
 	Toolbar:
+		id: toolbar
 		title: 'KivyMD Kitchen Sink'
-		left_action_items: [['md-menu', lambda x: None]]
+		left_action_items: [['md-menu', lambda x: nav_drawer.toggle()]]
 		right_action_items: [['md-content-copy', lambda x: None], \
 		['md-more-vert', lambda x: None]]
 	MaterialFlatButton:
@@ -156,6 +157,24 @@ RelativeLayout:
 				right_container_size: 'small'
 				text: 'Three-line item'
 				secondary_text: 'This is a multi-line label where you can fit more text than usual'
+	NavigationDrawer:
+		id: nav_drawer
+		bind_to_window: False
+		size_hint_y: None
+		height: root.height - toolbar.height
+		NavigationDrawerCategory:
+			NavigationDrawerButton:
+				icon: 'md-lens'
+				text: 'Item 1'
+			NavigationDrawerButton:
+				icon: 'md-lens'
+				text: 'Item 2'
+			NavigationDrawerButton:
+				icon: 'md-lens'
+				text: 'Item 3'
+			NavigationDrawerButton:
+				icon: 'md-lens'
+				text: 'Item 4'
 '''
 
 
