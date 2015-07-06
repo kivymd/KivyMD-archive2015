@@ -111,7 +111,8 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 									  _hint_lbl_font_size=sp(12), duration=.2,
 									  t='out_quad')
 		self.hint_anim_out = Animation(_hint_y=dp(10),
-									   _hint_lbl_font_size=sp(16), duration=.2,
+									   _hint_lbl_font_size=sp(16),
+									   duration=.2,
 									   t='out_quad')
 
 	def on_focus(self, *args):
