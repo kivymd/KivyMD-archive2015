@@ -15,6 +15,7 @@ main_widget_kv = '''
 #:import NavigationDrawer kivymd.navigationdrawer.NavigationDrawer
 #:import ListItem kivymd.list.ListItem
 #:import SingleLineTextField kivymd.textfields.SingleLineTextField
+#:import MaterialSpinner kivymd.spinner.MaterialSpinner
 
 RelativeLayout:
 	Toolbar:
@@ -167,6 +168,12 @@ RelativeLayout:
 				right_container_size: 'small'
 				text: 'Three-line item'
 				secondary_text: 'This is a multi-line label where you can fit more text than usual'
+
+	MaterialSpinner:
+		size_hint: None, None
+		size: dp(36), dp(36)
+		pos_hint: {'center_x': 0.15, 'center_y': 0.1}
+
 	NavigationDrawer:
 		id: nav_drawer
 		bind_to_window: False
