@@ -14,6 +14,8 @@ main_widget_kv = '''
 #:import MaterialList kivymd.list.MaterialList
 #:import NavigationDrawer kivymd.navigationdrawer.NavigationDrawer
 #:import ListItem kivymd.list.ListItem
+#:import SingleLineTextField kivymd.textfields.SingleLineTextField
+
 RelativeLayout:
 	Toolbar:
 		id: toolbar
@@ -21,6 +23,14 @@ RelativeLayout:
 		left_action_items: [['md-menu', lambda x: nav_drawer.toggle()]]
 		right_action_items: [['md-content-copy', lambda x: None], \
 		['md-more-vert', lambda x: None]]
+
+	SingleLineTextField:
+		id: text_field
+		size_hint: 0.8, None
+		height: dp(48)
+		pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+		hint_text: "Write something"
+
 	MaterialFlatButton:
 		id: flat_button
 		text: 'MaterialFlatButton'
@@ -66,9 +76,9 @@ RelativeLayout:
 
 	ScrollView:
 		do_scroll_x: False
-		pos_hint: {'center_x': 0.3, 'center_y': 0.3}
+		pos_hint: {'center_x': 0.5, 'center_y': 0.4}
 		size_hint: (None, None)
-		size: (320, 300)
+		size: (320, 250)
 		MaterialList:
 			ListItem:
 				type: 'one-line'
@@ -199,7 +209,16 @@ class KitchenSink(App):
 
 		self.dialog.add_action_button("Dismiss", action=lambda *x: self.dialog.dismiss())
 		main_widget.ids.raised_button.bind(on_release=lambda *x: self.dialog.open())
+		main_widget.ids.text_field.bind(on_text_validate=self.set_error_message,
+										on_focus=self.set_error_message)
 		return main_widget
+
+	def set_error_message(self, *args):
+		if len(self.root.ids.text_field.text) == 0:
+			self.root.ids.text_field.error = True
+			self.root.ids.text_field.error_message = "Some text is required"
+		else:
+			self.root.ids.text_field.error = False
 
 	def on_pause(self):
 		return True
