@@ -3,7 +3,8 @@
 from kivy.lang import Builder
 from kivy.uix.textinput import TextInput
 
-from kivy.properties import ObjectProperty, NumericProperty, StringProperty, ListProperty, BooleanProperty
+from kivy.properties import ObjectProperty, NumericProperty, StringProperty, \
+	ListProperty, BooleanProperty
 from kivy.metrics import sp, dp
 from kivy.animation import Animation
 from kivymd.label import MaterialLabel
@@ -32,19 +33,23 @@ Builder.load_string('''
             size: self._msg_label.texture_size
             pos: self.x, self.y - dp(8)
         Color:
-            rgba: (self.cursor_color if self.focus and not self.cursor_blink else (0, 0, 0, 0))
+            rgba: (self.cursor_color if self.focus and not self.cursor_blink \
+            else (0, 0, 0, 0))
         Rectangle:
             pos: [int(x) for x in self.cursor_pos]
             size: 1, -self.line_height
 		Color:
-			rgba: self._hint_txt_color if not self.text and not self.focus else \
-			(self.line_color_focus if not self.text or self.focus else (1, 1, 1, 0))
+			rgba: self._hint_txt_color if not self.text and not self.focus \
+			else (self.line_color_focus if not self.text or self.focus \
+			else (1, 1, 1, 0))
 		Rectangle:
 			texture: self._hint_lbl.texture
 			size: self._hint_lbl.texture_size
 			pos: self.x, self.y + self._hint_y
 		Color:
-            rgba: self.disabled_foreground_color if self.disabled else (self.hint_text_color if not self.text and not self.focus else self.foreground_color)
+            rgba: self.disabled_foreground_color if self.disabled else \
+            (self.hint_text_color if not self.text and not self.focus else \
+            self.foreground_color)
 
 	font_name:	'Roboto'
 	font_size:	sp(16)
@@ -53,8 +58,8 @@ Builder.load_string('''
 	multiline:	False
 ''')
 
-class SingleLineTextField(ThemableBehavior, TextInput):
 
+class SingleLineTextField(ThemableBehavior, TextInput):
 	error_message = StringProperty('')
 
 	line_color_normal = ListProperty([])
@@ -71,6 +76,7 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 	_msg_label = ObjectProperty()
 	_line_width = NumericProperty(0)
 	_hint_txt = StringProperty('')
+
 	def __init__(self, **kwargs):
 		self._msg_label = MaterialLabel(font_style='Caption',
 										theme_text_color='Error',
@@ -101,18 +107,24 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 		self._hint_lbl.width = self.width
 
 	def on_pos(self, *args):
-		self.hint_anim_in = Animation(_hint_y=dp(34), _hint_lbl_font_size=sp(12), duration=.2, t='out_quad')
-		self.hint_anim_out = Animation(_hint_y=dp(10), _hint_lbl_font_size=sp(16), duration=.2, t='out_quad')
+		self.hint_anim_in = Animation(_hint_y=dp(34),
+									  _hint_lbl_font_size=sp(12), duration=.2,
+									  t='out_quad')
+		self.hint_anim_out = Animation(_hint_y=dp(10),
+									   _hint_lbl_font_size=sp(16), duration=.2,
+									   t='out_quad')
 
 	def on_focus(self, *args):
 		if self.focus:
-			Animation.cancel_all(self, '_line_width', '_hint_y', '_hint_lbl_font_size')
+			Animation.cancel_all(self, '_line_width', '_hint_y',
+								 '_hint_lbl_font_size')
 			if len(self.text) == 0:
 				self.hint_anim_in.start(self)
 			if not self.error:
 				self.anim.start(self)
 		else:
-			Animation.cancel_all(self, '_line_width', '_hint_y', '_hint_lbl_font_size')
+			Animation.cancel_all(self, '_line_width', '_hint_y',
+								 '_hint_lbl_font_size')
 			if len(self.text) == 0:
 				self.hint_anim_out.start(self)
 			if not self.error:
