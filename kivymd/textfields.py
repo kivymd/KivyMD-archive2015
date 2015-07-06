@@ -79,11 +79,13 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 
 	def __init__(self, **kwargs):
 		self._msg_label = MaterialLabel(font_style='Caption',
-										theme_text_color='Error',
-										halign='left', valign='middle')
+		                                theme_text_color='Error',
+		                                halign='left',
+		                                valign='middle')
 
-		self._hint_lbl = MaterialLabel(font_style='Subhead', halign='left',
-									   valign='middle')
+		self._hint_lbl = MaterialLabel(font_style='Subhead',
+		                               halign='left',
+		                               valign='middle')
 		super(SingleLineTextField, self).__init__(**kwargs)
 		self.line_color_normal = self.theme_cls.divider_color
 		self.line_color_focus = self.theme_cls.primary_color
@@ -93,8 +95,8 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 		self.cursor_color = self.theme_cls.primary_color
 
 		self.bind(error_message=self._set_msg,
-				  hint_text=self._set_hint,
-				  _hint_lbl_font_size=self._hint_lbl.setter('font_size'))
+		          hint_text=self._set_hint,
+		          _hint_lbl_font_size=self._hint_lbl.setter('font_size'))
 
 	def on_hint_text_color(self, instance, color):
 		self._hint_txt_color = self.theme_cls.disabled_hint_text_color
@@ -107,24 +109,24 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 
 	def on_pos(self, *args):
 		self.hint_anim_in = Animation(_hint_y=dp(34),
-									  _hint_lbl_font_size=sp(12), duration=.2,
-									  t='out_quad')
+		                              _hint_lbl_font_size=sp(12), duration=.2,
+		                              t='out_quad')
 		self.hint_anim_out = Animation(_hint_y=dp(10),
-									   _hint_lbl_font_size=sp(16),
-									   duration=.2,
-									   t='out_quad')
+		                               _hint_lbl_font_size=sp(16),
+		                               duration=.2,
+		                               t='out_quad')
 
 	def on_focus(self, *args):
 		if self.focus:
 			Animation.cancel_all(self, '_line_width', '_hint_y',
-								 '_hint_lbl_font_size')
+			                     '_hint_lbl_font_size')
 			if len(self.text) == 0:
 				self.hint_anim_in.start(self)
 			if not self.error:
 				self.anim.start(self)
 		else:
 			Animation.cancel_all(self, '_line_width', '_hint_y',
-								 '_hint_lbl_font_size')
+			                     '_hint_lbl_font_size')
 			if len(self.text) == 0:
 				self.hint_anim_out.start(self)
 			if not self.error:
