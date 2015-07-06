@@ -80,10 +80,9 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 	def __init__(self, **kwargs):
 		self._msg_label = MaterialLabel(font_style='Caption',
 										theme_text_color='Error',
-										halign='left',
-										valign='middle')
-		self._hint_lbl = MaterialLabel(font_style='Subhead',
-									   halign='left',
+										halign='left', valign='middle')
+
+		self._hint_lbl = MaterialLabel(font_style='Subhead', halign='left',
 									   valign='middle')
 		super(SingleLineTextField, self).__init__(**kwargs)
 		self.line_color_normal = self.theme_cls.divider_color
