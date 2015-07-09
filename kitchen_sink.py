@@ -15,6 +15,7 @@ main_widget_kv = '''
 #:import NavigationDrawer kivymd.navigationdrawer.NavigationDrawer
 #:import ListItem kivymd.list.ListItem
 #:import SingleLineTextField kivymd.textfields.SingleLineTextField
+#:import MDSpinner kivymd.spinner.MDSpinner
 
 RelativeLayout:
 	Toolbar:
@@ -43,11 +44,7 @@ RelativeLayout:
 		size_hint: None, None
 		size: dp(110), dp(36)
 		pos_hint: {'center_x': 0.75, 'center_y': 0.75}
-	MaterialCheckBox:
-		id:			chkbox
-		size_hint:	None, None
-		size:		dp(48), dp(48)
-		pos_hint:	{'center_x': 0.2, 'center_y': 0.65}
+
 	MaterialCheckBox:
 		id:			grp_chkbox_1
 		group:		'test'
@@ -65,14 +62,7 @@ RelativeLayout:
 		size:		dp(36), dp(48)
 		pos_hint:	{'center_x': 0.7, 'center_y': 0.65}
 		active:		False
-	FloatingActionButton:
-		id:					float_act_btn
-		icon:				'md-android'
-		size_hint:			None, None
-		size:				dp(56), dp(56)
-		opposite_colors:	True
-		elevation_normal:	8
-		pos_hint:			{'center_x': 0.85, 'center_y': 0.1}
+
 
 	ScrollView:
 		do_scroll_x: False
@@ -167,6 +157,38 @@ RelativeLayout:
 				right_container_size: 'small'
 				text: 'Three-line item'
 				secondary_text: 'This is a multi-line label where you can fit more text than usual'
+
+	MDSpinner:
+		id: spinner
+		size_hint: None, None
+		size: dp(46), dp(46)
+		pos_hint: {'center_x': 0.15, 'center_y': 0.1}
+		determinate: True if chkbox.active else False
+
+	MaterialLabel:
+		font_style: 'Subhead'
+		theme_text_color: 'Primary'
+		text: "Determinate"
+		halign: 'center'
+		pos_hint: {'center_x': 0.5, 'center_y': 0.14}
+	MaterialCheckBox:
+		id:			chkbox
+		size_hint:	None, None
+		size:		dp(48), dp(48)
+		pos_hint:	{'center_x': 0.5, 'center_y': 0.1}
+
+	FloatingActionButton:
+		id:					float_act_btn
+		icon:				'md-replay'
+		size_hint:			None, None
+		size:				dp(56), dp(56)
+		opposite_colors:	True
+		elevation_normal:	8
+		pos_hint:			{'center_x': 0.85, 'center_y': 0.1}
+		on_release:         spinner.active = not spinner.active
+
+
+
 	NavigationDrawer:
 		id: nav_drawer
 		bind_to_window: False
