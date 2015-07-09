@@ -35,7 +35,7 @@ class MDSpinner(ThemableBehavior, Widget):
 	It can be used either as an indeterminate indicator that loops while
 	the user waits for something to happen, or as a determinate indicator.
 
-	Set :attr:`determinate` to **True** to set the determinate mode, and
+	Set :attr:`determinate` to **True** to activate determinate mode, and
 	:attr:`determinate_time` to set the duration of the animation.
 	"""
 
