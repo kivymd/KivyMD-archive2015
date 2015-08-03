@@ -109,7 +109,7 @@ class ElevationBehaviour(object):
 	when you want the widget to appear on the same 'height' as a widget next to
 	it.
 
-	:attr:`determinate` is a :class:`~kivy.properties.OptionProperty` and
+	:attr:`cut_shadow` is a :class:`~kivy.properties.OptionProperty` and
 	defaults to 'no_cut'.
 	"""
 
