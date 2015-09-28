@@ -20,7 +20,6 @@ Builder.load_string('''
 			rgba: root.theme_cls.bg_light
 		Rectangle:
 			size: root.size
-			pos: root.pos
 	Image:
 		id: _header_bg
 		size_hint_y: None
