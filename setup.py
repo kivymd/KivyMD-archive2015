@@ -4,7 +4,7 @@
 from distutils.core import setup
 
 setup(name='kivymd',
-	  version='0.1.0',
+	  version='0.1.1',
 	  description='Set of widgets for Kivy inspired by Google\'s Material '
 				  'Design',
 	  author='Andrés Rodríguez',
