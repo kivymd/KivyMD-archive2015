@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import kivymd.snackbar as Snackbar
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -231,6 +232,7 @@ class KitchenSink(App):
 
 		self.dialog.add_action_button("Dismiss", action=lambda *x: self.dialog.dismiss())
 		main_widget.ids.raised_button.bind(on_release=lambda *x: self.dialog.open())
+		main_widget.ids.flat_button.bind(on_release=lambda *x: Snackbar.make("This is a much longer snackbar with extra text! Extra text! Extra text! Extra text! Extra text!", button_text="Hello cruel world", button_callback=lambda *args: 2))
 		main_widget.ids.text_field.bind(on_text_validate=self.set_error_message,
 										on_focus=self.set_error_message)
 		return main_widget
