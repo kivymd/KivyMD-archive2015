@@ -75,7 +75,6 @@ class _SnackbarWidget(FloatLayout):
 				DEVICE_TYPE == "mobile" else dp(40)
 			self.padding_right = dp(16)
 		Window.add_widget(self)
-		#self.ids['_label'].width = self.ids._spacer.x - dp(24) if DEVICE_TYPE == 'mobile' else self.texture_size[0] if (dp(568) - self.padding_right - self.ids._button.width - self.ids._spacer.width - self.texture_size[0] - dp(24)) >= 0 else (dp(568) - self.padding_right - self.ids._button.width - self.ids._spacer.width - dp(24))
 		anim = Animation(top=self.height, duration=.3, t='out_quad')
 		anim.start(self)
 		Clock.schedule_once(lambda dt: self.die(), self.duration)
@@ -91,7 +90,7 @@ queue = deque()
 playing = False
 
 
-def make(text, button_text=None, button_callback=None, duration=300):
+def make(text, button_text=None, button_callback=None, duration=3):
 	if button_text is not None and button_callback is not None:
 		queue.append(_SnackbarWidget(text=text,
 		                             button_text=button_text,
