@@ -6,7 +6,7 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty, StringProperty, NumericProperty
-from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.relativelayout import RelativeLayout
 from kivymd.material_resources import DEVICE_TYPE
 
 Builder.load_string('''
@@ -21,37 +21,35 @@ Builder.load_string('''
 			rgb: get_color_from_hex('323232')
 		Rectangle:
 			size: self.size
-			pos: self.pos
 	size_hint_y: None
 	size_hint_x: 1 if DEVICE_TYPE == 'mobile' else None
-	height: dp(48) if _label.height < dp(48) else dp(80)
-	width: dp(288) if (_label.width + _spacer.width + _button.width + dp(24) + root.padding_right) < dp(288) else dp(568) if (_label.width + _spacer.width + _button.width + dp(24) + root.padding_right) > dp(568) else (_label.width + _spacer.width + _button.width + dp(24) + root.padding_right)
+	height: dp(48) if _label.texture_size[1] < dp(30) else dp(80)
+	width: dp(24) + _label.width + _spacer.width + _button.width + root.padding_right
 	top: 0
 	x: 0 if DEVICE_TYPE == 'mobile' else Window.width/2 - self.width/2
 	MaterialLabel:
 		id: _label
 		text: root.text
-		size_hint_x: 0
-		x: root.x + dp(24)
-		y: root.y
-		max_lines: 2
+		size_hint_x: None
+		x: dp(24)
 		width: Window.width - root.padding_right - _button.width - _spacer.width - dp(24) if DEVICE_TYPE == 'mobile' else self.texture_size[0] if (dp(568) - root.padding_right - _button.width - _spacer.width - self.texture_size[0] - dp(24)) >= 0 else (dp(568) - root.padding_right - _button.width - _spacer.width - dp(24))
+		valign: 'middle'
 	BoxLayout:
 		id: _spacer
-		size_hint_x: 0
-		right: _button.x
+		size_hint_x: None
+		x: _label.right
 		width: 0
 	MaterialFlatButton:
 		id: _button
 		text: root.button_text
-		size_hint_x: 0
-		right: root.right - root.padding_right
-		center_y: root.center_y
+		size_hint_x: None
+		x: _spacer.right
+		center_y: root.height/2
 		on_release: root.button_callback
 ''')
 
 
-class _SnackbarWidget(FloatLayout):
+class _SnackbarWidget(RelativeLayout):
 	text = StringProperty()
 	button_text = StringProperty()
 	button_callback = ObjectProperty()
@@ -75,7 +73,7 @@ class _SnackbarWidget(FloatLayout):
 				DEVICE_TYPE == "mobile" else dp(40)
 			self.padding_right = dp(16)
 		Window.add_widget(self)
-		anim = Animation(top=self.height, duration=.3, t='out_quad')
+		anim = Animation(y=0, duration=.3, t='out_quad')
 		anim.start(self)
 		Clock.schedule_once(lambda dt: self.die(), self.duration)
 
