@@ -45,7 +45,7 @@ Builder.load_string('''
 		size_hint_x: None
 		x: _spacer.right
 		center_y: root.height/2
-		on_release: root.button_callback
+		on_release: root.button_callback()
 ''')
 
 
