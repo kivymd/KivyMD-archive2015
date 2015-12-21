@@ -1,4 +1,44 @@
 # -*- coding: utf-8 -*-
+'''
+List
+====
+
+.. _Material Design spec Lists page:
+   https://www.google.com/design/spec/components/lists.html
+
+.. _Material Design spec Lists: Controls page:
+   https://www.google.com/design/spec/components/lists-controls.html
+
+The class :class:`MaterialList` in combination with a ListItem like
+:class:`TextListItem` will create a list that expands as items are added to
+it, working nicely with Kivy's :class:`~kivy.uix.scrollview.ScrollView`.
+
+All different ListItems are able to adapt to the different numbers of lines
+described in the spec, by simply changing the :attr:`TextListItem.type`
+attribute. However, the right ListItem must be chosen according to wether
+you need to have an avatar/icon container to the left or an avatar to the left,
+icon to the right combination.
+
+
+Example
+-------
+
+    ScrollView:
+		do_scroll_x: False  # Important for MD compliance
+    	MaterialList:
+    		TextListItem:
+    				type: 'one-line'
+    				text: 'Single-line item'
+    			TextListItem:
+    				type: 'two-line'
+    				text: 'Two-line item'
+    				secondary_text: 'Secondary text here'
+    			TextListItem:
+    				type: 'three-line'
+    				text: 'Three-line item'
+    				secondary_text: 'This is a multi-line label where you can fit more text than usual'
+'''
+
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import ObjectProperty, StringProperty, OptionProperty, \
@@ -58,7 +98,145 @@ Builder.load_string('''
 		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
 		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
 		size: (0,0) if root.right_container_size is None else (dp(24),dp(24))
+
+<TextListItem>
+	size_hint_y: None
+	canvas:
+		Color:
+			rgba: self.theme_cls.divider_color
+		Line:
+			points: root.x,root.y, root.x+self.width,root.y
+	BoxLayout:
+		id: _text_container
+		orientation: 'vertical'
+		pos: root.pos
+		padding: root._txt_left_pad, root._txt_top_pad, root._txt_right_pad, root._txt_bot_pad
+		MaterialLabel:
+			id: _lbl_primary
+			text: root.text
+			font_style: 'Subhead'
+			theme_text_color: 'Primary'
+			size_hint_y: None
+			height: self.texture_size[1]
+		MaterialLabel:
+			id: _lbl_secondary
+			text: '' if root.type == 'one-line' else root.secondary_text
+			font_style: 'Body1'
+			theme_text_color: 'Secondary'
+			size_hint_y: None
+			height: 0 if root.type == 'one-line' else self.texture_size[1]
+
+<AvatarListItem>
+	BoxLayout:
+		id: _avatar_container
+		size_hint: None, None
+		x: root.x + dp(16)
+		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
+		size: dp(40), dp(40)
+
+<IconListItem>
+	BoxLayout:
+		id: _icon_container
+		size_hint: None, None
+		x: root.x + dp(16)
+		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
+		size: dp(24), dp(24)
+
+<AvatarIconListItem>
+	BoxLayout:
+		id: _icon_container
+		size_hint: None, None
+		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
+		size: dp(24), dp(24)
 ''')
+
+
+class TextListItem(ThemableBehavior, RectangularRippleBehavior,
+                   ButtonBehavior, FloatLayout):
+	'''TextListItem. Base class to all ListItems. See module documentation for
+	more information.
+	'''
+
+	type = OptionProperty('one-line',
+	                      options=['one-line', 'two-line', 'three-line'])
+	'''Type of ListItem. Determines how many lines of text there are.
+
+	Valid values are \'one-line\', \'two-line\' and \'three-line\'.
+
+	:attr:`type` is a :class:`~kivy.properties.OptionProperty` and defaults
+	to \'one-line\'.
+	'''
+
+	text = StringProperty()
+	'''Text shown in the first line.
+
+	:attr:`text` is a :class:`~kivy.properties.StringProperty` and defaults
+	to "".
+	'''
+
+	secondary_text = StringProperty()
+	'''Text shown in the second and potentially third line.
+
+	The text will wrap into the third line if the ListItem's type is set to
+	\'one-line\'. It can be forced into the third line by adding a \\n
+	escape sequence.
+
+	:attr:`secondary_text` is a :class:`~kivy.properties.StringProperty` and
+	defaults to "".
+	'''
+
+	_txt_left_pad = NumericProperty(dp(16))
+	_txt_top_pad = NumericProperty()
+	_txt_bot_pad = NumericProperty()
+	_txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
+
+	def __init__(self, **kwargs):
+		super(TextListItem, self).__init__(**kwargs)
+		self.on_type(None, self.type)
+
+	def on_type(self, instance, value):
+		if value == 'one-line':
+			self.set_sizes_for_one_line()
+		elif value == 'two-line':
+			self.set_sizes_for_two_line()
+		elif value == 'three-line':
+			self.set_sizes_for_three_line()
+
+	def set_sizes_for_one_line(self):
+		self.height = dp(48)
+		self._txt_top_pad = dp(16)
+		self._txt_bot_pad = dp(20) - dp(5)
+
+	def set_sizes_for_two_line(self):
+		self.height = dp(72)
+		self._txt_top_pad = dp(20)
+		self._txt_bot_pad = dp(20) - dp(5)
+
+	def set_sizes_for_three_line(self):
+		self.height = dp(88)
+		self._txt_top_pad = dp(16)
+		self._txt_bot_pad = dp(20) - dp(5)
+
+	def select(self, selection_tracker):
+		pass
+
+
+class AvatarListItem(TextListItem):
+	_txt_left_pad = NumericProperty(dp(72))
+
+	def set_sizes_for_one_line(self):
+		self.height = dp(56)
+		self._txt_top_pad = dp(20)
+		self._txt_bot_pad = dp(24) - dp(5)
+
+
+class IconListItem(TextListItem):
+	_txt_left_pad = NumericProperty(dp(72))
+
+
+class AvatarIconListItem(AvatarListItem):
+	_txt_right_pad = NumericProperty(dp(16) + dp(24) + m_res.HORIZ_MARGINS)
 
 
 class MaterialList(GridLayout):
@@ -93,18 +271,17 @@ class MaterialList(GridLayout):
 	def resize(self):
 		new_height = self._min_list_height
 		for i in self.children:
-			#if issubclass(i.__class__, ListItem):
 			new_height += i.height
 		self.height = new_height
 
-
+# DO NOT DELETE FOLLOWING CODE UNTIL REWRITE FULLY IMPLEMENTED:
 class ListItem(ThemableBehavior, RectangularRippleBehavior,
                ButtonBehavior, FloatLayout):
 	type = OptionProperty('one-line',
 	                      options=['one-line', 'two-line', 'three-line'])
 
 	left_container_size = OptionProperty(
-		None, options=['small', 'big'], allownone=True)
+			None, options=['small', 'big'], allownone=True)
 	'''Size of the left widget container.
 
 	Valid values are None (no container), \'small\' (24dp, e.g. icons) and
@@ -112,7 +289,7 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 	'''
 
 	right_container_size = OptionProperty(
-		None, options=['small'], allownone=True)
+			None, options=['small'], allownone=True)
 	'''Size of the right widget container.
 
 	Valid values are None (no container) and \'small\' (24dp, e.g. icons).
@@ -186,7 +363,7 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 
 	def on_right_container_size(self, instance, value):
 		if value:
-			self._txt_right_pad =  dp(16) + dp(24) + m_res.HORIZ_MARGINS
+			self._txt_right_pad = dp(16) + dp(24) + m_res.HORIZ_MARGINS
 		else:
 			self._txt_right_pad = m_res.HORIZ_MARGINS
 
@@ -215,7 +392,6 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 
 
 class ListItemBody(object):
-
 	_container_owner = ObjectProperty()
 
 	def on_parent(self, instance, parent):
@@ -233,21 +409,18 @@ class ListItemBody(object):
 		self.size = container.size
 		self._container_owner = container
 
-
 	def post_removal_cleanup(self, parent):
 		self._container_owner.unbind(pos=self.setter('pos'),
 		                             size=self.setter('size'))
 
 
 class LeftListItemBody(ListItemBody):
-
 	def on_parent(self, instance, parent):
 		super(LeftListItemBody, self).on_parent(instance, parent)
 		self.bind_to_container(parent.ids['_left_container'])
 
 
 class RightListItemBody(ListItemBody):
-
 	def on_parent(self, instance, parent):
 		super(RightListItemBody, self).on_parent(instance, parent)
 		self.bind_to_container(parent.ids['_right_container'])
