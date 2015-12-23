@@ -1,4 +1,14 @@
 # -*- coding: utf-8 -*-
+'''
+Buttons
+=======
+
+`Material Design spec, Buttons page <https://www.google.com/design/spec/components/buttons.html>`_
+
+`Material Design spec, Buttons: Floating Action Button page <https://www.google.com/design/spec/components/buttons-floating-action-button.html>`_
+
+TO-DO: DOCUMENT MODULE
+'''
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp

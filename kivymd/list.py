@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 '''
-List
-====
+Lists
+=====
 
-.. _Material Design spec Lists page:
-   https://www.google.com/design/spec/components/lists.html
+`Material Design spec, Lists page <https://www.google.com/design/spec/components/lists.html>`_
 
-.. _Material Design spec Lists: Controls page:
-   https://www.google.com/design/spec/components/lists-controls.html
+`Material Design spec, Lists: Controls page <https://www.google.com/design/spec/components/lists-controls.html>`_
 
 The class :class:`MaterialList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
@@ -17,7 +15,7 @@ it, working nicely with Kivy's :class:`~kivy.uix.scrollview.ScrollView`.
 Simple examples
 ---------------
 
-Kv lang:
+Kv Lang:
 
 .. code-block:: python
 
@@ -59,7 +57,7 @@ from a certain level of complexity to keep the widgets compliant, flexible
 and performant.
 
 For this KivyMD provides ListItems that try to cover the most common usecases,
-when those are insufficient, there's a base class called :class:`_ListItem`
+when those are insufficient, there's a base class called :class:`ListItem`
 which you can use to create your own ListItems. This documentation will only
 cover the provided ones, for custom implementations please refer to this
 module's source code.
@@ -67,32 +65,30 @@ module's source code.
 Text only ListItems
 -------------------
 
-:class:`~OneLineListItem`
+- :class:`~OneLineListItem`
+- :class:`~TwoLineListItem`
+- :class:`~ThreeLineListItem`
 
-:class:`~TwoLineListItem`
-
-:class:`~ThreeLineListItem`
-
-These are the simplest ones. The :attr:`~_ListItem.text` attribute changes the
-text in the most prominent line, while :attr:`~_ListItem.secondary_text`
+These are the simplest ones. The :attr:`~ListItem.text` attribute changes the
+text in the most prominent line, while :attr:`~ListItem.secondary_text`
 changes the second and third line.
 
-If there are only two lines, :attr:`~_ListItem.secondary_text` will shorten
+If there are only two lines, :attr:`~ListItem.secondary_text` will shorten
 the text to fit in case it is too long; if a third line is available, it will
 instead wrap the text to make use of it.
 
 ListItems with widget containers
 --------------------------------
 
-:class:`~OneLineAvatarListItem`
-:class:`~TwoLineAvatarListItem`
-:class:`~ThreeLineAvatarListItem`
-:class:`~OneLineIconListItem`
-:class:`~TwoLineIconListItem`
-:class:`~ThreeLineIconListItem`
-:class:`~OneLineAvatarIconListItem`
-:class:`~TwoLineAvatarIconListItem`
-:class:`~ThreeLineAvatarIconListItem`
+- :class:`~OneLineAvatarListItem`
+- :class:`~TwoLineAvatarListItem`
+- :class:`~ThreeLineAvatarListItem`
+- :class:`~OneLineIconListItem`
+- :class:`~TwoLineIconListItem`
+- :class:`~ThreeLineIconListItem`
+- :class:`~OneLineAvatarIconListItem`
+- :class:`~TwoLineAvatarIconListItem`
+- :class:`~ThreeLineAvatarIconListItem`
 
 These widgets will take other widgets that inherit from :class:`~ILeftBody`,
 :class:`ILeftBodyTouch`, :class:`~IRightBody` or :class:`~IRightBodyTouch` and
@@ -140,6 +136,8 @@ Python example:
         item.add_widget(MessageButton(phone_number=c[1])
         ml.add_widget(item)
 
+API
+---
 '''
 
 from kivy.lang import Builder
@@ -160,7 +158,7 @@ Builder.load_string('''
 	height: self._min_list_height
 	padding: 0, self._list_vertical_padding
 
-<_ListItem>
+<BaseListItem>
 	size_hint_y: None
 	canvas:
 		Color:
@@ -245,10 +243,37 @@ Builder.load_string('''
 ''')
 
 
-class _ListItem(ThemableBehavior, RectangularRippleBehavior,
-                ButtonBehavior, FloatLayout):
-	'''_ListItem. Base class to all ListItems. Not supposed to be instantiated.
-	See module documentation for more information.
+class MaterialList(GridLayout):
+	'''ListItem container. Best used in conjunction with a
+	:class:`kivy.uix.ScrollView`.
+
+	When adding (or removing) a widget, it will resize itself to fit its
+	children, plus top and bottom paddings as described by the MD spec.
+	'''
+	selected = ObjectProperty()
+	_min_list_height = dp(16)
+	_list_vertical_padding = dp(8)
+
+	icon = StringProperty()
+
+	def add_widget(self, widget, index=0):
+		widget.bind(on_release=lambda x: widget.select(selection_tracker=self))
+		super(MaterialList, self).add_widget(widget, index)
+		self.height += widget.height
+
+	def remove_widget(self, widget):
+		super(MaterialList, self).remove_widget(widget)
+		self.height -= widget.height
+
+	def register_new_selection(self, widget):
+		if self.selected:
+			self.selected.is_selected = False
+		self.selected = widget
+
+
+class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
+                   ButtonBehavior, FloatLayout):
+	'''Base class to all ListItems. Not supposed to be instantiated on its own.
 	'''
 
 	text = StringProperty()
@@ -311,9 +336,9 @@ class IRightBodyTouch():
 	pass
 
 
-class _ContainerSupport():
-	'''Overrides add_widget in a _ListItem to include support for ILeftBody and
-	IRightBody widgets when the appropiate containers are present.
+class ContainerSupport():
+	'''Overrides add_widget in a ListItem to include support for I*Body
+	widgets when the appropiate containers are present.
 	'''
 	_touchable_widgets = ListProperty()
 
@@ -329,27 +354,27 @@ class _ContainerSupport():
 			self.ids['_right_container'].add_widget(widget)
 			self._touchable_widgets.append(widget)
 		else:
-			return super(_ListItem, self).add_widget(widget, index)
+			return super(BaseListItem, self).add_widget(widget, index)
 
 	def remove_widget(self, widget):
-		super(_ListItem, self).remove_widget(widget)
+		super(BaseListItem, self).remove_widget(widget)
 		if widget in self._touchable_widgets:
 			self._touchable_widgets.remove(widget)
 
 	def on_touch_down(self, touch):
 		if self.propagate_touch_to_touchable_widgets(touch, 'down'):
 			return
-		super(_ListItem, self).on_touch_down(touch)
+		super(BaseListItem, self).on_touch_down(touch)
 
 	def on_touch_move(self, touch, *args):
 		if self.propagate_touch_to_touchable_widgets(touch, 'move', *args):
 			return
-		super(_ListItem, self).on_touch_move(touch, *args)
+		super(BaseListItem, self).on_touch_move(touch, *args)
 
 	def on_touch_up(self, touch):
 		if self.propagate_touch_to_touchable_widgets(touch, 'up'):
 			return
-		super(_ListItem, self).on_touch_up(touch)
+		super(BaseListItem, self).on_touch_up(touch)
 
 	def propagate_touch_to_touchable_widgets(self, touch, touch_event, *args):
 		triggered = False
@@ -365,7 +390,7 @@ class _ContainerSupport():
 		return triggered
 
 
-class OneLineListItem(_ListItem):
+class OneLineListItem(BaseListItem):
 	_txt_top_pad = NumericProperty(dp(16))
 	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
 	_num_lines = 1
@@ -375,7 +400,7 @@ class OneLineListItem(_ListItem):
 		self.height = dp(48)
 
 
-class TwoLineListItem(_ListItem):
+class TwoLineListItem(BaseListItem):
 	_txt_top_pad = NumericProperty(dp(20))
 	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
 
@@ -384,7 +409,7 @@ class TwoLineListItem(_ListItem):
 		self.height = dp(72)
 
 
-class ThreeLineListItem(_ListItem):
+class ThreeLineListItem(BaseListItem):
 	_txt_top_pad = NumericProperty(dp(16))
 	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
 	_num_lines = 3
@@ -394,7 +419,7 @@ class ThreeLineListItem(_ListItem):
 		self.height = dp(88)
 
 
-class OneLineAvatarListItem(_ContainerSupport, _ListItem):
+class OneLineAvatarListItem(ContainerSupport, BaseListItem):
 	_txt_left_pad = NumericProperty(dp(72))
 	_txt_top_pad = NumericProperty(dp(20))
 	_txt_bot_pad = NumericProperty(dp(19))  # dp(24) - dp(5)
@@ -411,15 +436,15 @@ class TwoLineAvatarListItem(OneLineAvatarListItem):
 	_num_lines = 2
 
 	def __init__(self, **kwargs):
-		super(_ListItem, self).__init__(**kwargs)
+		super(BaseListItem, self).__init__(**kwargs)
 		self.height = dp(72)
 
 
-class ThreeLineAvatarListItem(_ContainerSupport, ThreeLineListItem):
+class ThreeLineAvatarListItem(ContainerSupport, ThreeLineListItem):
 	_txt_left_pad = NumericProperty(dp(72))
 
 
-class OneLineIconListItem(_ContainerSupport, OneLineListItem):
+class OneLineIconListItem(ContainerSupport, OneLineListItem):
 	_txt_left_pad = NumericProperty(dp(72))
 
 
@@ -429,11 +454,11 @@ class TwoLineIconListItem(OneLineIconListItem):
 	_num_lines = 2
 
 	def __init__(self, **kwargs):
-		super(_ListItem, self).__init__(**kwargs)
+		super(BaseListItem, self).__init__(**kwargs)
 		self.height = dp(72)
 
 
-class ThreeLineIconListItem(_ContainerSupport, ThreeLineListItem):
+class ThreeLineIconListItem(ContainerSupport, ThreeLineListItem):
 	_txt_left_pad = NumericProperty(dp(72))
 
 
@@ -450,25 +475,3 @@ class TwoLineAvatarIconListItem(TwoLineAvatarListItem):
 class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
 	# dp(40) = dp(16) + dp(24):
 	_txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
-
-
-class MaterialList(GridLayout):
-	selected = ObjectProperty()
-	_min_list_height = dp(16)
-	_list_vertical_padding = dp(8)
-
-	icon = StringProperty()
-
-	def add_widget(self, widget, index=0):
-		widget.bind(on_release=lambda x: widget.select(selection_tracker=self))
-		super(MaterialList, self).add_widget(widget, index)
-		self.height += widget.height
-
-	def remove_widget(self, widget):
-		super(MaterialList, self).remove_widget(widget)
-		self.height -= widget.height
-
-	def register_new_selection(self, widget):
-		if self.selected:
-			self.selected.is_selected = False
-		self.selected = widget
