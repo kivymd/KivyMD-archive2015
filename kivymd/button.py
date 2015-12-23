@@ -29,6 +29,7 @@ Builder.load_string('''
 		font_style: 'Icon'
 		text: u"{}".format(md_icons[root.icon])
 		halign: 'center'
+		theme_text_color: 'Primary'
 		opposite_colors: root.opposite_colors
 		valign: 'middle'
 
