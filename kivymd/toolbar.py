@@ -39,6 +39,8 @@ Builder.load_string('''
 		font_style: 'Title'
 		opposite_colors: True
 		text: root.title
+		shorten: True
+		shorten_from: 'right'
 ''')
 
 
