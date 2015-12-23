@@ -24,16 +24,17 @@ Builder.load_string('''
 	size_hint_y: None
 	size_hint_x: 1 if DEVICE_TYPE == 'mobile' else None
 	height: dp(48) if _label.texture_size[1] < dp(30) else dp(80)
-	width: dp(24) + _label.width + _spacer.width + _button.width + root.padding_right
+	width: dp(24) + _label.width + _spacer.width + root.padding_right if root.button_text == '' else dp(24) + _label.width + _spacer.width + _button.width + root.padding_right
 	top: 0
 	x: 0 if DEVICE_TYPE == 'mobile' else Window.width/2 - self.width/2
-	MaterialLabel:
-		id: _label
-		text: root.text
+	BoxLayout:
+		width: Window.width - root.padding_right - _spacer.width - dp(24) if DEVICE_TYPE == 'mobile' and root.button_text == '' else Window.width - root.padding_right - _button.width - _spacer.width - dp(24) if DEVICE_TYPE == 'mobile' else _label.texture_size[0] if (dp(568) - root.padding_right - _button.width - _spacer.width - _label.texture_size[0] - dp(24)) >= 0 else (dp(568) - root.padding_right - _button.width - _spacer.width - dp(24))
 		size_hint_x: None
 		x: dp(24)
-		width: Window.width - root.padding_right - _button.width - _spacer.width - dp(24) if DEVICE_TYPE == 'mobile' else self.texture_size[0] if (dp(568) - root.padding_right - _button.width - _spacer.width - self.texture_size[0] - dp(24)) >= 0 else (dp(568) - root.padding_right - _button.width - _spacer.width - dp(24))
-		valign: 'middle'
+		MaterialLabel:
+			id: _label
+			text: root.text
+			size: self.texture_size
 	BoxLayout:
 		id: _spacer
 		size_hint_x: None
@@ -43,7 +44,7 @@ Builder.load_string('''
 		id: _button
 		text: root.button_text
 		size_hint_x: None
-		x: _spacer.right
+		x: _spacer.right if root.button_text != '' else root.right
 		center_y: root.height/2
 		on_release: root.button_callback()
 ''')
@@ -67,7 +68,7 @@ class _SnackbarWidget(RelativeLayout):
 
 	def begin(self):
 		if self.button_text == '':
-			self.ids['_button'].width = 0
+			self.remove_widget(self.ids['_button'])
 		else:
 			self.ids['_spacer'].width = dp(16) if \
 				DEVICE_TYPE == "mobile" else dp(40)

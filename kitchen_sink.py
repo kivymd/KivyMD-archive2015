@@ -78,8 +78,9 @@ RelativeLayout:
 	ScrollView:
 		do_scroll_x: False
 		pos_hint: {'center_x': 0.5, 'center_y': 0.4}
-		size_hint: (None, None)
-		size: (720, 250)
+		size_hint_y: None
+		size_hint_x: None if DEVICE_TYPE == 'desktop' else 1
+		size: (1024, 250)
 		MaterialList:
 			id: ml
 			OneLineListItem:
@@ -109,6 +110,7 @@ RelativeLayout:
 			OneLineIconListItem:
 				text: "Single-line item with left icon"
 				IconLeftSampleWidget:
+					id: li_icon_1
 					icon: 'md-stars'
 			TwoLineIconListItem:
 				text: "Two-line item..."
@@ -217,6 +219,9 @@ class KitchenSink(App):
 				                                    button_text="Hello world",
 				                                    button_callback=lambda
 					                                    *args: 2))
+		main_widget.ids.li_icon_1.bind(
+				on_release=lambda *x: Snackbar.make("This is a very very very very very very very long snackbar!",
+				                                    button_text="Hello world"))
 		main_widget.ids.text_field.bind(
 				on_text_validate=self.set_error_message,
 				on_focus=self.set_error_message)
