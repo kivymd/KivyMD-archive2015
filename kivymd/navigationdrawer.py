@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.metrics import dp
 from kivy.properties import StringProperty, ObjectProperty
-from kivy.uix.relativelayout import RelativeLayout
 from kivymd.elevationbehaviour import ElevationBehaviour
 from kivymd.icon_definitions import md_icons
 from kivymd.label import MaterialLabel
-from kivymd.list import MaterialList, ListItem, LeftListItemBody
+from kivymd.list import MaterialList, OneLineIconListItem, OneLineListItem, \
+	ILeftBody
 from kivymd.slidingpanel import SlidingPanel
 from kivymd.theming import ThemableBehavior
 
-
 Builder.load_string('''
+#:import md_icons kivymd.icon_definitions.md_icons
+#:import colors kivymd.color_definitions.colors
 <NavigationDrawer>
 	_list: _list
 	canvas:
@@ -35,6 +35,13 @@ Builder.load_string('''
 		pos: root.pos
 		MaterialList:
 			id: _list
+
+<NavigationDrawerIconButton>
+	NDIconLabel:
+		id: _icon
+		font_style: 'Icon'
+		theme_text_color: 'Secondary'
+
 ''')
 
 
@@ -57,38 +64,29 @@ class NavigationDrawer(SlidingPanel, ThemableBehavior, ElevationBehaviour):
 
 
 class NavigationDrawerCategory(MaterialList):
-
 	def __init__(self, **kwargs):
 		super(NavigationDrawerCategory, self).__init__(**kwargs)
 		self.padding = (0, self.padding[1], 0, 0)
 
 
-class NavigationDrawerButton(ListItem):
+class NDIconLabel(ILeftBody, MaterialLabel):
+	pass
 
+
+class NavigationDrawerIconButton(OneLineIconListItem):
 	icon = StringProperty()
 
-	def __init__(self, **kwargs):
-		super(NavigationDrawerButton, self).__init__(**kwargs)
-		self.lbl_icon = LeftIcon(font_style='Icon',
-		                         theme_text_color='Custom',
-		                         text_color=(0,0,0,0.54))
-		Clock.schedule_once(self.initialization_instructions)
-
-	def initialization_instructions(self, _):
-		self.add_widget(self.lbl_icon)
-		self.on_icon(None, self.icon)
-
 	def on_icon(self, instance, value):
-		if value == '':
-			self.left_container_size = None
-		else:
-			self.left_container_size = 'small'
-			self.lbl_icon.text = u"{}".format(md_icons[value])
+		self.ids['_icon'].text = u"{}".format(md_icons[value])
 
 	def on_parent(self, instance, value):
 		if not issubclass(value.__class__, NavigationDrawerCategory):
 			raise Exception("NavigationDrawerButton may only be placed inside"
 			                " a NavigationDrawerCategory widget")
 
-class LeftIcon(LeftListItemBody, MaterialLabel):
-	pass
+
+class NavigationDrawerButton(OneLineListItem):
+	def on_parent(self, instance, value):
+		if not issubclass(value.__class__, NavigationDrawerCategory):
+			raise Exception("NavigationDrawerButton may only be placed inside"
+			                " a NavigationDrawerCategory widget")

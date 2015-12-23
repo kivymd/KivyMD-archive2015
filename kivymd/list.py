@@ -10,39 +10,142 @@ List
    https://www.google.com/design/spec/components/lists-controls.html
 
 The class :class:`MaterialList` in combination with a ListItem like
-:class:`TextListItem` will create a list that expands as items are added to
+:class:`OneLineListItem` will create a list that expands as items are added to
 it, working nicely with Kivy's :class:`~kivy.uix.scrollview.ScrollView`.
 
-All different ListItems are able to adapt to the different numbers of lines
-described in the spec, by simply changing the :attr:`TextListItem.type`
-attribute. However, the right ListItem must be chosen according to wether
-you need to have an avatar/icon container to the left or an avatar to the left,
-icon to the right combination.
 
+Simple examples
+---------------
 
-Example
--------
+Kv lang:
+
+.. code-block:: python
 
     ScrollView:
-		do_scroll_x: False  # Important for MD compliance
+    	do_scroll_x: False  # Important for MD compliance
     	MaterialList:
-    		TextListItem:
-    				type: 'one-line'
-    				text: 'Single-line item'
-    			TextListItem:
-    				type: 'two-line'
-    				text: 'Two-line item'
-    				secondary_text: 'Secondary text here'
-    			TextListItem:
-    				type: 'three-line'
-    				text: 'Three-line item'
-    				secondary_text: 'This is a multi-line label where you can fit more text than usual'
+    		OneLineListItem:
+    			text: "Single-line item"
+    		TwoLineListItem:
+    			text: "Two-line item"
+    			secondary_text: "Secondary text here"
+    		ThreeLineListItem:
+    			text: "Three-line item"
+    			secondary_text: "This is a multi-line label where you can fit more text than usual"
+
+
+Python:
+
+.. code-block:: python
+
+    # Sets up ScrollView with MaterialList, as normally used in Android:
+    sv = ScrollView()
+    ml = MaterialList()
+    sv.add_widget(ml)
+
+    contacts = ["Paula", "John", "Kate", "Vlad"]
+    for c in contacts:
+    	ml.add_widget(
+    		OneLineListItem(
+    			text=c
+    		)
+    	)
+
+Advanced usage
+--------------
+
+Due to the variety in sizes and controls in the MD spec, this module suffers
+from a certain level of complexity to keep the widgets compliant, flexible
+and performant.
+
+For this KivyMD provides ListItems that try to cover the most common usecases,
+when those are insufficient, there's a base class called :class:`_ListItem`
+which you can use to create your own ListItems. This documentation will only
+cover the provided ones, for custom implementations please refer to this
+module's source code.
+
+Text only ListItems
+-------------------
+
+:class:`~OneLineListItem`
+
+:class:`~TwoLineListItem`
+
+:class:`~ThreeLineListItem`
+
+These are the simplest ones. The :attr:`~_ListItem.text` attribute changes the
+text in the most prominent line, while :attr:`~_ListItem.secondary_text`
+changes the second and third line.
+
+If there are only two lines, :attr:`~_ListItem.secondary_text` will shorten
+the text to fit in case it is too long; if a third line is available, it will
+instead wrap the text to make use of it.
+
+ListItems with widget containers
+--------------------------------
+
+:class:`~OneLineAvatarListItem`
+:class:`~TwoLineAvatarListItem`
+:class:`~ThreeLineAvatarListItem`
+:class:`~OneLineIconListItem`
+:class:`~TwoLineIconListItem`
+:class:`~ThreeLineIconListItem`
+:class:`~OneLineAvatarIconListItem`
+:class:`~TwoLineAvatarIconListItem`
+:class:`~ThreeLineAvatarIconListItem`
+
+These widgets will take other widgets that inherit from :class:`~ILeftBody`,
+:class:`ILeftBodyTouch`, :class:`~IRightBody` or :class:`~IRightBodyTouch` and
+put them in their corresponding container.
+
+As the name implies, :class:`~ILeftBody` and :class:`~IRightBody` will signal
+that the widget goes into the left or right container, respectively.
+
+:class:`~ILeftBodyTouch` and :class:`~IRightBodyTouch` do the same thing,
+except these widgets will also receive touch events that occur within their
+surfaces.
+
+Python example:
+
+.. code-block:: python
+
+    class ContactPhoto(ILeftBody, AsyncImage):
+        pass
+
+    class MessageButton(IRightBodyTouch, MaterialIconButton):
+        phone_number = StringProperty()
+
+        def on_release(self):
+            # sample code:
+            Dialer.send_sms(phone_number, "Hey! What's up?")
+            pass
+
+    # Sets up ScrollView with MaterialList, as normally used in Android:
+    sv = ScrollView()
+    ml = MaterialList()
+    sv.add_widget(ml)
+
+    contacts = [
+        ["Annie", "555-24235", "http://myphotos.com/annie.png"],
+        ["Bob", "555-15423", "http://myphotos.com/bob.png"],
+        ["Claire", "555-66098", "http://myphotos.com/claire.png"]
+    ]
+
+    for c in contacts:
+        item = TwoLineAvatarIconListItem(
+            text=c[0],
+            secondary_text=c[1]
+        )
+        item.add_widget(ContactPhoto(source=c[2]))
+        item.add_widget(MessageButton(phone_number=c[1])
+        ml.add_widget(item)
+
 '''
 
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ObjectProperty, StringProperty, OptionProperty, \
-	NumericProperty, ListProperty
+from kivy.properties import ObjectProperty, StringProperty, NumericProperty, \
+	ListProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.gridlayout import GridLayout
@@ -55,51 +158,9 @@ Builder.load_string('''
 	cols: 1
 	size_hint_y: None
 	height: self._min_list_height
-	padding: (0, self._list_vertical_padding, 0, self._list_vertical_padding)
+	padding: 0, self._list_vertical_padding
 
-<ListItem>
-	size_hint_y: None
-	left_container: _left_container
-	_text_container: _text_container
-	right_container: _right_container
-	canvas:
-		Color:
-			rgba: self.theme_cls.divider_color
-		Line:
-			points: root.x,root.y, root.x+self.width,root.y
-	BoxLayout:
-		id: _left_container
-		size_hint: (None, None)
-		x: root.x + dp(16)
-		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
-		size: (0,0) if root.left_container_size is None else ((dp(40), dp(40)) if root.left_container_size is 'big' else (dp(24), dp(24)))
-	BoxLayout:
-		id: _text_container
-		orientation: 'vertical'
-		pos: root.pos
-		padding: (root._txt_left_pad, root._txt_top_pad, root._txt_right_pad, root._txt_bot_pad)
-		MaterialLabel:
-			id: _lbl_primary
-			text: root.text
-			font_style: 'Subhead'
-			theme_text_color: 'Primary'
-			size_hint_y: None
-			height: self.texture_size[1]
-		MaterialLabel:
-			id: _lbl_secondary
-			text: '' if root.type == 'one-line' else root.secondary_text
-			font_style: 'Body1'
-			theme_text_color: 'Secondary'
-			size_hint_y: None
-			height: 0 if root.type == 'one-line' else self.texture_size[1]
-	BoxLayout:
-		id: _right_container
-		size_hint: (None, None)
-		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
-		size: (0,0) if root.right_container_size is None else (dp(24),dp(24))
-
-<TextListItem>
+<_ListItem>
 	size_hint_y: None
 	canvas:
 		Color:
@@ -120,52 +181,74 @@ Builder.load_string('''
 			height: self.texture_size[1]
 		MaterialLabel:
 			id: _lbl_secondary
-			text: '' if root.type == 'one-line' else root.secondary_text
+			text: '' if root._num_lines == 1 else root.secondary_text
 			font_style: 'Body1'
 			theme_text_color: 'Secondary'
 			size_hint_y: None
-			height: 0 if root.type == 'one-line' else self.texture_size[1]
+			height: 0 if root._num_lines == 1 else self.texture_size[1]
+			shorten: True if root._num_lines == 2 else False
 
-<AvatarListItem>
+<OneLineAvatarListItem>
 	BoxLayout:
-		id: _avatar_container
+		id: _left_container
 		size_hint: None, None
 		x: root.x + dp(16)
-		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
+		y: root.y + root.height/2 - self.height/2
 		size: dp(40), dp(40)
 
-<IconListItem>
+<ThreeLineAvatarListItem>
 	BoxLayout:
-		id: _icon_container
+		id: _left_container
 		size_hint: None, None
 		x: root.x + dp(16)
-		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
+		y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
+		size: dp(40), dp(40)
+
+<OneLineIconListItem>
+	BoxLayout:
+		id: _left_container
+		size_hint: None, None
+		x: root.x + dp(16)
+		y: root.y + root.height/2 - self.height/2
+
+<ThreeLineIconListItem>
+	BoxLayout:
+		id: _left_container
+		size_hint: None, None
+		x: root.x + dp(16)
+		y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
 		size: dp(24), dp(24)
 
-<AvatarIconListItem>
+<OneLineAvatarIconListItem>
 	BoxLayout:
-		id: _icon_container
+		id: _right_container
 		size_hint: None, None
 		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
-		y: root.y + root.height - root._txt_top_pad - self.height - dp(5) if root.type == 'three-line' else root.y + root.height/2 - self.height/2
+		y: root.y + root.height/2 - self.height/2
+		size: dp(24), dp(24)
+
+<TwoLineAvatarIconListItem>
+	BoxLayout:
+		id: _right_container
+		size_hint: None, None
+		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+		y: root.y + root.height/2 - self.height/2
+		size: dp(24), dp(24)
+
+<ThreeLineAvatarIconListItem>
+	BoxLayout:
+		id: _right_container
+		size_hint: None, None
+		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+		y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
 		size: dp(24), dp(24)
 ''')
 
 
-class TextListItem(ThemableBehavior, RectangularRippleBehavior,
-                   ButtonBehavior, FloatLayout):
-	'''TextListItem. Base class to all ListItems. See module documentation for
-	more information.
-	'''
-
-	type = OptionProperty('one-line',
-	                      options=['one-line', 'two-line', 'three-line'])
-	'''Type of ListItem. Determines how many lines of text there are.
-
-	Valid values are \'one-line\', \'two-line\' and \'three-line\'.
-
-	:attr:`type` is a :class:`~kivy.properties.OptionProperty` and defaults
-	to \'one-line\'.
+class _ListItem(ThemableBehavior, RectangularRippleBehavior,
+                ButtonBehavior, FloatLayout):
+	'''_ListItem. Base class to all ListItems. Not supposed to be instantiated.
+	See module documentation for more information.
 	'''
 
 	text = StringProperty()
@@ -190,139 +273,83 @@ class TextListItem(ThemableBehavior, RectangularRippleBehavior,
 	_txt_top_pad = NumericProperty()
 	_txt_bot_pad = NumericProperty()
 	_txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
-
-	def __init__(self, **kwargs):
-		super(TextListItem, self).__init__(**kwargs)
-		self.on_type(None, self.type)
-
-	def on_type(self, instance, value):
-		if value == 'one-line':
-			self.set_sizes_for_one_line()
-		elif value == 'two-line':
-			self.set_sizes_for_two_line()
-		elif value == 'three-line':
-			self.set_sizes_for_three_line()
-
-	def set_sizes_for_one_line(self):
-		self.height = dp(48)
-		self._txt_top_pad = dp(16)
-		self._txt_bot_pad = dp(20) - dp(5)
-
-	def set_sizes_for_two_line(self):
-		self.height = dp(72)
-		self._txt_top_pad = dp(20)
-		self._txt_bot_pad = dp(20) - dp(5)
-
-	def set_sizes_for_three_line(self):
-		self.height = dp(88)
-		self._txt_top_pad = dp(16)
-		self._txt_bot_pad = dp(20) - dp(5)
+	_num_lines = 2
 
 	def select(self, selection_tracker):
 		pass
 
 
-class AvatarListItem(TextListItem):
-	_txt_left_pad = NumericProperty(dp(72))
+class ILeftBody():
+	'''Pseudo-interface for widgets that go in the left container for
+	ListItems that support it.
 
-	def set_sizes_for_one_line(self):
-		self.height = dp(56)
-		self._txt_top_pad = dp(20)
-		self._txt_bot_pad = dp(24) - dp(5)
-
-
-class IconListItem(TextListItem):
-	_txt_left_pad = NumericProperty(dp(72))
-
-
-class AvatarIconListItem(AvatarListItem):
-	_txt_right_pad = NumericProperty(dp(16) + dp(24) + m_res.HORIZ_MARGINS)
-
-
-class MaterialList(GridLayout):
-	selected = ObjectProperty()
-	_min_list_height = dp(16)
-	_list_vertical_padding = dp(8)
-
-	icon = StringProperty()
-
-	def __init__(self, **kwargs):
-		super(MaterialList, self).__init__(**kwargs)
-
-	def add_widget(self, widget, index=0):
-		widget.bind(height=lambda x, y: self.resize())
-		widget.bind(on_release=lambda x: widget.select(selection_tracker=self))
-		super(MaterialList, self).add_widget(widget, index)
-		self.resize()
-
-	def remove_widget(self, widget):
-		super(MaterialList, self).remove_widget(widget)
-		self.resize()
-
-	def clear_widgets(self, children=None):
-		super(MaterialList, self).clear_widgets(children)
-		self.resize()
-
-	def register_new_selection(self, widget):
-		if self.selected:
-			self.selected.is_selected = False
-		self.selected = widget
-
-	def resize(self):
-		new_height = self._min_list_height
-		for i in self.children:
-			new_height += i.height
-		self.height = new_height
-
-# DO NOT DELETE FOLLOWING CODE UNTIL REWRITE FULLY IMPLEMENTED:
-class ListItem(ThemableBehavior, RectangularRippleBehavior,
-               ButtonBehavior, FloatLayout):
-	type = OptionProperty('one-line',
-	                      options=['one-line', 'two-line', 'three-line'])
-
-	left_container_size = OptionProperty(
-			None, options=['small', 'big'], allownone=True)
-	'''Size of the left widget container.
-
-	Valid values are None (no container), \'small\' (24dp, e.g. icons) and
-	 \'big\' (40dp, e.g. avatars, checkboxes,...)
+	Implements nothing and requires no implementation, for annotation only.
 	'''
+	pass
 
-	right_container_size = OptionProperty(
-			None, options=['small'], allownone=True)
-	'''Size of the right widget container.
 
-	Valid values are None (no container) and \'small\' (24dp, e.g. icons).
+class ILeftBodyTouch():
+	'''Same as :class:`~ILeftBody`, but allows the widget to receive touch
+	events instead of triggering the ListItem's ripple effect
 	'''
+	pass
 
-	text = StringProperty()
 
-	secondary_text = StringProperty()
+class IRightBody():
+	'''Pseudo-interface for widgets that go in the right container for
+	ListItems that support it.
 
-	_txt_left_pad = NumericProperty()
-	_txt_top_pad = NumericProperty()
-	_txt_bot_pad = NumericProperty()
-	_txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
+	Implements nothing and requires no implementation, for annotation only.
+	'''
+	pass
+
+
+class IRightBodyTouch():
+	'''Same as :class:`~IRightBody`, but allows the widget to receive touch
+	events instead of triggering the ListItem's ripple effect
+	'''
+	pass
+
+
+class _ContainerSupport():
+	'''Overrides add_widget in a _ListItem to include support for ILeftBody and
+	IRightBody widgets when the appropiate containers are present.
+	'''
 	_touchable_widgets = ListProperty()
 
-	def __init__(self, **kwargs):
-		super(ListItem, self).__init__(**kwargs)
-		self.on_left_container_size(None, self.left_container_size)
+	def add_widget(self, widget, index=0):
+		if issubclass(widget.__class__, ILeftBody):
+			self.ids['_left_container'].add_widget(widget)
+		elif issubclass(widget.__class__, ILeftBodyTouch):
+			self.ids['_left_container'].add_widget(widget)
+			self._touchable_widgets.append(widget)
+		elif issubclass(widget.__class__, IRightBody):
+			self.ids['_right_container'].add_widget(widget)
+		elif issubclass(widget.__class__, IRightBodyTouch):
+			self.ids['_right_container'].add_widget(widget)
+			self._touchable_widgets.append(widget)
+		else:
+			return super(_ListItem, self).add_widget(widget, index)
+
+	def remove_widget(self, widget):
+		super(_ListItem, self).remove_widget(widget)
+		if widget in self._touchable_widgets:
+			self._touchable_widgets.remove(widget)
 
 	def on_touch_down(self, touch):
 		if self.propagate_touch_to_touchable_widgets(touch, 'down'):
 			return
-		super(ListItem, self).on_touch_down(touch)
+		super(_ListItem, self).on_touch_down(touch)
 
 	def on_touch_move(self, touch, *args):
 		if self.propagate_touch_to_touchable_widgets(touch, 'move', *args):
 			return
-		super(ListItem, self).on_touch_move(touch, *args)
+		super(_ListItem, self).on_touch_move(touch, *args)
 
 	def on_touch_up(self, touch):
 		if self.propagate_touch_to_touchable_widgets(touch, 'up'):
 			return
-		super(ListItem, self).on_touch_up(touch)
+		super(_ListItem, self).on_touch_up(touch)
 
 	def propagate_touch_to_touchable_widgets(self, touch, touch_event, *args):
 		triggered = False
@@ -335,92 +362,113 @@ class ListItem(ThemableBehavior, RectangularRippleBehavior,
 					i.on_touch_move(touch, *args)
 				elif touch_event == 'up':
 					i.on_touch_up(touch)
-		if triggered:
-			return True
-		else:
-			return False
+		return triggered
+
+
+class OneLineListItem(_ListItem):
+	_txt_top_pad = NumericProperty(dp(16))
+	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+	_num_lines = 1
+
+	def __init__(self, **kwargs):
+		super(OneLineListItem, self).__init__(**kwargs)
+		self.height = dp(48)
+
+
+class TwoLineListItem(_ListItem):
+	_txt_top_pad = NumericProperty(dp(20))
+	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+
+	def __init__(self, **kwargs):
+		super(TwoLineListItem, self).__init__(**kwargs)
+		self.height = dp(72)
+
+
+class ThreeLineListItem(_ListItem):
+	_txt_top_pad = NumericProperty(dp(16))
+	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+	_num_lines = 3
+
+	def __init__(self, **kwargs):
+		super(ThreeLineListItem, self).__init__(**kwargs)
+		self.height = dp(88)
+
+
+class OneLineAvatarListItem(_ContainerSupport, _ListItem):
+	_txt_left_pad = NumericProperty(dp(72))
+	_txt_top_pad = NumericProperty(dp(20))
+	_txt_bot_pad = NumericProperty(dp(19))  # dp(24) - dp(5)
+	_num_lines = 1
+
+	def __init__(self, **kwargs):
+		super(OneLineAvatarListItem, self).__init__(**kwargs)
+		self.height = dp(56)
+
+
+class TwoLineAvatarListItem(OneLineAvatarListItem):
+	_txt_top_pad = NumericProperty(dp(20))
+	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+	_num_lines = 2
+
+	def __init__(self, **kwargs):
+		super(_ListItem, self).__init__(**kwargs)
+		self.height = dp(72)
+
+
+class ThreeLineAvatarListItem(_ContainerSupport, ThreeLineListItem):
+	_txt_left_pad = NumericProperty(dp(72))
+
+
+class OneLineIconListItem(_ContainerSupport, OneLineListItem):
+	_txt_left_pad = NumericProperty(dp(72))
+
+
+class TwoLineIconListItem(OneLineIconListItem):
+	_txt_top_pad = NumericProperty(dp(20))
+	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+	_num_lines = 2
+
+	def __init__(self, **kwargs):
+		super(_ListItem, self).__init__(**kwargs)
+		self.height = dp(72)
+
+
+class ThreeLineIconListItem(_ContainerSupport, ThreeLineListItem):
+	_txt_left_pad = NumericProperty(dp(72))
+
+
+class OneLineAvatarIconListItem(OneLineAvatarListItem):
+	# dp(40) = dp(16) + dp(24):
+	_txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+
+
+class TwoLineAvatarIconListItem(TwoLineAvatarListItem):
+	# dp(40) = dp(16) + dp(24):
+	_txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+
+
+class ThreeLineAvatarIconListItem(ThreeLineAvatarListItem):
+	# dp(40) = dp(16) + dp(24):
+	_txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+
+
+class MaterialList(GridLayout):
+	selected = ObjectProperty()
+	_min_list_height = dp(16)
+	_list_vertical_padding = dp(8)
+
+	icon = StringProperty()
+
+	def add_widget(self, widget, index=0):
+		widget.bind(on_release=lambda x: widget.select(selection_tracker=self))
+		super(MaterialList, self).add_widget(widget, index)
+		self.height += widget.height
 
 	def remove_widget(self, widget):
-		super(ListItem, self).remove_widget(widget)
-		if widget in self._touchable_widgets:
-			self._touchable_widgets.remove(widget)
-		widget.post_removal_cleanup(self)
+		super(MaterialList, self).remove_widget(widget)
+		self.height -= widget.height
 
-	def on_type(self, instance, value):
-		if value == 'one-line':
-			self.set_sizes_for_one_line()
-		elif value == 'two-line':
-			self.set_sizes_for_two_line()
-		elif value == 'three-line':
-			self.set_sizes_for_three_line()
-
-	def on_left_container_size(self, instance, value):
-		if value:
-			self._txt_left_pad = dp(72)
-		else:
-			self._txt_left_pad = dp(16)
-		self.on_type(None, self.type)
-
-	def on_right_container_size(self, instance, value):
-		if value:
-			self._txt_right_pad = dp(16) + dp(24) + m_res.HORIZ_MARGINS
-		else:
-			self._txt_right_pad = m_res.HORIZ_MARGINS
-
-	def set_sizes_for_one_line(self):
-		if self.left_container_size == 'big':
-			self.height = dp(56)
-			self._txt_top_pad = dp(20)
-			self._txt_bot_pad = dp(24) - dp(5)
-		else:
-			self.height = dp(48)
-			self._txt_top_pad = dp(16)
-			self._txt_bot_pad = dp(20) - dp(5)
-
-	def set_sizes_for_two_line(self):
-		self.height = dp(72)
-		self._txt_top_pad = dp(20)
-		self._txt_bot_pad = dp(20) - dp(5)
-
-	def set_sizes_for_three_line(self):
-		self.height = dp(88)
-		self._txt_top_pad = dp(16)
-		self._txt_bot_pad = dp(20) - dp(5)
-
-	def select(self, selection_tracker):
-		pass
-
-
-class ListItemBody(object):
-	_container_owner = ObjectProperty()
-
-	def on_parent(self, instance, parent):
-		if not issubclass(parent.__class__, ListItem):
-			raise Exception('ListItemBody objects can only be fathered by a '
-			                'ListItem object')
-		if issubclass(self.__class__, ButtonBehavior):
-			parent._touchable_widgets.append(self)
-
-	def bind_to_container(self, container):
-		self.size_hint = (None, None)
-		container.bind(pos=self.setter('pos'),
-		               size=self.setter('size'))
-		self.pos = container.pos
-		self.size = container.size
-		self._container_owner = container
-
-	def post_removal_cleanup(self, parent):
-		self._container_owner.unbind(pos=self.setter('pos'),
-		                             size=self.setter('size'))
-
-
-class LeftListItemBody(ListItemBody):
-	def on_parent(self, instance, parent):
-		super(LeftListItemBody, self).on_parent(instance, parent)
-		self.bind_to_container(parent.ids['_left_container'])
-
-
-class RightListItemBody(ListItemBody):
-	def on_parent(self, instance, parent):
-		super(RightListItemBody, self).on_parent(instance, parent)
-		self.bind_to_container(parent.ids['_right_container'])
+	def register_new_selection(self, widget):
+		if self.selected:
+			self.selected.is_selected = False
+		self.selected = widget
