@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import kivymd.snackbar as Snackbar
 from kivy.app import App
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.image import Image
+from kivymd.bottomsheet import ListBottomSheet, GridBottomSheet
 from kivymd.button import MaterialIconButton
 from kivymd.label import MaterialLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
@@ -116,11 +116,13 @@ RelativeLayout:
 				text: "Two-line item..."
 				secondary_text: "...with left icon"
 				IconLeftSampleWidget:
+					id: li_icon_2
 					icon: 'md-chat'
 			ThreeLineIconListItem:
 				text: "Three-line item..."
 				secondary_text: "...with left icon..." + '\\n' + "and third line!"
 				IconLeftSampleWidget:
+					id: li_icon_3
 					icon: 'md-sd-storage'
 			OneLineAvatarIconListItem:
 				text: "Single-line + avatar&icon"
@@ -220,12 +222,35 @@ class KitchenSink(App):
 				                                    button_callback=lambda
 					                                    *args: 2))
 		main_widget.ids.li_icon_1.bind(
-				on_release=lambda *x: Snackbar.make("This is a very very very very very very very long snackbar!",
-				                                    button_text="Hello world"))
+				on_release=lambda *x: Snackbar.make(
+						"This is a very very very very very very very long snackbar!",
+						button_text="Hello world"))
+		main_widget.ids.li_icon_2.bind(
+				on_release=lambda *x: self.show_example_bottom_sheet()
+		)
+		main_widget.ids.li_icon_3.bind(
+				on_release=lambda *x: self.show_example_grid_bottom_sheet()
+		)
 		main_widget.ids.text_field.bind(
 				on_text_validate=self.set_error_message,
 				on_focus=self.set_error_message)
 		return main_widget
+
+	def show_example_bottom_sheet(self):
+		bs = ListBottomSheet()
+		bs.add_item("Here's an item with text only", lambda x: x)
+		bs.add_item("Here's an item with an icon", lambda x: x, icon='md-cast')
+		bs.add_item("Here's another!", lambda x: x, icon='md-nfc')
+		bs.open()
+
+	def show_example_grid_bottom_sheet(self):
+		bs = GridBottomSheet()
+		bs.add_item("Facebook", lambda x: x, icon_src='./assets/facebook-box.png')
+		bs.add_item("YouTube", lambda x: x, icon_src='./assets/youtube-play.png')
+		bs.add_item("Twitter", lambda x: x, icon_src='./assets/twitter.png')
+		bs.add_item("Da Cloud", lambda x: x, icon_src='./assets/cloud-upload.png')
+		bs.add_item("Camera", lambda x: x, icon_src='./assets/camera.png')
+		bs.open()
 
 	def set_error_message(self, *args):
 		if len(self.root.ids.text_field.text) == 0:

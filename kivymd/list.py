@@ -208,6 +208,7 @@ Builder.load_string('''
 		size_hint: None, None
 		x: root.x + dp(16)
 		y: root.y + root.height/2 - self.height/2
+		size: dp(48), dp(48)
 
 <ThreeLineIconListItem>
 	BoxLayout:
@@ -215,7 +216,7 @@ Builder.load_string('''
 		size_hint: None, None
 		x: root.x + dp(16)
 		y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
-		size: dp(24), dp(24)
+		size: dp(48), dp(48)
 
 <OneLineAvatarIconListItem>
 	BoxLayout:
@@ -223,7 +224,7 @@ Builder.load_string('''
 		size_hint: None, None
 		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
 		y: root.y + root.height/2 - self.height/2
-		size: dp(24), dp(24)
+		size: dp(48), dp(48)
 
 <TwoLineAvatarIconListItem>
 	BoxLayout:
@@ -231,7 +232,7 @@ Builder.load_string('''
 		size_hint: None, None
 		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
 		y: root.y + root.height/2 - self.height/2
-		size: dp(24), dp(24)
+		size: dp(48), dp(48)
 
 <ThreeLineAvatarIconListItem>
 	BoxLayout:
@@ -239,7 +240,7 @@ Builder.load_string('''
 		size_hint: None, None
 		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
 		y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
-		size: dp(24), dp(24)
+		size: dp(48), dp(48)
 ''')
 
 
