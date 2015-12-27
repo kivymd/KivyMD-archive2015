@@ -1,4 +1,41 @@
 # -*- coding: utf-8 -*-
+'''
+Bottom Sheets
+=============
+
+`Material Design spec Bottom Sheets page <http://www.google.com/design/spec/components/bottom-sheets.html>`_
+
+In this module there's the :class:`BottomSheet` class which will let you implement your own BottomSheets, and there are two classes called :class:`ListBottomSheet` and :class:`GridBottomSheet` implementing the ones mentioned in the spec.
+
+Examples
+--------
+
+.. note::
+
+    These widgets are designed to be called from Python code only.
+
+For :class:`ListBottomSheet`:
+
+.. code-block:: python
+
+    bs = ListBottomSheet()
+    bs.add_item("Here's an item with text only", lambda x: x)
+    bs.add_item("Here's an item with an icon", lambda x: x, icon='md-cast')
+    bs.add_item("Here's another!", lambda x: x, icon='md-nfc')
+    bs.open()
+
+For :class:`ListBottomSheet`:
+
+.. code-block:: python
+
+    bs = GridBottomSheet()
+    bs.add_item("Facebook", lambda x: x, icon_src='./assets/facebook-box.png')
+    bs.add_item("YouTube", lambda x: x, icon_src='./assets/youtube-play.png')
+    bs.add_item("Twitter", lambda x: x, icon_src='./assets/twitter.png')
+    bs.add_item("Da Cloud", lambda x: x, icon_src='./assets/cloud-upload.png')
+    bs.add_item("Camera", lambda x: x, icon_src='./assets/camera.png')
+    bs.open()
+'''
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
