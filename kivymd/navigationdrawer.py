@@ -68,6 +68,10 @@ class NavigationDrawerCategory(MaterialList):
 		super(NavigationDrawerCategory, self).__init__(**kwargs)
 		self.padding = (0, self.padding[1], 0, 0)
 
+	def add_widget(self, widget, index=0):
+		widget.bind(on_release=lambda x: self.parent.parent.parent.toggle())
+		super(NavigationDrawerCategory, self).add_widget(widget, index)
+
 
 class NDIconLabel(ILeftBody, MaterialLabel):
 	pass
