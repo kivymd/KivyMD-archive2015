@@ -12,14 +12,15 @@ Contents:
    :maxdepth: 2
 
    kivymd.list
+   kivymd.bottomsheet
 
-Module contents
----------------
+.. Module contents
+.. ---------------
 
-.. automodule:: kivymd
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. .. automodule:: kivymd
+..     :members:
+..     :undoc-members:
+..     :show-inheritance:
 
 Indices and tables
 ==================
