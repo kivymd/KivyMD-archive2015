@@ -16,7 +16,7 @@ If you wish to contribute, [the project's coding style](https://github.com/kivym
 Documentation
 =============
 
-You will find some documentation in the project's docstrings. When things are a little more complete, Sphinx HTML documentation will be generated to the project's site at GitHub pages.
+Some very early documentation can be found at our project's website, other than that we recommend checking the kitchen_sink.py file for examples.
 
 License
 =======
