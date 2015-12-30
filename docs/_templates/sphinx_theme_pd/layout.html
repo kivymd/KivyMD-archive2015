@@ -1,0 +1,52 @@
+{% extends "basic/layout.html" %}
+
+{%- block extrahead %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script type="text/javascript" src="{{ pathto('_static/pd.js', 1) }}"></script>
+{% endblock %}
+
+{%- block header %}
+    <div id="header">
+        <h1>{{ docstitle }}</h1>
+    </div>
+{%- endblock header %}
+
+{%- block relbar1 %}
+    <div class="related" role="navigation" aria-label="related navigation">
+        <ul>
+            <li class="nav-item nav-item-0"><a href="{{ pathto(master_doc) }}">{{ shorttitle|e }}</a>{{ reldelim1 }}
+            </li>
+            {%- for parent in parents %}
+                <li class="nav-item nav-item-{{ loop.index }}"><a href="{{ parent.link|e }}"
+                        {% if loop.last %}{{ accesskey("U") }}{% endif %}>{{ parent.title }}</a>{{ reldelim1 }}</li>
+            {%- endfor %}
+        </ul>
+    </div>
+{% endblock %}
+
+{%- block relbar2 %}{% endblock %}
+
+{%- block sidebarrel %}{%- endblock %}
+
+{%- block sidebarsourcelink %}
+    {%- if show_source and has_source and sourcename %}
+        <div role="note" aria-label="source link">
+            <ul class="this-page-menu">
+                <li><a href="{{ pathto('_sources/' + sourcename, true)|e }}"
+                       rel="nofollow">{{ _('Show Source') }}</a></li>
+            </ul>
+        </div>
+    {%- endif %}
+{%- endblock %}
+
+{%- block sidebarsearch %}
+        <div id="searchbox" style="display: none" role="search">
+            <form class="search" action="{{ pathto('search') }}" method="get">
+                <label for="search"><i class="material-icons">search</i></label>
+                <input id="search" type="text" name="q"/>
+                <input type="hidden" name="check_keywords" value="yes"/>
+                <input type="hidden" name="area" value="default"/>
+            </form>
+        </div>
+        <script type="text/javascript">$('#searchbox').show(0);</script>
+{%- endblock %}
