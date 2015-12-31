@@ -1,0 +1,8 @@
+*.pyc
+*.swp
+bin
+.buildozer
+.idea
+build
+buildozer.spec
+docs/_build
