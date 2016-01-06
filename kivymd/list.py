@@ -258,18 +258,12 @@ class MaterialList(GridLayout):
 	icon = StringProperty()
 
 	def add_widget(self, widget, index=0):
-		widget.bind(on_release=lambda x: widget.select(selection_tracker=self))
 		super(MaterialList, self).add_widget(widget, index)
 		self.height += widget.height
 
 	def remove_widget(self, widget):
 		super(MaterialList, self).remove_widget(widget)
 		self.height -= widget.height
-
-	def register_new_selection(self, widget):
-		if self.selected:
-			self.selected.is_selected = False
-		self.selected = widget
 
 
 class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
@@ -300,9 +294,6 @@ class BaseListItem(ThemableBehavior, RectangularRippleBehavior,
 	_txt_bot_pad = NumericProperty()
 	_txt_right_pad = NumericProperty(m_res.HORIZ_MARGINS)
 	_num_lines = 2
-
-	def select(self, selection_tracker):
-		pass
 
 
 class ILeftBody():
