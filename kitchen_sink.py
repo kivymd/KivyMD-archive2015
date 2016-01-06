@@ -27,6 +27,7 @@ main_widget_kv = '''
 #:import OneLineAvatarIconListItem kivymd.list.OneLineAvatarIconListItem
 #:import SingleLineTextField kivymd.textfields.SingleLineTextField
 #:import MDSpinner kivymd.spinner.MDSpinner
+#:import MDCard kivymd.card.MDCard
 
 RelativeLayout:
 	Toolbar:
@@ -170,7 +171,11 @@ RelativeLayout:
 		pos_hint:			{'center_x': 0.85, 'center_y': 0.1}
 		on_release:         spinner.active = not spinner.active
 
-
+	MDCard:
+		size_hint: None, None
+		size: dp(144), dp(81)
+		pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+		y: dp(10)
 
 	NavigationDrawer:
 		id: nav_drawer
