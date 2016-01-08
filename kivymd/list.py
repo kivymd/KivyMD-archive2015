@@ -218,6 +218,22 @@ Builder.load_string('''
 		y: root.y + root.height - root._txt_top_pad - self.height - dp(5)
 		size: dp(48), dp(48)
 
+<OneLineRightIconListItem>
+	BoxLayout:
+		id: _right_container
+		size_hint: None, None
+		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+		y: root.y + root.height/2 - self.height/2
+		size: dp(48), dp(48)
+
+<ThreeLineRightIconListItem>
+	BoxLayout:
+		id: _right_container
+		size_hint: None, None
+		x: root.x + root.width - m_res.HORIZ_MARGINS - self.width
+		y: root.y + root.height/2 - self.height/2
+		size: dp(48), dp(48)
+
 <OneLineAvatarIconListItem>
 	BoxLayout:
 		id: _right_container
@@ -452,6 +468,26 @@ class TwoLineIconListItem(OneLineIconListItem):
 
 class ThreeLineIconListItem(ContainerSupport, ThreeLineListItem):
 	_txt_left_pad = NumericProperty(dp(72))
+
+
+class OneLineRightIconListItem(ContainerSupport, OneLineListItem):
+	# dp(40) = dp(16) + dp(24):
+	_txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
+
+
+class TwoLineRightIconListItem(OneLineRightIconListItem):
+	_txt_top_pad = NumericProperty(dp(20))
+	_txt_bot_pad = NumericProperty(dp(15))  # dp(20) - dp(5)
+	_num_lines = 2
+
+	def __init__(self, **kwargs):
+		super(BaseListItem, self).__init__(**kwargs)
+		self.height = dp(72)
+
+
+class ThreeLineRightIconListitem(ContainerSupport, ThreeLineListItem):
+	# dp(40) = dp(16) + dp(24):
+	_txt_right_pad = NumericProperty(dp(40) + m_res.HORIZ_MARGINS)
 
 
 class OneLineAvatarIconListItem(OneLineAvatarListItem):
