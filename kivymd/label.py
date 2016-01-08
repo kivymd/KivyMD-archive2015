@@ -15,30 +15,32 @@ Builder.load_string('''
 
 
 class MDLabel(ThemableBehavior, Label):
-
 	font_style = OptionProperty(
-		'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
-		                  'Headline', 'Display1', 'Display2', 'Display3',
-		                  'Display4', 'Button', 'Icon'])
+			'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
+			                  'Headline', 'Display1', 'Display2', 'Display3',
+			                  'Display4', 'Button', 'Icon'])
 
 	# Font, Bold, Mobile size, Desktop size (None if same as Mobile)
-	_font_styles = DictProperty({'Body1':['Roboto', False, 14, 13],
-	                             'Body2':['Roboto', True, 14, 13],
-	                             'Caption':['Roboto', False, 12, None],
-	                             'Subhead':['Roboto', False, 16, 15],
-	                             'Title':['Roboto', True, 20, None],
-	                             'Headline':['Roboto', False, 24, None],
-	                             'Display1':['Roboto', False, 34, None],
-	                             'Display2':['Roboto', False, 45, None],
-	                             'Display3':['Roboto', False, 56, None],
-	                             'Display4':['RobotoLight', False, 112, None],
-	                             'Button':['Roboto', True, 14, None],
-	                             'Icon':['Icons', False, 24, None]})
+	_font_styles = DictProperty({'Body1': ['Roboto', False, 14, 13],
+	                             'Body2': ['Roboto', True, 14, 13],
+	                             'Caption': ['Roboto', False, 12, None],
+	                             'Subhead': ['Roboto', False, 16, 15],
+	                             'Title': ['Roboto', True, 20, None],
+	                             'Headline': ['Roboto', False, 24, None],
+	                             'Display1': ['Roboto', False, 34, None],
+	                             'Display2': ['Roboto', False, 45, None],
+	                             'Display3': ['Roboto', False, 56, None],
+	                             'Display4': ['RobotoLight', False, 112, None],
+	                             'Button': ['Roboto', True, 14, None],
+	                             'Icon': ['Icons', False, 24, None]})
 
 	theme_text_color = OptionProperty(None, allownone=True,
-		options=['Primary', 'Secondary', 'Hint', 'Error', 'Custom'])
+	                                  options=['Primary', 'Secondary', 'Hint',
+	                                           'Error', 'Custom'])
 
 	text_color = ListProperty(None, allownone=True)
+
+	_currently_bound_property = ''
 
 	def __init__(self, **kwargs):
 		super(MDLabel, self).__init__(**kwargs)
@@ -58,18 +60,25 @@ class MDLabel(ThemableBehavior, Label):
 	def on_theme_text_color(self, instance, value):
 		t = self.theme_cls
 		op = self.opposite_colors
+		self.unbind(color=t.setter(self._currently_bound_property))
+		c = ''
 		if value == 'Primary':
-			self.color = t.text_color if not op else t.opposite_text_color
+			c = 'text_color' if not op else 'opposite_text_color'
+			self.bind(color=t.setter(c))
 		elif value == 'Secondary':
-			self.color = t.secondary_text_color if not op else \
-				t.opposite_secondary_text_color
+			c = 'secondary_text_color' if not op else \
+				'opposite_secondary_text_color'
+			self.bind(color=t.setter(c))
 		elif value == 'Hint':
-			self.color = t.disabled_hint_text_color if not op else \
-				t.opposite_disabled_hint_text_color
+			c = 'disabled_hint_text_color' if not op else \
+				'opposite_disabled_hint_text_color'
+			self.bind(color=t.setter(c))
 		elif value == 'Error':
-			self.color = self.theme_cls.error_color
+			c = 'error_color'
+			self.bind(color=t.setter(c))
 		elif value == 'Custom':
 			self.color = self.text_color if self.text_color else (0, 0, 0, 1)
+		self._currently_bound_property = c
 
 	def on_text_color(self, *args):
 		if self.theme_text_color == 'Custom':
