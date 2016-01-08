@@ -4,7 +4,7 @@ from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
 from kivymd.elevationbehaviour import ElevationBehaviour
 from kivymd.icon_definitions import md_icons
-from kivymd.label import MaterialLabel
+from kivymd.label import MDLabel
 from kivymd.list import MaterialList, OneLineIconListItem, OneLineListItem, \
 	ILeftBody
 from kivymd.slidingpanel import SlidingPanel
@@ -73,7 +73,7 @@ class NavigationDrawerCategory(MaterialList):
 		super(NavigationDrawerCategory, self).add_widget(widget, index)
 
 
-class NDIconLabel(ILeftBody, MaterialLabel):
+class NDIconLabel(ILeftBody, MDLabel):
 	pass
 
 

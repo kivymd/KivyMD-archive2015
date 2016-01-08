@@ -7,7 +7,7 @@ from kivy.properties import ObjectProperty, NumericProperty, StringProperty, \
 	ListProperty, BooleanProperty
 from kivy.metrics import sp, dp
 from kivy.animation import Animation
-from kivymd.label import MaterialLabel
+from kivymd.label import MDLabel
 from theming import ThemableBehavior
 
 Builder.load_string('''
@@ -78,14 +78,14 @@ class SingleLineTextField(ThemableBehavior, TextInput):
 	_hint_txt = StringProperty('')
 
 	def __init__(self, **kwargs):
-		self._msg_label = MaterialLabel(font_style='Caption',
-		                                theme_text_color='Error',
-		                                halign='left',
-		                                valign='middle')
+		self._msg_label = MDLabel(font_style='Caption',
+		                          theme_text_color='Error',
+		                          halign='left',
+		                          valign='middle')
 
-		self._hint_lbl = MaterialLabel(font_style='Subhead',
-		                               halign='left',
-		                               valign='middle')
+		self._hint_lbl = MDLabel(font_style='Subhead',
+		                         halign='left',
+		                         valign='middle')
 		super(SingleLineTextField, self).__init__(**kwargs)
 		self.line_color_normal = self.theme_cls.divider_color
 		self.line_color_focus = self.theme_cls.primary_color

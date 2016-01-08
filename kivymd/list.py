@@ -170,14 +170,14 @@ Builder.load_string('''
 		orientation: 'vertical'
 		pos: root.pos
 		padding: root._txt_left_pad, root._txt_top_pad, root._txt_right_pad, root._txt_bot_pad
-		MaterialLabel:
+		MDLabel:
 			id: _lbl_primary
 			text: root.text
 			font_style: 'Subhead'
 			theme_text_color: 'Primary'
 			size_hint_y: None
 			height: self.texture_size[1]
-		MaterialLabel:
+		MDLabel:
 			id: _lbl_secondary
 			text: '' if root._num_lines == 1 else root.secondary_text
 			font_style: 'Body1'

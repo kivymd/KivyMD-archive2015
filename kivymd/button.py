@@ -29,12 +29,12 @@ from kivymd.color_definitions import colors
 Builder.load_string('''
 #:import md_icons kivymd.icon_definitions.md_icons
 #:import colors kivymd.color_definitions.colors
-#:import MaterialLabel kivymd.label.MaterialLabel
+#:import MDLabel kivymd.label.MDLabel
 <MaterialIconButton>
 	size_hint: (None, None)
 	size: (dp(48), dp(48))
 	padding: dp(12)
-	MaterialLabel:
+	MDLabel:
 		id: _label
 		font_style: 'Icon'
 		text: u"{}".format(md_icons[root.icon])
@@ -54,7 +54,7 @@ Builder.load_string('''
 	height: dp(36)
 	width: _label.texture_size[0] + dp(16)
 	padding: (dp(8), 0)
-	MaterialLabel:
+	MDLabel:
 		id: _label
 		text: root._text
 		font_style: 'Button'
@@ -79,7 +79,7 @@ Builder.load_string('''
 
 	anchor_x:			'center'
 	anchor_y:			'center'
-	MaterialLabel:
+	MDLabel:
 		id: label
 		font_style: 		'Button'
 		text:				root._text
@@ -105,7 +105,7 @@ Builder.load_string('''
 
 	anchor_x:			'center'
 	anchor_y:			'center'
-	MaterialLabel:
+	MDLabel:
 		id: label
 		font_style: 		'Icon'
 		text: 				u"{}".format(md_icons[root.icon])

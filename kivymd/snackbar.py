@@ -13,7 +13,7 @@ Builder.load_string('''
 #:import Window kivy.core.window.Window
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import MaterialFlatButton kivymd.button.MaterialFlatButton
-#:import MaterialLabel kivymd.label.MaterialLabel
+#:import MDLabel kivymd.label.MDLabel
 #:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
 <_SnackbarWidget>
 	canvas:
@@ -31,7 +31,7 @@ Builder.load_string('''
 		width: Window.width - root.padding_right - _spacer.width - dp(24) if DEVICE_TYPE == 'mobile' and root.button_text == '' else Window.width - root.padding_right - _button.width - _spacer.width - dp(24) if DEVICE_TYPE == 'mobile' else _label.texture_size[0] if (dp(568) - root.padding_right - _button.width - _spacer.width - _label.texture_size[0] - dp(24)) >= 0 else (dp(568) - root.padding_right - _button.width - _spacer.width - dp(24))
 		size_hint_x: None
 		x: dp(24)
-		MaterialLabel:
+		MDLabel:
 			id: _label
 			text: root.text
 			size: self.texture_size

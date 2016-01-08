@@ -28,7 +28,7 @@ Builder.load_string('''
 			cols: 1
 			padding:		dp(24), dp(24), dp(24), 0
 			spacing:		dp(20)
-			MaterialLabel:
+			MDLabel:
 				text:				root.title
 				font_style:			'Title'
 				theme_text_color:	'Primary'

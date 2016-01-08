@@ -31,7 +31,7 @@ Builder.load_string('''
 		height: dp(48)
 		x: root.width - root.theme_cls.horizontal_margins + dp(12) - self.width
 		y: root.y + root.height - (root.theme_cls.standard_increment - self.height)/2 - self.height
-	MaterialLabel:
+	MDLabel:
 		size_hint_x: None
 		width: right_actions.x - self.x - dp(12)
 		x: root.x + left_actions.width + dp(24)

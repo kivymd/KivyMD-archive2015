@@ -50,7 +50,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.modalview import ModalView
 from kivy.uix.scrollview import ScrollView
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
-from kivymd.label import MaterialLabel
+from kivymd.label import MDLabel
 from kivymd.list import MaterialList, OneLineListItem, ILeftBody, \
 	OneLineIconListItem
 from kivymd.theming import ThemableBehavior
@@ -139,7 +139,7 @@ Builder.load_string('''
 ''')
 
 
-class ListBSIconLeft(ILeftBody, MaterialLabel):
+class ListBSIconLeft(ILeftBody, MDLabel):
 	icon = StringProperty()
 
 
@@ -178,7 +178,7 @@ Builder.load_string('''
 		height: dp(48)
 		Image:
 			source: root.source
-	MaterialLabel:
+	MDLabel:
 		font_style: 'Caption'
 		theme_text_color: 'Secondary'
 		text: root.caption

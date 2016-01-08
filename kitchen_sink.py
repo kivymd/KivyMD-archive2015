@@ -6,7 +6,7 @@ from kivy.metrics import dp
 from kivy.uix.image import Image
 from kivymd.bottomsheet import ListBottomSheet, GridBottomSheet
 from kivymd.button import MaterialIconButton
-from kivymd.label import MaterialLabel
+from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.selectioncontrols import MaterialCheckBox
 from kivymd.theming import ThemeManager
@@ -149,7 +149,7 @@ RelativeLayout:
 		pos_hint: {'center_x': 0.15, 'center_y': 0.1}
 		determinate: True if chkbox.active else False
 
-	MaterialLabel:
+	MDLabel:
 		font_style: 'Subhead'
 		theme_text_color: 'Primary'
 		text: "Determinate"
@@ -204,10 +204,10 @@ class KitchenSink(App):
 	def build(self):
 		main_widget = Builder.load_string(main_widget_kv)
 		# self.theme_cls.theme_style = 'Dark'
-		content = MaterialLabel(font_style='Body1',
-		                        theme_text_color='Secondary',
-		                        text="This is a Dialog with a title and some text. That's pretty awesome right!",
-		                        valign='top')
+		content = MDLabel(font_style='Body1',
+		                  theme_text_color='Secondary',
+		                  text="This is a Dialog with a title and some text. That's pretty awesome right!",
+		                  valign='top')
 
 		content.bind(size=content.setter('text_size'))
 

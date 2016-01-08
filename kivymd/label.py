@@ -8,13 +8,13 @@ from kivymd.theming import ThemableBehavior
 from kivymd.color_definitions import colors
 
 Builder.load_string('''
-<MaterialLabel>
+<MDLabel>
 	disabled_color: self.theme_cls.disabled_hint_text_color
 	text_size: (self.width, None)
 ''')
 
 
-class MaterialLabel(ThemableBehavior, Label):
+class MDLabel(ThemableBehavior, Label):
 
 	font_style = OptionProperty(
 		'Body1', options=['Body1', 'Body2', 'Caption', 'Subhead', 'Title',
@@ -41,7 +41,7 @@ class MaterialLabel(ThemableBehavior, Label):
 	text_color = ListProperty(None, allownone=True)
 
 	def __init__(self, **kwargs):
-		super(MaterialLabel, self).__init__(**kwargs)
+		super(MDLabel, self).__init__(**kwargs)
 		self.on_theme_text_color(None, self.theme_text_color)
 		self.on_font_style(None, self.font_style)
 		self.on_opposite_colors(None, self.opposite_colors)
