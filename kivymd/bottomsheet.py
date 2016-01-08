@@ -5,7 +5,7 @@ Bottom Sheets
 
 `Material Design spec Bottom Sheets page <http://www.google.com/design/spec/components/bottom-sheets.html>`_
 
-In this module there's the :class:`BottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`ListBottomSheet` and :class:`GridBottomSheet` implementing the ones mentioned in the spec.
+In this module there's the :class:`MDBottomSheet` class which will let you implement your own Material Design Bottom Sheets, and there are two classes called :class:`MDListBottomSheet` and :class:`MDGridBottomSheet` implementing the ones mentioned in the spec.
 
 Examples
 --------
@@ -14,21 +14,21 @@ Examples
 
     These widgets are designed to be called from Python code only.
 
-For :class:`ListBottomSheet`:
+For :class:`MDListBottomSheet`:
 
 .. code-block:: python
 
-    bs = ListBottomSheet()
+    bs = MDListBottomSheet()
     bs.add_item("Here's an item with text only", lambda x: x)
     bs.add_item("Here's an item with an icon", lambda x: x, icon='md-cast')
     bs.add_item("Here's another!", lambda x: x, icon='md-nfc')
     bs.open()
 
-For :class:`ListBottomSheet`:
+For :class:`MDListBottomSheet`:
 
 .. code-block:: python
 
-    bs = GridBottomSheet()
+    bs = MDGridBottomSheet()
     bs.add_item("Facebook", lambda x: x, icon_src='./assets/facebook-box.png')
     bs.add_item("YouTube", lambda x: x, icon_src='./assets/youtube-play.png')
     bs.add_item("Twitter", lambda x: x, icon_src='./assets/twitter.png')
@@ -56,7 +56,7 @@ from kivymd.list import MaterialList, OneLineListItem, ILeftBody, \
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
-<BottomSheet>
+<MDBottomSheet>
 	background: 'atlas://data/images/defaulttheme/action_group_disabled'
 	background_color: 0,0,0,.8
 	sv: sv
@@ -91,14 +91,14 @@ class BottomSheetContent(BackgroundColorBehavior, GridLayout):
 	pass
 
 
-class BottomSheet(ThemableBehavior, ModalView):
+class MDBottomSheet(ThemableBehavior, ModalView):
 	sv = ObjectProperty()
 	upper_padding = ObjectProperty()
 	gl_content = ObjectProperty()
 	dismiss_zone_scroll = 1000  # Arbitrary high number
 
 	def open(self, *largs):
-		super(BottomSheet, self).open(*largs)
+		super(MDBottomSheet, self).open(*largs)
 		Clock.schedule_once(self.set_dismiss_zone, 0)
 
 	def set_dismiss_zone(self, *largs):
@@ -123,7 +123,7 @@ class BottomSheet(ThemableBehavior, ModalView):
 
 	def add_widget(self, widget, index=0):
 		if type(widget) == ScrollView:
-			super(BottomSheet, self).add_widget(widget, index)
+			super(MDBottomSheet, self).add_widget(widget, index)
 		else:
 			self.gl_content.add_widget(widget, index)
 
@@ -143,11 +143,11 @@ class ListBSIconLeft(ILeftBody, MDLabel):
 	icon = StringProperty()
 
 
-class ListBottomSheet(BottomSheet):
+class MDListBottomSheet(MDBottomSheet):
 	mlist = ObjectProperty()
 
 	def __init__(self, **kwargs):
-		super(ListBottomSheet, self).__init__(**kwargs)
+		super(MDListBottomSheet, self).__init__(**kwargs)
 		self.mlist = MaterialList()
 		self.gl_content.add_widget(self.mlist)
 		Clock.schedule_once(self.resize_content_layout, 0)
@@ -192,9 +192,9 @@ class GridBSItem(ButtonBehavior, BoxLayout):
 	caption = StringProperty()
 
 
-class GridBottomSheet(BottomSheet):
+class MDGridBottomSheet(MDBottomSheet):
 	def __init__(self, **kwargs):
-		super(GridBottomSheet, self).__init__(**kwargs)
+		super(MDGridBottomSheet, self).__init__(**kwargs)
 		self.gl_content.padding = (dp(16), 0, dp(16), dp(24))
 		self.gl_content.height = dp(24)
 		self.gl_content.cols = 3

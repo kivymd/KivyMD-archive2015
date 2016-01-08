@@ -4,7 +4,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.image import Image
-from kivymd.bottomsheet import ListBottomSheet, GridBottomSheet
+from kivymd.mdbottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MaterialIconButton
 from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
@@ -242,14 +242,14 @@ class KitchenSink(App):
 		return main_widget
 
 	def show_example_bottom_sheet(self):
-		bs = ListBottomSheet()
+		bs = MDListBottomSheet()
 		bs.add_item("Here's an item with text only", lambda x: x)
 		bs.add_item("Here's an item with an icon", lambda x: x, icon='md-cast')
 		bs.add_item("Here's another!", lambda x: x, icon='md-nfc')
 		bs.open()
 
 	def show_example_grid_bottom_sheet(self):
-		bs = GridBottomSheet()
+		bs = MDGridBottomSheet()
 		bs.add_item("Facebook", lambda x: x, icon_src='./assets/facebook-box.png')
 		bs.add_item("YouTube", lambda x: x, icon_src='./assets/youtube-play.png')
 		bs.add_item("Twitter", lambda x: x, icon_src='./assets/twitter.png')
