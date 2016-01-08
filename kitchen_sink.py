@@ -36,146 +36,172 @@ RelativeLayout:
 		left_action_items: [['md-menu', lambda x: nav_drawer.toggle()]]
 		right_action_items: [['md-content-copy', lambda x: None], \
 		['md-more-vert', lambda x: None]]
-
-	SingleLineTextField:
-		id: text_field
-		size_hint: 0.8, None
-		height: dp(48)
-		pos_hint: {'center_x': 0.5, 'center_y': 0.85}
-		hint_text: "Write something"
-
-	MaterialFlatButton:
-		id: flat_button
-		text: 'MaterialFlatButton'
-		pos_hint: {'center_x': 0.3, 'center_y': 0.75}
-	MaterialRaisedButton:
-		id: raised_button
-		text: "Open dialog"
-		elevation_normal: 2
-		opposite_colors: True
-		size_hint: None, None
-		size: dp(110), dp(36)
-		pos_hint: {'center_x': 0.75, 'center_y': 0.75}
-
-	MaterialCheckBox:
-		id:			grp_chkbox_1
-		group:		'test'
-		size_hint:	None, None
-		size:		dp(48), dp(48)
-		pos_hint:	{'center_x': 0.4, 'center_y': 0.65}
-	MaterialCheckBox:
-		id:			grp_chkbox_2
-		group:		'test'
-		size_hint:	None, None
-		size:		dp(48), dp(48)
-		pos_hint:	{'center_x': 0.5, 'center_y': 0.65}
-	MaterialSwitch:
-		size_hint:	None, None
-		size:		dp(36), dp(48)
-		pos_hint:	{'center_x': 0.7, 'center_y': 0.65}
-		active:		False
-
-
-	ScrollView:
-		do_scroll_x: False
-		pos_hint: {'center_x': 0.5, 'center_y': 0.4}
+	ScreenManager:
+		id: scr_mngr
 		size_hint_y: None
-		size_hint_x: None if DEVICE_TYPE == 'desktop' else 1
-		size: (1024, 250)
-		MDList:
-			id: ml
-			OneLineListItem:
-				text: "One-line item"
-			TwoLineListItem:
-				text: "Two-line item"
-				secondary_text: "Secondary text here"
-			ThreeLineListItem:
-				text: "Three-line item"
-				secondary_text: "This is a multi-line label where you can fit more text than usual"
-			OneLineAvatarListItem:
-				text: "Single-line item with avatar"
-				AvatarSampleWidget:
-					source: './assets/avatar.png'
-			TwoLineAvatarListItem:
-				type: "two-line"
-				text: "Two-line item..."
-				secondary_text: "with avatar"
-				AvatarSampleWidget:
-					source: './assets/avatar.png'
-			ThreeLineAvatarListItem:
-				type: "three-line"
-				text: "Three-line item..."
-				secondary_text: "...with avatar..." + '\\n' + "and third line!"
-				AvatarSampleWidget:
-					source: './assets/avatar.png'
-			OneLineIconListItem:
-				text: "Single-line item with left icon"
-				IconLeftSampleWidget:
-					id: li_icon_1
-					icon: 'md-stars'
-			TwoLineIconListItem:
-				text: "Two-line item..."
-				secondary_text: "...with left icon"
-				IconLeftSampleWidget:
-					id: li_icon_2
-					icon: 'md-chat'
-			ThreeLineIconListItem:
-				text: "Three-line item..."
-				secondary_text: "...with left icon..." + '\\n' + "and third line!"
-				IconLeftSampleWidget:
-					id: li_icon_3
-					icon: 'md-sd-storage'
-			OneLineAvatarIconListItem:
-				text: "Single-line + avatar&icon"
-				AvatarSampleWidget:
-					source: './assets/avatar.png'
-				IconRightSampleWidget:
-			TwoLineAvatarIconListItem:
-				text: "Two-line item..."
-				secondary_text: "...with avatar&icon"
-				AvatarSampleWidget:
-					source: './assets/avatar.png'
-				IconRightSampleWidget:
-			ThreeLineAvatarIconListItem:
-				text: "Three-line item..."
-				secondary_text: "...with avatar&icon..." + '\\n' + "and third line!"
-				AvatarSampleWidget:
-					source: './assets/avatar.png'
-				IconRightSampleWidget:
-	MDSpinner:
-		id: spinner
-		size_hint: None, None
-		size: dp(46), dp(46)
-		pos_hint: {'center_x': 0.15, 'center_y': 0.1}
-		determinate: True if chkbox.active else False
+		height: root.height - toolbar.height
+		Screen:
+			name: 'bottomsheet'
+			
+		Screen:
+			name: 'button'
+			MaterialFlatButton:
+				id: flat_button
+				text: 'MaterialFlatButton'
+				pos_hint: {'center_x': 0.3, 'center_y': 0.75}
+			MaterialRaisedButton:
+				id: raised_button
+				text: "Open dialog"
+				elevation_normal: 2
+				opposite_colors: True
+				size_hint: None, None
+				size: dp(110), dp(36)
+				pos_hint: {'center_x': 0.75, 'center_y': 0.75}
+			FloatingActionButton:
+				id:					float_act_btn
+				icon:				'md-replay'
+				size_hint:			None, None
+				size:				dp(56), dp(56)
+				opposite_colors:	True
+				elevation_normal:	8
+				pos_hint:			{'center_x': 0.85, 'center_y': 0.1}
 
-	MDLabel:
-		font_style: 'Subhead'
-		theme_text_color: 'Primary'
-		text: "Determinate"
-		halign: 'center'
-		pos_hint: {'center_x': 0.5, 'center_y': 0.14}
-	MaterialCheckBox:
-		id:			chkbox
-		size_hint:	None, None
-		size:		dp(48), dp(48)
-		pos_hint:	{'center_x': 0.5, 'center_y': 0.1}
+		Screen:
+			name: 'card'
+			MDCard:
+				size_hint: None, None
+				size: dp(320), dp(180)
+				pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-	FloatingActionButton:
-		id:					float_act_btn
-		icon:				'md-replay'
-		size_hint:			None, None
-		size:				dp(56), dp(56)
-		opposite_colors:	True
-		elevation_normal:	8
-		pos_hint:			{'center_x': 0.85, 'center_y': 0.1}
-		on_release:         spinner.active = not spinner.active
+		Screen:
+			name: 'dialog'
 
-	MDCard:
-		size_hint: None, None
-		size: dp(144), dp(81)
-		pos_hint: {'center_x': 0.5, 'center_y': 0.25}
-		y: dp(10)
+		Screen:
+			name: 'list'
+			ScrollView:
+				do_scroll_x: False
+				MDList:
+					id: ml
+					OneLineListItem:
+						text: "One-line item"
+					TwoLineListItem:
+						text: "Two-line item"
+						secondary_text: "Secondary text here"
+					ThreeLineListItem:
+						text: "Three-line item"
+						secondary_text: "This is a multi-line label where you can fit more text than usual"
+					OneLineAvatarListItem:
+						text: "Single-line item with avatar"
+						AvatarSampleWidget:
+							source: './assets/avatar.png'
+					TwoLineAvatarListItem:
+						type: "two-line"
+						text: "Two-line item..."
+						secondary_text: "with avatar"
+						AvatarSampleWidget:
+							source: './assets/avatar.png'
+					ThreeLineAvatarListItem:
+						type: "three-line"
+						text: "Three-line item..."
+						secondary_text: "...with avatar..." + '\\n' + "and third line!"
+						AvatarSampleWidget:
+							source: './assets/avatar.png'
+					OneLineIconListItem:
+						text: "Single-line item with left icon"
+						IconLeftSampleWidget:
+							id: li_icon_1
+							icon: 'md-stars'
+					TwoLineIconListItem:
+						text: "Two-line item..."
+						secondary_text: "...with left icon"
+						IconLeftSampleWidget:
+							id: li_icon_2
+							icon: 'md-chat'
+					ThreeLineIconListItem:
+						text: "Three-line item..."
+						secondary_text: "...with left icon..." + '\\n' + "and third line!"
+						IconLeftSampleWidget:
+							id: li_icon_3
+							icon: 'md-sd-storage'
+					OneLineAvatarIconListItem:
+						text: "Single-line + avatar&icon"
+						AvatarSampleWidget:
+							source: './assets/avatar.png'
+						IconRightSampleWidget:
+					TwoLineAvatarIconListItem:
+						text: "Two-line item..."
+						secondary_text: "...with avatar&icon"
+						AvatarSampleWidget:
+							source: './assets/avatar.png'
+						IconRightSampleWidget:
+					ThreeLineAvatarIconListItem:
+						text: "Three-line item..."
+						secondary_text: "...with avatar&icon..." + '\\n' + "and third line!"
+						AvatarSampleWidget:
+							source: './assets/avatar.png'
+						IconRightSampleWidget:
+
+		Screen:
+			name: 'menu'
+
+		Screen:
+			name: 'progress'
+			MaterialCheckBox:
+				id:			chkbox
+				size_hint:	None, None
+				size:		dp(48), dp(48)
+				pos_hint:	{'center_x': 0.5, 'center_y': 0.1}
+				active: True
+			MDSpinner:
+				id: spinner
+				size_hint: None, None
+				size: dp(46), dp(46)
+				pos_hint: {'center_x': 0.15, 'center_y': 0.1}
+				active: True if chkbox.active else False
+
+		Screen:
+			name: 'selectioncontrols'
+			MaterialCheckBox:
+				id:			grp_chkbox_1
+				group:		'test'
+				size_hint:	None, None
+				size:		dp(48), dp(48)
+				pos_hint:	{'center_x': 0.4, 'center_y': 0.65}
+			MaterialCheckBox:
+				id:			grp_chkbox_2
+				group:		'test'
+				size_hint:	None, None
+				size:		dp(48), dp(48)
+				pos_hint:	{'center_x': 0.5, 'center_y': 0.65}
+			MaterialSwitch:
+				size_hint:	None, None
+				size:		dp(36), dp(48)
+				pos_hint:	{'center_x': 0.7, 'center_y': 0.65}
+				active:		False
+
+		Screen:
+			name: 'snackbar'
+
+		Screen:
+			name: 'textfields'
+			MDLabel:
+				font_style: 'Subhead'
+				theme_text_color: 'Primary'
+				text: "Determinate"
+				halign: 'center'
+				pos_hint: {'center_x': 0.5, 'center_y': 0.14}
+			SingleLineTextField:
+				id: text_field
+				size_hint: 0.8, None
+				height: dp(48)
+				pos_hint: {'center_x': 0.5, 'center_y': 0.85}
+				hint_text: "Write something"
+
+		Screen:
+			name: 'theming'
+
+		Screen:
+			name: 'toolbar'
 
 	NavigationDrawer:
 		id: nav_drawer
@@ -185,16 +211,52 @@ RelativeLayout:
 		NavigationDrawerCategory:
 			NavigationDrawerIconButton:
 				icon: 'md-lens'
-				text: 'Item 1'
+				text: "Bottom sheets"
+				on_release: scr_mngr.current = 'bottomsheet'
 			NavigationDrawerIconButton:
 				icon: 'md-lens'
-				text: 'Item 2'
+				text: "Buttons"
+				on_release: scr_mngr.current = 'button'
 			NavigationDrawerIconButton:
 				icon: 'md-lens'
-				text: 'Item 3'
+				text: "Cards"
+				on_release: scr_mngr.current = 'card'
 			NavigationDrawerIconButton:
 				icon: 'md-lens'
-				text: 'Item 4'
+				text: "Dialogs"
+				on_release: scr_mngr.current = 'dialog'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Lists"
+				on_release: scr_mngr.current = 'list'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Menus"
+				on_release: scr_mngr.current = 'menu'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Progres & activity"
+				on_release: scr_mngr.current = 'progress'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Selection controls"
+				on_release: scr_mngr.current = 'selectioncontrols'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Snackbars"
+				on_release: scr_mngr.current = 'snackbar'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Text fields"
+				on_release: scr_mngr.current = 'textfields'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Themes"
+				on_release: scr_mngr.current = 'theming'
+			NavigationDrawerIconButton:
+				icon: 'md-lens'
+				text: "Toolbars"
+				on_release: scr_mngr.current = 'toolbar'
 '''
 
 
@@ -241,6 +303,9 @@ class KitchenSink(App):
 				on_focus=self.set_error_message)
 		return main_widget
 
+	def theme_swap(self):
+		self.theme_cls.theme_style = 'Dark' if self.theme_cls.theme_style == 'Light' else 'Light'
+
 	def show_example_bottom_sheet(self):
 		bs = MDListBottomSheet()
 		bs.add_item("Here's an item with text only", lambda x: x)
@@ -250,10 +315,13 @@ class KitchenSink(App):
 
 	def show_example_grid_bottom_sheet(self):
 		bs = MDGridBottomSheet()
-		bs.add_item("Facebook", lambda x: x, icon_src='./assets/facebook-box.png')
-		bs.add_item("YouTube", lambda x: x, icon_src='./assets/youtube-play.png')
+		bs.add_item("Facebook", lambda x: x,
+		            icon_src='./assets/facebook-box.png')
+		bs.add_item("YouTube", lambda x: x,
+		            icon_src='./assets/youtube-play.png')
 		bs.add_item("Twitter", lambda x: x, icon_src='./assets/twitter.png')
-		bs.add_item("Da Cloud", lambda x: x, icon_src='./assets/cloud-upload.png')
+		bs.add_item("Da Cloud", lambda x: x,
+		            icon_src='./assets/cloud-upload.png')
 		bs.add_item("Camera", lambda x: x, icon_src='./assets/camera.png')
 		bs.open()
 

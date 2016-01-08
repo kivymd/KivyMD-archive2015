@@ -40,7 +40,7 @@ class MDLabel(ThemableBehavior, Label):
 
 	text_color = ListProperty(None, allownone=True)
 
-	_currently_bound_property = ''
+	_currently_bound_property = {}
 
 	def __init__(self, **kwargs):
 		super(MDLabel, self).__init__(**kwargs)
@@ -60,22 +60,29 @@ class MDLabel(ThemableBehavior, Label):
 	def on_theme_text_color(self, instance, value):
 		t = self.theme_cls
 		op = self.opposite_colors
-		self.unbind(color=t.setter(self._currently_bound_property))
-		c = ''
+		setter = self.setter('color')
+		t.unbind(**self._currently_bound_property)
+		c = {}
 		if value == 'Primary':
-			c = 'text_color' if not op else 'opposite_text_color'
-			self.bind(color=t.setter(c))
+			c = {'text_color' if not op else 'opposite_text_color': setter}
+			t.bind(**c)
+			self.color = t.text_color if not op else t.opposite_text_color
 		elif value == 'Secondary':
-			c = 'secondary_text_color' if not op else \
-				'opposite_secondary_text_color'
-			self.bind(color=t.setter(c))
+			c = {'secondary_text_color' if not op else \
+				     'opposite_secondary_text_color': setter}
+			t.bind(**c)
+			self.color = t.secondary_text_color if not op else \
+				t.opposite_secondary_text_color
 		elif value == 'Hint':
-			c = 'disabled_hint_text_color' if not op else \
-				'opposite_disabled_hint_text_color'
-			self.bind(color=t.setter(c))
+			c = {'disabled_hint_text_color' if not op else \
+				     'opposite_disabled_hint_text_color': setter}
+			t.bind(**c)
+			self.color = t.disabled_hint_text_color if not op else \
+				t.opposite_disabled_hint_text_color
 		elif value == 'Error':
-			c = 'error_color'
-			self.bind(color=t.setter(c))
+			c = {'error_color': setter}
+			t.bind(**c)
+			self.color = t.error_color
 		elif value == 'Custom':
 			self.color = self.text_color if self.text_color else (0, 0, 0, 1)
 		self._currently_bound_property = c
