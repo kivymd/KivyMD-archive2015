@@ -51,7 +51,7 @@ from kivy.uix.modalview import ModalView
 from kivy.uix.scrollview import ScrollView
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
 from kivymd.label import MDLabel
-from kivymd.list import MaterialList, OneLineListItem, ILeftBody, \
+from kivymd.list import MDList, OneLineListItem, ILeftBody, \
 	OneLineIconListItem
 from kivymd.theming import ThemableBehavior
 
@@ -148,7 +148,7 @@ class MDListBottomSheet(MDBottomSheet):
 
 	def __init__(self, **kwargs):
 		super(MDListBottomSheet, self).__init__(**kwargs)
-		self.mlist = MaterialList()
+		self.mlist = MDList()
 		self.gl_content.add_widget(self.mlist)
 		Clock.schedule_once(self.resize_content_layout, 0)
 

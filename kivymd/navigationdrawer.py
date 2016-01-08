@@ -5,7 +5,7 @@ from kivy.properties import StringProperty, ObjectProperty
 from kivymd.elevationbehaviour import ElevationBehaviour
 from kivymd.icon_definitions import md_icons
 from kivymd.label import MDLabel
-from kivymd.list import MaterialList, OneLineIconListItem, OneLineListItem, \
+from kivymd.list import MDList, OneLineIconListItem, OneLineListItem, \
 	ILeftBody
 from kivymd.slidingpanel import SlidingPanel
 from kivymd.theming import ThemableBehavior
@@ -33,7 +33,7 @@ Builder.load_string('''
 		size_hint_y: None
 		height: root.height - _header_bg.height - dp(8)
 		pos: root.pos
-		MaterialList:
+		MDList:
 			id: _list
 
 <NavigationDrawerIconButton>
@@ -63,7 +63,7 @@ class NavigationDrawer(SlidingPanel, ThemableBehavior, ElevationBehaviour):
 		self._header_bg.source = value
 
 
-class NavigationDrawerCategory(MaterialList):
+class NavigationDrawerCategory(MDList):
 	def __init__(self, **kwargs):
 		super(NavigationDrawerCategory, self).__init__(**kwargs)
 		self.padding = (0, self.padding[1], 0, 0)

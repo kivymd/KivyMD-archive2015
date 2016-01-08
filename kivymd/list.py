@@ -7,7 +7,7 @@ Lists
 
 `Material Design spec, Lists: Controls page <https://www.google.com/design/spec/components/lists-controls.html>`_
 
-The class :class:`MaterialList` in combination with a ListItem like
+The class :class:`MDList` in combination with a ListItem like
 :class:`OneLineListItem` will create a list that expands as items are added to
 it, working nicely with Kivy's :class:`~kivy.uix.scrollview.ScrollView`.
 
@@ -21,7 +21,7 @@ Kv Lang:
 
     ScrollView:
     	do_scroll_x: False  # Important for MD compliance
-    	MaterialList:
+    	MDList:
     		OneLineListItem:
     			text: "Single-line item"
     		TwoLineListItem:
@@ -36,9 +36,9 @@ Python:
 
 .. code-block:: python
 
-    # Sets up ScrollView with MaterialList, as normally used in Android:
+    # Sets up ScrollView with MDList, as normally used in Android:
     sv = ScrollView()
-    ml = MaterialList()
+    ml = MDList()
     sv.add_widget(ml)
 
     contacts = ["Paula", "John", "Kate", "Vlad"]
@@ -116,9 +116,9 @@ Python example:
             Dialer.send_sms(phone_number, "Hey! What's up?")
             pass
 
-    # Sets up ScrollView with MaterialList, as normally used in Android:
+    # Sets up ScrollView with MDList, as normally used in Android:
     sv = ScrollView()
-    ml = MaterialList()
+    ml = MDList()
     sv.add_widget(ml)
 
     contacts = [
@@ -152,7 +152,7 @@ from kivymd.ripplebehavior import RectangularRippleBehavior
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
-<MaterialList>
+<MDList>
 	cols: 1
 	size_hint_y: None
 	height: self._min_list_height
@@ -260,7 +260,7 @@ Builder.load_string('''
 ''')
 
 
-class MaterialList(GridLayout):
+class MDList(GridLayout):
 	'''ListItem container. Best used in conjunction with a
 	:class:`kivy.uix.ScrollView`.
 
@@ -274,11 +274,11 @@ class MaterialList(GridLayout):
 	icon = StringProperty()
 
 	def add_widget(self, widget, index=0):
-		super(MaterialList, self).add_widget(widget, index)
+		super(MDList, self).add_widget(widget, index)
 		self.height += widget.height
 
 	def remove_widget(self, widget):
-		super(MaterialList, self).remove_widget(widget)
+		super(MDList, self).remove_widget(widget)
 		self.height -= widget.height
 
 

@@ -4,7 +4,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.uix.image import Image
-from kivymd.mdbottomsheet import MDListBottomSheet, MDGridBottomSheet
+from kivymd.bottomsheet import MDListBottomSheet, MDGridBottomSheet
 from kivymd.button import MaterialIconButton
 from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
@@ -18,7 +18,7 @@ main_widget_kv = '''
 #:import NavigationDrawer kivymd.navigationdrawer.NavigationDrawer
 #:import MaterialCheckBox kivymd.selectioncontrols.MaterialCheckBox
 #:import MaterialSwitch kivymd.selectioncontrols.MaterialSwitch
-#:import MaterialList kivymd.list.MaterialList
+#:import MDList kivymd.list.MDList
 #:import OneLineListItem kivymd.list.OneLineListItem
 #:import TwoLineListItem kivymd.list.TwoLineListItem
 #:import ThreeLineListItem kivymd.list.ThreeLineListItem
@@ -82,7 +82,7 @@ RelativeLayout:
 		size_hint_y: None
 		size_hint_x: None if DEVICE_TYPE == 'desktop' else 1
 		size: (1024, 250)
-		MaterialList:
+		MDList:
 			id: ml
 			OneLineListItem:
 				text: "One-line item"
