@@ -10,7 +10,7 @@ from elevationbehaviour import ElevationBehaviour
 from kivymd.button import MaterialFlatButton
 
 Builder.load_string('''
-<Dialog>:
+<MDDialog>:
 	canvas:
 		Color:
 			rgba: 	self.theme_cls.bg_light
@@ -57,7 +57,7 @@ Builder.load_string('''
 				width:			self.minimum_width
 ''')
 
-class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
+class MDDialog(ThemableBehavior, ElevationBehaviour, ModalView):
 	title = StringProperty('')
 
 	content = ObjectProperty(None)
@@ -69,7 +69,7 @@ class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
 	_action_area = ObjectProperty()
 
 	def __init__(self, **kwargs):
-		super(Dialog, self).__init__(**kwargs)
+		super(MDDialog, self).__init__(**kwargs)
 		self.bind(_action_buttons=self._update_action_buttons,
 				  auto_dismiss=lambda *x: setattr(self.shadow, 'on_release',
 												  self.shadow.dismiss if self.auto_dismiss else None))
@@ -98,7 +98,7 @@ class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
 					'Popup can have only one widget as content')
 			self.content = widget
 		else:
-			super(Dialog, self).add_widget(widget)
+			super(MDDialog, self).add_widget(widget)
 
 	def open(self, *largs):
 		'''Show the view window from the :attr:`attach_to` widget. If set, it
@@ -165,7 +165,7 @@ class Dialog(ThemableBehavior, ElevationBehaviour, ModalView):
 	def on_touch_down(self, touch):
 		if self.disabled and self.collide_point(*touch.pos):
 			return True
-		return super(Dialog, self).on_touch_down(touch)
+		return super(MDDialog, self).on_touch_down(touch)
 
 	def _update_action_buttons(self, *args):
 		self._action_area.clear_widgets()

@@ -10,7 +10,7 @@ from kivymd.label import MDLabel
 from kivymd.list import ILeftBody, ILeftBodyTouch, IRightBodyTouch
 from kivymd.selectioncontrols import MaterialCheckBox
 from kivymd.theming import ThemeManager
-from kivymd.dialog import Dialog
+from kivymd.dialog import MDDialog
 
 main_widget_kv = '''
 #:import Toolbar kivymd.toolbar.Toolbar
@@ -50,7 +50,7 @@ RelativeLayout:
 		pos_hint: {'center_x': 0.3, 'center_y': 0.75}
 	MaterialRaisedButton:
 		id: raised_button
-		text: "Open Dialog"
+		text: "Open dialog"
 		elevation_normal: 2
 		opposite_colors: True
 		size_hint: None, None
@@ -206,16 +206,16 @@ class KitchenSink(App):
 		# self.theme_cls.theme_style = 'Dark'
 		content = MDLabel(font_style='Body1',
 		                  theme_text_color='Secondary',
-		                  text="This is a Dialog with a title and some text. That's pretty awesome right!",
+		                  text="This is a dialog with a title and some text. That's pretty awesome right!",
 		                  valign='top')
 
 		content.bind(size=content.setter('text_size'))
 
-		self.dialog = Dialog(title="This is a test dialog",
-		                     content=content,
-		                     size_hint=(.8, None),
-		                     height=dp(200),
-		                     auto_dismiss=False)
+		self.dialog = MDDialog(title="This is a test dialog",
+		                       content=content,
+		                       size_hint=(.8, None),
+		                       height=dp(200),
+		                       auto_dismiss=False)
 
 		self.dialog.add_action_button("Dismiss",
 		                              action=lambda *x: self.dialog.dismiss())
