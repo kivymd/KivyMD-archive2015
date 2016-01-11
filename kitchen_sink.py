@@ -28,6 +28,7 @@ main_widget_kv = '''
 #:import SingleLineTextField kivymd.textfields.SingleLineTextField
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDCard kivymd.card.MDCard
+#:import MDDropdownMenu kivymd.menu.MDDropdownMenu
 
 RelativeLayout:
 	Toolbar:
@@ -143,6 +144,14 @@ RelativeLayout:
 
 		Screen:
 			name: 'menu'
+			AnchorLayout:
+				anchor_x: 'center'
+				anchor_y: 'center'
+				MaterialRaisedButton:
+					size_hint: None, None
+					size: 3 * dp(48), dp(48)
+					text: 'Open menu'
+					on_release: MDDropdownMenu(items=app.menu_items, width_mult=4).open(self)
 
 		Screen:
 			name: 'progress'
@@ -199,6 +208,23 @@ RelativeLayout:
 
 		Screen:
 			name: 'theming'
+			BoxLayout:
+				orientation: 'vertical'
+				size_hint_y: None
+				height: dp(80)
+				center_y: self.parent.center_y
+				MaterialRaisedButton:
+					size_hint: None, None
+					size: 3 * dp(48), dp(48)
+					center_x: self.parent.center_x
+					text: 'Switch theme style'
+					on_release: app.theme_cls.theme_style = 'Dark' if app.theme_cls.theme_style == 'Light' else 'Light'
+					pos_hint: {'center_x': 0.5}
+				MDLabel:
+					text: "Current: " + app.theme_cls.theme_style
+					theme_text_color: 'Primary'
+					pos_hint: {'center_x': 0.5}
+					halign: 'center'
 
 		Screen:
 			name: 'toolbar'
@@ -262,6 +288,21 @@ RelativeLayout:
 
 class KitchenSink(App):
 	theme_cls = ThemeManager()
+
+	menu_items = [
+		{'viewclass': 'MDMenuItem',
+		 'text': 'Example item'},
+		{'viewclass': 'MDMenuItem',
+		 'text': 'Example item'},
+		{'viewclass': 'MDMenuItem',
+		 'text': 'Example item'},
+		{'viewclass': 'MDMenuItem',
+		 'text': 'Example item'},
+		{'viewclass': 'MDMenuItem',
+		 'text': 'Example item'},
+		{'viewclass': 'MDMenuItem',
+		 'text': 'Example item'},
+	]
 
 	def build(self):
 		main_widget = Builder.load_string(main_widget_kv)
