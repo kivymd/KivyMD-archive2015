@@ -110,11 +110,9 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
 					Window.width / m_res.STANDARD_INCREMENT) * m_res.STANDARD_INCREMENT
 
 		target_height = sum([dp(48) for i in self.items])
-		print target_height
 		# If we're over max_height...
 		if self.max_height > 0 and target_height > self.max_height:
 			target_height = self.max_height
-		print target_height
 
 		# ---ESTABLISH VERTICAL GROWTH DIRECTION---
 		if self.ver_growth is not None:
@@ -166,12 +164,6 @@ class MDDropdownMenu(ThemableBehavior, BoxLayout):
 			tar_x = c[0]
 		else:  # should always be 'left'
 			tar_x = c[0] - target_width
-		print hor_growth
-		print ver_growth
-		print tar_x
-		print tar_y
-		print target_width
-		print target_height
 		anim = Animation(x=tar_x, y=tar_y,
 		                 width=target_width, height=target_height,
 		                 duration=.3, transition='out_quint')
