@@ -231,58 +231,56 @@ RelativeLayout:
 
 	NavigationDrawer:
 		id: nav_drawer
-		bind_to_window: False
 		size_hint_y: None
 		height: root.height - toolbar.height
-		NavigationDrawerCategory:
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Bottom sheets"
-				on_release: scr_mngr.current = 'bottomsheet'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Buttons"
-				on_release: scr_mngr.current = 'button'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Cards"
-				on_release: scr_mngr.current = 'card'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Dialogs"
-				on_release: scr_mngr.current = 'dialog'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Lists"
-				on_release: scr_mngr.current = 'list'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Menus"
-				on_release: scr_mngr.current = 'menu'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Progres & activity"
-				on_release: scr_mngr.current = 'progress'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Selection controls"
-				on_release: scr_mngr.current = 'selectioncontrols'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Snackbars"
-				on_release: scr_mngr.current = 'snackbar'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Text fields"
-				on_release: scr_mngr.current = 'textfields'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Themes"
-				on_release: scr_mngr.current = 'theming'
-			NavigationDrawerIconButton:
-				icon: 'md-lens'
-				text: "Toolbars"
-				on_release: scr_mngr.current = 'toolbar'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Bottom sheets"
+			on_release: scr_mngr.current = 'bottomsheet'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Buttons"
+			on_release: scr_mngr.current = 'button'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Cards"
+			on_release: scr_mngr.current = 'card'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Dialogs"
+			on_release: scr_mngr.current = 'dialog'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Lists"
+			on_release: scr_mngr.current = 'list'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Menus"
+			on_release: scr_mngr.current = 'menu'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Progress & activity"
+			on_release: scr_mngr.current = 'progress'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Selection controls"
+			on_release: scr_mngr.current = 'selectioncontrols'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Snackbars"
+			on_release: scr_mngr.current = 'snackbar'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Text fields"
+			on_release: scr_mngr.current = 'textfields'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Themes"
+			on_release: scr_mngr.current = 'theming'
+		NavigationDrawerIconButton:
+			icon: 'md-lens'
+			text: "Toolbars"
+			on_release: scr_mngr.current = 'toolbar'
 '''
 
 

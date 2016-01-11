@@ -1,21 +1,17 @@
 # -*- coding: utf-8 -*-
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import StringProperty, ObjectProperty
 from kivymd.elevationbehaviour import ElevationBehaviour
 from kivymd.icon_definitions import md_icons
 from kivymd.label import MDLabel
-from kivymd.list import MDList, OneLineIconListItem, OneLineListItem, \
-	ILeftBody
+from kivymd.list import OneLineIconListItem, ILeftBody, BaseListItem
 from kivymd.slidingpanel import SlidingPanel
 from kivymd.theming import ThemableBehavior
 
 Builder.load_string('''
-#:import md_icons kivymd.icon_definitions.md_icons
-#:import colors kivymd.color_definitions.colors
 <NavigationDrawer>
 	_list: _list
-	canvas:
+	canvas.before:
 		Color:
 			rgba: root.theme_cls.bg_light
 		Rectangle:
@@ -30,10 +26,11 @@ Builder.load_string('''
 		allow_stretch: True
 		keep_ratio: False
 	ScrollView:
-		size_hint_y: None
+		id: _sv
+		do_scroll_x: False
 		height: root.height - _header_bg.height - dp(8)
-		pos: root.pos
 		MDList:
+			id: ml
 			id: _list
 
 <NavigationDrawerIconButton>
@@ -54,23 +51,14 @@ class NavigationDrawer(SlidingPanel, ThemableBehavior, ElevationBehaviour):
 	_header_bg = ObjectProperty()
 
 	def add_widget(self, widget, index=0):
-		if issubclass(widget.__class__, NavigationDrawerCategory):
+		if issubclass(widget.__class__, BaseListItem):
 			self._list.add_widget(widget, index)
+			widget.bind(on_release=lambda x: self.toggle())
 		else:
 			super(NavigationDrawer, self).add_widget(widget, index)
 
 	def on_header_img(self, instance, value):
 		self._header_bg.source = value
-
-
-class NavigationDrawerCategory(MDList):
-	def __init__(self, **kwargs):
-		super(NavigationDrawerCategory, self).__init__(**kwargs)
-		self.padding = (0, self.padding[1], 0, 0)
-
-	def add_widget(self, widget, index=0):
-		widget.bind(on_release=lambda x: self.parent.parent.parent.toggle())
-		super(NavigationDrawerCategory, self).add_widget(widget, index)
 
 
 class NDIconLabel(ILeftBody, MDLabel):
@@ -82,15 +70,3 @@ class NavigationDrawerIconButton(OneLineIconListItem):
 
 	def on_icon(self, instance, value):
 		self.ids['_icon'].text = u"{}".format(md_icons[value])
-
-	def on_parent(self, instance, value):
-		if not issubclass(value.__class__, NavigationDrawerCategory):
-			raise Exception("NavigationDrawerButton may only be placed inside"
-			                " a NavigationDrawerCategory widget")
-
-
-class NavigationDrawerButton(OneLineListItem):
-	def on_parent(self, instance, value):
-		if not issubclass(value.__class__, NavigationDrawerCategory):
-			raise Exception("NavigationDrawerButton may only be placed inside"
-			                " a NavigationDrawerCategory widget")
