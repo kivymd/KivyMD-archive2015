@@ -7,7 +7,7 @@ from kivy.uix.modalview import ModalView
 from kivy.animation import Animation
 from theming import ThemableBehavior
 from elevationbehaviour import ElevationBehaviour
-from kivymd.button import MaterialFlatButton
+from kivymd.button import MDFlatButton
 
 Builder.load_string('''
 <MDDialog>:
@@ -57,6 +57,7 @@ Builder.load_string('''
 				width:			self.minimum_width
 ''')
 
+
 class MDDialog(ThemableBehavior, ElevationBehaviour, ModalView):
 	title = StringProperty('')
 
@@ -71,8 +72,8 @@ class MDDialog(ThemableBehavior, ElevationBehaviour, ModalView):
 	def __init__(self, **kwargs):
 		super(MDDialog, self).__init__(**kwargs)
 		self.bind(_action_buttons=self._update_action_buttons,
-				  auto_dismiss=lambda *x: setattr(self.shadow, 'on_release',
-												  self.shadow.dismiss if self.auto_dismiss else None))
+		          auto_dismiss=lambda *x: setattr(self.shadow, 'on_release',
+		                                          self.shadow.dismiss if self.auto_dismiss else None))
 
 	def add_action_button(self, text, action=None):
 		"""Add an :class:`FlatButton` to the right of the action area.
@@ -82,9 +83,9 @@ class MDDialog(ThemableBehavior, ElevationBehaviour, ModalView):
 		:param action: Function set to trigger when on_release fires
 		:type action: function or None
 		"""
-		button = MaterialFlatButton(text=text,
-									size_hint=(None, None),
-									height=dp(36))
+		button = MDFlatButton(text=text,
+		                      size_hint=(None, None),
+		                      height=dp(36))
 		if action:
 			button.bind(on_release=action)
 		button.text_color = self.theme_cls.primary_color
@@ -95,7 +96,7 @@ class MDDialog(ThemableBehavior, ElevationBehaviour, ModalView):
 		if self._container:
 			if self.content:
 				raise PopupException(
-					'Popup can have only one widget as content')
+						'Popup can have only one widget as content')
 			self.content = widget
 		else:
 			super(MDDialog, self).add_widget(widget)
@@ -116,7 +117,7 @@ class MDDialog(ThemableBehavior, ElevationBehaviour, ModalView):
 			return self
 		self._window.add_widget(self)
 		self._window.bind(on_resize=self._align_center,
-						  on_keyboard=self._handle_keyboard)
+		                  on_keyboard=self._handle_keyboard)
 		self.center = self._window.center
 		self.bind(size=self._update_center)
 		a = Animation(_anim_alpha=1., d=self._anim_duration)

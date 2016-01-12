@@ -9,7 +9,6 @@ from kivy.uix.relativelayout import RelativeLayout
 
 
 class SlidingPanel(RelativeLayout):
-
 	side = OptionProperty('left', options=['left', 'right'])
 	animation_length_open = NumericProperty(0.3)
 	animation_length_close = NumericProperty(0.3)

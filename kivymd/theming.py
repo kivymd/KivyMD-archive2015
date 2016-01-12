@@ -18,89 +18,96 @@ for font in FONTS:
 
 
 class ThemeManager(Widget):
-
 	primary_palette = OptionProperty(
-		'Blue',
-		options=['Pink', 'Blue', 'Indigo', 'BlueGrey', 'Brown', 'LightBlue',
-		         'Purple', 'Grey', 'Yellow', 'LightGreen', 'DeepOrange',
-		         'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
-		         'DeepPurple', 'Lime'])
+			'Blue',
+			options=['Pink', 'Blue', 'Indigo', 'BlueGrey', 'Brown',
+			         'LightBlue',
+			         'Purple', 'Grey', 'Yellow', 'LightGreen', 'DeepOrange',
+			         'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
+			         'DeepPurple', 'Lime'])
 
 	primary_hue = OptionProperty(
-		'500',
-		options=['50', '100', '200', '300', '400', '500', '600', '700', '800',
-		         '900', 'A100', 'A200', 'A400', 'A700'])
+			'500',
+			options=['50', '100', '200', '300', '400', '500', '600', '700',
+			         '800',
+			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	primary_light_hue = OptionProperty(
-		'100',
-		options=['50', '100', '200', '300', '400', '500', '600', '700', '800',
-		         '900', 'A100', 'A200', 'A400', 'A700'])
+			'100',
+			options=['50', '100', '200', '300', '400', '500', '600', '700',
+			         '800',
+			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	primary_dark_hue = OptionProperty(
-		'700',
-		options=['50', '100', '200', '300', '400', '500', '600', '700', '800',
-		         '900', 'A100', 'A200', 'A400', 'A700'])
+			'700',
+			options=['50', '100', '200', '300', '400', '500', '600', '700',
+			         '800',
+			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	def _get_primary_color(self):
 		return get_color_from_hex(
-			colors[self.primary_palette][self.primary_hue])
+				colors[self.primary_palette][self.primary_hue])
 
 	primary_color = AliasProperty(_get_primary_color,
 	                              bind=('primary_palette', 'primary_hue'))
 
 	def _get_primary_light(self):
 		return get_color_from_hex(
-			colors[self.primary_palette][self.primary_light_hue])
+				colors[self.primary_palette][self.primary_light_hue])
 
 	primary_light = AliasProperty(
-		_get_primary_light, bind=('primary_palette', 'primary_light_hue'))
+			_get_primary_light, bind=('primary_palette', 'primary_light_hue'))
 
 	def _get_primary_dark(self):
 		return get_color_from_hex(
-			colors[self.primary_palette][self.primary_dark_hue])
+				colors[self.primary_palette][self.primary_dark_hue])
 
 	primary_dark = AliasProperty(_get_primary_color,
-	                              bind=('primary_palette', 'primary_dark_hue'))
+	                             bind=('primary_palette', 'primary_dark_hue'))
 
 	accent_palette = OptionProperty(
-		'Amber',
-		options=['Pink', 'Blue', 'Indigo', 'BlueGrey', 'Brown', 'LightBlue',
-		         'Purple', 'Grey', 'Yellow', 'LightGreen', 'DeepOrange',
-		         'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
-		         'DeepPurple', 'Lime'])
+			'Amber',
+			options=['Pink', 'Blue', 'Indigo', 'BlueGrey', 'Brown',
+			         'LightBlue',
+			         'Purple', 'Grey', 'Yellow', 'LightGreen', 'DeepOrange',
+			         'Green', 'Red', 'Teal', 'Orange', 'Cyan', 'Amber',
+			         'DeepPurple', 'Lime'])
 
 	accent_hue = OptionProperty(
-		'A200',
-		options=['50', '100', '200', '300', '400', '500', '600', '700', '800',
-		         '900', 'A100', 'A200', 'A400', 'A700'])
+			'A200',
+			options=['50', '100', '200', '300', '400', '500', '600', '700',
+			         '800',
+			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	accent_light_hue = OptionProperty(
-		'A100',
-		options=['50', '100', '200', '300', '400', '500', '600', '700', '800',
-		         '900', 'A100', 'A200', 'A400', 'A700'])
+			'A100',
+			options=['50', '100', '200', '300', '400', '500', '600', '700',
+			         '800',
+			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	accent_dark_hue = OptionProperty(
-		'A400',
-		options=['50', '100', '200', '300', '400', '500', '600', '700', '800',
-		         '900', 'A100', 'A200', 'A400', 'A700'])
+			'A400',
+			options=['50', '100', '200', '300', '400', '500', '600', '700',
+			         '800',
+			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	def _get_accent_color(self):
 		return get_color_from_hex(
-			colors[self.accent_palette][self.accent_hue])
+				colors[self.accent_palette][self.accent_hue])
 
 	accent_color = AliasProperty(_get_accent_color,
 	                             bind=['accent_palette', 'accent_hue'])
 
 	def _get_accent_light(self):
 		return get_color_from_hex(
-			colors[self.accent_palette][self.accent_light_hue])
+				colors[self.accent_palette][self.accent_light_hue])
 
 	accent_light = AliasProperty(_get_accent_light,
 	                             bind=['accent_palette', 'accent_light_hue'])
 
 	def _get_accent_dark(self):
 		return get_color_from_hex(
-			colors[self.accent_palette][self.accent_dark_hue])
+				colors[self.accent_palette][self.accent_dark_hue])
 
 	accent_dark = AliasProperty(_get_accent_dark,
 	                            bind=['accent_palette', 'accent_dark_hue'])
@@ -258,14 +265,13 @@ class ThemeManager(Widget):
 		return self._get_disabled_hint_text_color(True)
 
 	opposite_disabled_hint_text_color = AliasProperty(
-		_get_op_disabled_hint_text_color, bind=['theme_style'])
+			_get_op_disabled_hint_text_color, bind=['theme_style'])
 
 	# Hardcoded because muh standard
 	def _get_error_color(self):
 		return get_color_from_hex(colors['Red']['A700'])
 
 	error_color = AliasProperty(_get_error_color)
-
 
 	def _get_ripple_color(self):
 		return self._ripple_color
@@ -281,7 +287,7 @@ class ThemeManager(Widget):
 	def _determine_device_orientation(self, _, window_size):
 		if window_size[0] > window_size[1]:
 			self.device_orientation = 'landscape'
-		elif window_size[1] >= window_size [0]:
+		elif window_size[1] >= window_size[0]:
 			self.device_orientation = 'portrait'
 
 	device_orientation = StringProperty('')
@@ -303,6 +309,7 @@ class ThemeManager(Widget):
 			return dp(16)
 		else:
 			return dp(24)
+
 	horizontal_margins = AliasProperty(_get_horizontal_margins)
 
 	def on_theme_style(self, instance, value):
@@ -313,10 +320,10 @@ class ThemeManager(Widget):
 	def set_clearcolor_by_theme_style(self, theme_style):
 		if theme_style == 'Light':
 			Window.clearcolor = get_color_from_hex(
-				colors['Light']['Background'])
+					colors['Light']['Background'])
 		elif theme_style == 'Dark':
 			Window.clearcolor = get_color_from_hex(
-				colors['Dark']['Background'])
+					colors['Dark']['Background'])
 
 	def __init__(self, **kwargs):
 		super(ThemeManager, self).__init__(**kwargs)

@@ -12,7 +12,7 @@ from kivymd.material_resources import DEVICE_TYPE
 Builder.load_string('''
 #:import Window kivy.core.window.Window
 #:import get_color_from_hex kivy.utils.get_color_from_hex
-#:import MaterialFlatButton kivymd.button.MaterialFlatButton
+#:import MDFlatButton kivymd.button.MDFlatButton
 #:import MDLabel kivymd.label.MDLabel
 #:import DEVICE_TYPE kivymd.material_resources.DEVICE_TYPE
 <_SnackbarWidget>
@@ -40,7 +40,7 @@ Builder.load_string('''
 		size_hint_x: None
 		x: _label.right
 		width: 0
-	MaterialFlatButton:
+	MDFlatButton:
 		id: _button
 		text: root.button_text
 		size_hint_x: None

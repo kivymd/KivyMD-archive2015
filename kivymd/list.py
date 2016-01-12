@@ -108,7 +108,7 @@ Python example:
     class ContactPhoto(ILeftBody, AsyncImage):
         pass
 
-    class MessageButton(IRightBodyTouch, MaterialIconButton):
+    class MessageButton(IRightBodyTouch, MDIconButton):
         phone_number = StringProperty()
 
         def on_release(self):

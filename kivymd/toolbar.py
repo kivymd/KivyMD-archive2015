@@ -5,7 +5,7 @@ from kivy.metrics import dp
 from kivy.properties import ListProperty, StringProperty
 from kivy.uix.relativelayout import RelativeLayout
 from kivymd.backgroundcolorbehavior import BackgroundColorBehavior
-from kivymd.button import MaterialIconButton
+from kivymd.button import MDIconButton
 from kivymd.theming import ThemableBehavior
 from kivymd.elevationbehaviour import ElevationBehaviour
 
@@ -44,8 +44,8 @@ Builder.load_string('''
 ''')
 
 
-class Toolbar(ThemableBehavior, ElevationBehaviour, BackgroundColorBehavior, RelativeLayout):
-
+class Toolbar(ThemableBehavior, ElevationBehaviour, BackgroundColorBehavior,
+              RelativeLayout):
 	left_action_items = ListProperty()
 	"""The icons on the left of the toolbar.
 
@@ -68,9 +68,10 @@ class Toolbar(ThemableBehavior, ElevationBehaviour, BackgroundColorBehavior, Rel
 	def __init__(self, **kwargs):
 		super(Toolbar, self).__init__(**kwargs)
 		Clock.schedule_once(
-			lambda x: self.on_left_action_items(0, self.left_action_items))
+				lambda x: self.on_left_action_items(0, self.left_action_items))
 		Clock.schedule_once(
-			lambda x: self.on_right_action_items(0, self.right_action_items))
+				lambda x: self.on_right_action_items(0,
+				                                     self.right_action_items))
 
 	def on_left_action_items(self, instance, value):
 		self.update_action_bar(self.ids['left_actions'], value)
@@ -83,7 +84,7 @@ class Toolbar(ThemableBehavior, ElevationBehaviour, BackgroundColorBehavior, Rel
 		new_width = 0
 		for item in action_bar_items:
 			new_width += dp(48)
-			action_bar.add_widget(MaterialIconButton(icon=item[0],
-			                                         on_release=item[1],
-			                                         opposite_colors=True))
+			action_bar.add_widget(MDIconButton(icon=item[0],
+			                                   on_release=item[1],
+			                                   opposite_colors=True))
 		action_bar.width = new_width

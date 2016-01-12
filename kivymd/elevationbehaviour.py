@@ -55,7 +55,8 @@ class ElevationBehaviour(object):
 		except:
 			self._elevation = 1
 
-	elevation = AliasProperty(_get_elevation, _set_elevation, bind=('_elevation',))
+	elevation = AliasProperty(_get_elevation, _set_elevation,
+	                          bind=('_elevation',))
 
 	_soft_shadow_texture = ObjectProperty()
 	_soft_shadow_size = ListProperty([0, 0])
@@ -69,8 +70,8 @@ class ElevationBehaviour(object):
 	def __init__(self, **kwargs):
 		super(ElevationBehaviour, self).__init__(**kwargs)
 		self.bind(elevation=self._update_shadow,
-				  pos=self._update_shadow,
-				  size=self._update_shadow)
+		          pos=self._update_shadow,
+		          size=self._update_shadow)
 
 	def _update_shadow(self, *args):
 		if self.elevation > 0:
@@ -107,15 +108,18 @@ class ElevationBehaviour(object):
 			self._soft_shadow_size = (soft_width, soft_height)
 			self._hard_shadow_size = (width, height)
 
-			y = self.center_y - soft_height / 2 - dp(.1 * 1.5 ** self.elevation)
+			y = self.center_y - soft_height / 2 - dp(
+				.1 * 1.5 ** self.elevation)
 			self._soft_shadow_pos = (soft_x, y)
 			self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
-			self._soft_shadow_texture = self._shadow.textures[str(int(round(self.elevation - 1)))]
+			self._soft_shadow_texture = self._shadow.textures[
+				str(int(round(self.elevation - 1)))]
 
 			y = self.center_y - height / 2 - dp(.5 * 1.18 ** self.elevation)
 			self._hard_shadow_pos = (x, y)
 			self._hard_shadow_a = .4 * .9 ** self.elevation
-			self._hard_shadow_texture = self._shadow.textures[str(int(round(self.elevation)))]
+			self._hard_shadow_texture = self._shadow.textures[
+				str(int(round(self.elevation)))]
 
 		else:
 			self._soft_shadow_a = 0
@@ -134,7 +138,8 @@ class RoundElevationBehaviour(object):
 		except:
 			self._elevation = 1
 
-	elevation = AliasProperty(_get_elevation, _set_elevation, bind=('_elevation',))
+	elevation = AliasProperty(_get_elevation, _set_elevation,
+	                          bind=('_elevation',))
 
 	_soft_shadow_texture = ObjectProperty()
 	_soft_shadow_size = ListProperty([0, 0])
@@ -149,8 +154,8 @@ class RoundElevationBehaviour(object):
 		super(RoundElevationBehaviour, self).__init__(**kwargs)
 		self._shadow = App.get_running_app().theme_cls.round_shadow
 		self.bind(elevation=self._update_shadow,
-				  pos=self._update_shadow,
-				  size=self._update_shadow)
+		          pos=self._update_shadow,
+		          size=self._update_shadow)
 
 	def _update_shadow(self, *args):
 		if self.elevation > 0:
@@ -165,12 +170,14 @@ class RoundElevationBehaviour(object):
 			y = self.center_y - height / 2 - dp(.1 * 1.5 ** self.elevation)
 			self._soft_shadow_pos = (x, y)
 			self._soft_shadow_a = 0.1 * 1.1 ** self.elevation
-			self._soft_shadow_texture = self._shadow.textures[str(int(round(self.elevation)))]
+			self._soft_shadow_texture = self._shadow.textures[
+				str(int(round(self.elevation)))]
 
 			y = self.center_y - height / 2 - dp(.5 * 1.18 ** self.elevation)
 			self._hard_shadow_pos = (x, y)
 			self._hard_shadow_a = .4 * .9 ** self.elevation
-			self._hard_shadow_texture = self._shadow.textures[str(int(round(self.elevation - 1)))]
+			self._hard_shadow_texture = self._shadow.textures[
+				str(int(round(self.elevation - 1)))]
 
 		else:
 			self._soft_shadow_a = 0

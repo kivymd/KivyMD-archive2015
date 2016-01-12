@@ -20,7 +20,7 @@ from kivy.uix.widget import Widget
 from kivy.clock import Clock
 
 Builder.load_string('''
-<MaterialCheckBox>:
+<MDCheckbox>:
 	canvas:
 		Clear
 		Color:
@@ -45,10 +45,8 @@ Builder.load_string('''
 		Ellipse:
 			size: self.size
 			pos:		self.pos
-''')
 
-Builder.load_string('''
-<MaterialSwitch>:
+<MDSwitch>:
     canvas.before:
         Color:
             rgba: self._track_color_disabled if self.disabled else \
@@ -79,19 +77,23 @@ Builder.load_string('''
 ''')
 
 
-class MaterialCheckBox(ThemableBehavior, CircularRippleBehavior, ToggleButtonBehavior, Label):
+class MDCheckbox(ThemableBehavior, CircularRippleBehavior,
+                 ToggleButtonBehavior, Label):
 	active = BooleanProperty(False)
 
-	_checkbox_icon = StringProperty(u"{}".format(md_icons['md-check-box-outline-blank']))
+	_checkbox_icon = StringProperty(
+		u"{}".format(md_icons['md-check-box-outline-blank']))
 	_radio_icon = StringProperty(u"{}".format(md_icons['md-radio-button-off']))
 	_icon_active = StringProperty(u"{}".format(md_icons['md-check-box']))
 
 	def __init__(self, **kwargs):
-		super(MaterialCheckBox, self).__init__(**kwargs)
+		super(MDCheckbox, self).__init__(**kwargs)
 		self.register_event_type('on_active')
 		self.check_anim_out = Animation(font_size=0, duration=.1, t='out_quad')
-		self.check_anim_in = Animation(font_size=sp(24), duration=.1, t='out_quad')
-		self.check_anim_out.bind(on_complete=lambda *x: self.check_anim_in.start(self))
+		self.check_anim_in = Animation(font_size=sp(24), duration=.1,
+		                               t='out_quad')
+		self.check_anim_out.bind(
+			on_complete=lambda *x: self.check_anim_in.start(self))
 
 	def on_state(self, *args):
 		if self.state == 'down':
@@ -104,14 +106,16 @@ class MaterialCheckBox(ThemableBehavior, CircularRippleBehavior, ToggleButtonBeh
 			self.check_anim_in.cancel(self)
 			self.check_anim_out.start(self)
 			self._radio_icon = u"{}".format(md_icons['md-radio-button-off'])
-			self._checkbox_icon = u"{}".format(md_icons['md-check-box-outline-blank'])
+			self._checkbox_icon = u"{}".format(
+					md_icons['md-check-box-outline-blank'])
 			self.active = False
 
 	def on_active(self, instance, value):
 		self.state = 'down' if value else 'normal'
 
 
-class Thumb(RoundElevationBehaviour, CircularRippleBehavior, ButtonBehavior, Widget):
+class Thumb(RoundElevationBehaviour, CircularRippleBehavior, ButtonBehavior,
+            Widget):
 	ripple_scale = NumericProperty(2)
 
 	def _set_ellipse(self, instance, value):
@@ -119,12 +123,13 @@ class Thumb(RoundElevationBehaviour, CircularRippleBehavior, ButtonBehavior, Wid
 		if self.ellipse.size[0] > self.width * 1.5 and not self.fading_out:
 			self.fade_out()
 		self.ellipse.pos = (self.center_x - self.ripple_rad / 2.,
-							self.center_y - self.ripple_rad / 2.)
-		self.stencil.pos = (self.center_x - (self.width * self.ripple_scale) / 2,
-							self.center_y - (self.height * self.ripple_scale) / 2)
+		                    self.center_y - self.ripple_rad / 2.)
+		self.stencil.pos = (
+		self.center_x - (self.width * self.ripple_scale) / 2,
+		self.center_y - (self.height * self.ripple_scale) / 2)
 
 
-class MaterialSwitch(ThemableBehavior, FloatLayout):
+class MDSwitch(ThemableBehavior, FloatLayout):
 	active = BooleanProperty(False)
 
 	_thumb_color = ListProperty(get_color_from_hex(colors['Grey']['50']))
@@ -140,7 +145,8 @@ class MaterialSwitch(ThemableBehavior, FloatLayout):
 		elif len(color) == 4:
 			self._thumb_color = color
 
-	thumb_color = AliasProperty(_get_thumb_color, _set_thumb_color, bind=['_thumb_color'])
+	thumb_color = AliasProperty(_get_thumb_color, _set_thumb_color,
+	                            bind=['_thumb_color'])
 
 	_thumb_color_down = ListProperty([1, 1, 1, 1])
 
@@ -149,7 +155,8 @@ class MaterialSwitch(ThemableBehavior, FloatLayout):
 
 	def _set_thumb_color_down(self, color, alpha=None):
 		if len(color) == 2:
-			self._thumb_color_down = get_color_from_hex(colors[color[0]][color[1]])
+			self._thumb_color_down = get_color_from_hex(
+					colors[color[0]][color[1]])
 			if alpha:
 				self._thumb_color_down[3] = alpha
 			else:
@@ -157,23 +164,28 @@ class MaterialSwitch(ThemableBehavior, FloatLayout):
 		elif len(color) == 4:
 			self._thumb_color_down = color
 
-	thumb_color_down = AliasProperty(_get_thumb_color_down, _set_thumb_color_down, bind=['_thumb_color_down'])
+	thumb_color_down = AliasProperty(_get_thumb_color_down,
+	                                 _set_thumb_color_down,
+	                                 bind=['_thumb_color_down'])
 
-	_thumb_color_disabled = ListProperty(get_color_from_hex(colors['Grey']['400']))
+	_thumb_color_disabled = ListProperty(
+		get_color_from_hex(colors['Grey']['400']))
 
 	def _get_thumb_color_disabled(self):
 		return self._thumb_color_disabled
 
 	def _set_thumb_color_disabled(self, color, alpha=None):
 		if len(color) == 2:
-			self._thumb_color_disabled = get_color_from_hex(colors[color[0]][color[1]])
+			self._thumb_color_disabled = get_color_from_hex(
+					colors[color[0]][color[1]])
 			if alpha:
 				self._thumb_color_disabled[3] = alpha
 		elif len(color) == 4:
 			self._thumb_color_disabled = color
 
-	thumb_color_down = AliasProperty(_get_thumb_color_disabled, _set_thumb_color_disabled,
-									 bind=['_thumb_color_disabled'])
+	thumb_color_down = AliasProperty(_get_thumb_color_disabled,
+	                                 _set_thumb_color_disabled,
+	                                 bind=['_thumb_color_disabled'])
 
 	_track_color_active = ListProperty()
 	_track_color_normal = ListProperty()
@@ -181,10 +193,10 @@ class MaterialSwitch(ThemableBehavior, FloatLayout):
 	_thumb_pos = ListProperty([0, 0])
 
 	def __init__(self, **kwargs):
-		super(MaterialSwitch, self).__init__(**kwargs)
+		super(MDSwitch, self).__init__(**kwargs)
 		self.theme_cls.bind(theme_style=self._set_colors,
-							primary_color=self._set_colors,
-							primary_palette=self._set_colors)
+		                    primary_color=self._set_colors,
+		                    primary_palette=self._set_colors)
 		self._set_colors()
 
 	def _set_colors(self, *args):
@@ -195,10 +207,13 @@ class MaterialSwitch(ThemableBehavior, FloatLayout):
 			self._track_color_disabled = get_color_from_hex('FFFFFF')
 			self._track_color_disabled[3] = .1
 			self.thumb_color = get_color_from_hex(colors['Grey']['400'])
-			self.thumb_color_down = get_color_from_hex(colors[self.theme_cls.primary_palette]['200'])
-			self.thumb_color_disabled = get_color_from_hex(colors['Grey']['800'])
+			self.thumb_color_down = get_color_from_hex(
+					colors[self.theme_cls.primary_palette]['200'])
+			self.thumb_color_disabled = get_color_from_hex(
+					colors['Grey']['800'])
 		else:
-			self._track_color_active = get_color_from_hex(colors[self.theme_cls.primary_palette]['200'])
+			self._track_color_active = get_color_from_hex(
+					colors[self.theme_cls.primary_palette]['200'])
 			self._track_color_active[3] = .5
 			self._track_color_disabled = self.theme_cls.disabled_hint_text_color
 			self.thumb_color_down = self.theme_cls.primary_color
@@ -213,12 +228,14 @@ class MaterialSwitch(ThemableBehavior, FloatLayout):
 	def _update_thumb(self, *args):
 		if self.active:
 			Animation.cancel_all(self, '_thumb_pos')
-			anim = Animation(_thumb_pos=(self.right - dp(12), self.center_y - dp(12)),
-							 duration=.2,
-							 t='out_quad')
+			anim = Animation(
+				_thumb_pos=(self.right - dp(12), self.center_y - dp(12)),
+				duration=.2,
+				t='out_quad')
 		else:
 			Animation.cancel_all(self, '_thumb_pos')
-			anim = Animation(_thumb_pos=(self.x - dp(12), self.center_y - dp(12)),
-							 duration=.2,
-							 t='out_quad')
+			anim = Animation(
+				_thumb_pos=(self.x - dp(12), self.center_y - dp(12)),
+				duration=.2,
+				t='out_quad')
 		anim.start(self)

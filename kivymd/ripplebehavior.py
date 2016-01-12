@@ -33,7 +33,7 @@ class CommonRipple(object):
 		if not self.disabled:
 			if self.doing_ripple:
 				Animation.cancel_all(self, 'ripple_rad', 'ripple_color',
-									 'rect_color')
+				                     'rect_color')
 				self.anim_complete()
 			self.ripple_rad = self.ripple_rad_default
 			self.ripple_pos = (touch.x, touch.y)
@@ -45,7 +45,7 @@ class CommonRipple(object):
 			else:
 				# If no theme, set Grey 300
 				self.ripple_color = [0.8784313725490196, 0.8784313725490196,
-									 0.8784313725490196, self.ripple_alpha]
+				                     0.8784313725490196, self.ripple_alpha]
 			self.ripple_color[3] = self.ripple_alpha
 
 			self.lay_canvas_instructions()
@@ -70,9 +70,9 @@ class CommonRipple(object):
 	def start_ripple(self):
 		if not self.doing_ripple:
 			anim = Animation(
-				ripple_rad=self.finish_rad,
-				t='linear',
-				duration=self.ripple_duration_in_slow)
+					ripple_rad=self.finish_rad,
+					t='linear',
+					duration=self.ripple_duration_in_slow)
 			anim.bind(on_complete=self.fade_out)
 			self.doing_ripple = True
 			anim.start(self)
@@ -89,8 +89,8 @@ class CommonRipple(object):
 		if self.doing_ripple and not self.finishing_ripple:
 			Animation.cancel_all(self, 'ripple_rad')
 			anim = Animation(ripple_rad=self.finish_rad,
-							 t=self.ripple_func_in,
-							 duration=self.ripple_duration_in_fast)
+			                 t=self.ripple_func_in,
+			                 duration=self.ripple_duration_in_fast)
 			anim.bind(on_complete=self.fade_out)
 			self.finishing_ripple = True
 			anim.start(self)
@@ -100,8 +100,8 @@ class CommonRipple(object):
 		if not self.fading_out:
 			Animation.cancel_all(self, 'ripple_color')
 			anim = Animation(ripple_color=[rc[0], rc[1], rc[2], 0.],
-							 t=self.ripple_func_out,
-							 duration=self.ripple_duration_out)
+			                 t=self.ripple_func_out,
+			                 duration=self.ripple_duration_out)
 			anim.bind(on_complete=self.anim_complete)
 			self.fading_out = True
 			anim.start(self)
@@ -124,18 +124,18 @@ class RectangularRippleBehavior(CommonRipple):
 			self.col_instruction = Color(rgba=self.ripple_color)
 			self.ellipse = \
 				Ellipse(size=(self.ripple_rad, self.ripple_rad),
-						pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
-							 self.ripple_pos[1] - self.ripple_rad / 2.))
+				        pos=(self.ripple_pos[0] - self.ripple_rad / 2.,
+				             self.ripple_pos[1] - self.ripple_rad / 2.))
 			StencilUnUse()
 			Rectangle(pos=self.pos, size=self.size)
 			StencilPop()
 		self.bind(ripple_color=self._set_color,
-				  ripple_rad=self._set_ellipse)
+		          ripple_rad=self._set_ellipse)
 
 	def _set_ellipse(self, instance, value):
 		super(RectangularRippleBehavior, self)._set_ellipse(instance, value)
 		self.ellipse.pos = (self.ripple_pos[0] - self.ripple_rad / 2.,
-							self.ripple_pos[1] - self.ripple_rad / 2.)
+		                    self.ripple_pos[1] - self.ripple_rad / 2.)
 
 
 class CircularRippleBehavior(CommonRipple):
@@ -145,23 +145,25 @@ class CircularRippleBehavior(CommonRipple):
 		with self.canvas.after:
 			StencilPush()
 			self.stencil = Ellipse(size=(self.width * self.ripple_scale,
-										 self.height * self.ripple_scale),
-								   pos=(self.center_x - (self.width * self.ripple_scale) / 2,
-										self.center_y - (self.height * self.ripple_scale) / 2))
+			                             self.height * self.ripple_scale),
+			                       pos=(self.center_x - (
+			                       self.width * self.ripple_scale) / 2,
+			                            self.center_y - (
+			                            self.height * self.ripple_scale) / 2))
 			StencilUse()
 			self.col_instruction = Color(rgba=self.ripple_color)
 			self.ellipse = Ellipse(size=(self.ripple_rad, self.ripple_rad),
-								   pos=(self.center_x - self.ripple_rad / 2.,
-										self.center_y - self.ripple_rad / 2.))
+			                       pos=(self.center_x - self.ripple_rad / 2.,
+			                            self.center_y - self.ripple_rad / 2.))
 			StencilUnUse()
 			Ellipse(pos=self.pos, size=self.size)
 			StencilPop()
 			self.bind(ripple_color=self._set_color,
-					  ripple_rad=self._set_ellipse)
+			          ripple_rad=self._set_ellipse)
 
 	def _set_ellipse(self, instance, value):
 		super(CircularRippleBehavior, self)._set_ellipse(instance, value)
 		if self.ellipse.size[0] > self.width * .6 and not self.fading_out:
 			self.fade_out()
 		self.ellipse.pos = (self.center_x - self.ripple_rad / 2.,
-							self.center_y - self.ripple_rad / 2.)
+		                    self.center_y - self.ripple_rad / 2.)

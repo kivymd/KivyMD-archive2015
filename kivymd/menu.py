@@ -6,7 +6,8 @@ from kivy.lang import Builder
 from kivy.garden.recycleview import RecycleView
 from kivy.metrics import dp
 from kivy.properties import NumericProperty, ListProperty, OptionProperty, \
-	StringProperty, ObjectProperty
+	StringProperty
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 import kivymd.material_resources as m_res
 from kivymd.theming import ThemableBehavior
@@ -17,6 +18,7 @@ Builder.load_string('''
 	size_hint_y: None
 	height: dp(48)
 	padding: dp(16), 0
+	on_release: root.parent.parent.parent.parent.dismiss()  # Horrible, but hey it works
 	MDLabel:
 		text: root.text
 		theme_text_color: 'Primary'
@@ -45,7 +47,7 @@ Builder.load_string('''
 ''')
 
 
-class MDMenuItem(BoxLayout):
+class MDMenuItem(ButtonBehavior, BoxLayout):
 	text = StringProperty()
 
 
