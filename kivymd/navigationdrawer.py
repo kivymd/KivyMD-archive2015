@@ -50,6 +50,12 @@ class NavigationDrawer(SlidingPanel, ThemableBehavior, ElevationBehaviour):
 	_list = ObjectProperty()
 	_header_bg = ObjectProperty()
 
+	def __setattr__(self, key, value):
+		if key == 'side':
+			super(NavigationDrawer, self).__setattr__(key, 'left')
+			return
+		super(NavigationDrawer, self).__setattr__(key, value)
+
 	def add_widget(self, widget, index=0):
 		if issubclass(widget.__class__, BaseListItem):
 			self._list.add_widget(widget, index)
