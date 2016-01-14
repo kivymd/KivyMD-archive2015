@@ -78,8 +78,11 @@ Builder.load_string('''
 			size: self.size
 			pos: self.pos
 
-	anchor_x:			'center'
-	anchor_y:			'center'
+	anchor_x: 'center'
+	anchor_y: 'center'
+	background_color: root.theme_cls.primary_color
+	background_color_down: root.theme_cls.primary_dark
+	background_color_disabled: root.theme_cls.divider_color
 	MDLabel:
 		id: label
 		font_style: 		'Button'
@@ -106,6 +109,9 @@ Builder.load_string('''
 
 	anchor_x:			'center'
 	anchor_y:			'center'
+	background_color: root.theme_cls.accent_color
+	background_color_down: root.theme_cls.accent_dark
+	background_color_disabled: root.theme_cls.divider_color
 	MDLabel:
 		id: label
 		font_style: 		'Icon'
@@ -158,6 +164,9 @@ class MDRaisedButton(ThemableBehavior, RectangularRippleBehavior,
                      ElevationBehaviour, ButtonBehavior,
                      AnchorLayout):
 	_bg_color_down = ListProperty([])
+	background_color = ListProperty()
+	background_color_down = ListProperty()
+	background_color_disabled = ListProperty()
 
 	def _get_bg_color_down(self):
 		return self._bg_color_down
@@ -223,9 +232,6 @@ class MDRaisedButton(ThemableBehavior, RectangularRippleBehavior,
 
 	def __init__(self, **kwargs):
 		super(MDRaisedButton, self).__init__(**kwargs)
-		self.background_color = self.theme_cls.primary_color
-		self.background_color_down = self.theme_cls.primary_dark
-		self.background_color_disabled = self.theme_cls.divider_color
 		self.elevation_press_anim = Animation(elevation=self.elevation_raised,
 		                                      duration=.2, t='out_quad')
 		self.elevation_release_anim = Animation(
@@ -274,6 +280,9 @@ class MDFloatingActionButton(ThemableBehavior, CircularRippleBehavior,
                              RoundElevationBehaviour, ButtonBehavior,
                              AnchorLayout):
 	_bg_color_down = ListProperty([])
+	background_color = ListProperty()
+	background_color_down = ListProperty()
+	background_color_disabled = ListProperty()
 
 	def _get_bg_color_down(self):
 		return self._bg_color_down
@@ -341,9 +350,6 @@ class MDFloatingActionButton(ThemableBehavior, CircularRippleBehavior,
 			self.elevation_raised = 12
 
 		super(MDFloatingActionButton, self).__init__(**kwargs)
-		self.background_color = self.theme_cls.primary_color
-		self.background_color_down = self.theme_cls.primary_dark
-		self.background_color_disabled = self.theme_cls.divider_color
 
 		self.elevation_press_anim = Animation(elevation=self.elevation_raised,
 		                                      duration=.2, t='out_quad')

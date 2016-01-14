@@ -33,7 +33,7 @@ class ThemeManager(Widget):
 			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	primary_light_hue = OptionProperty(
-			'100',
+			'200',
 			options=['50', '100', '200', '300', '400', '500', '600', '700',
 			         '800',
 			         '900', 'A100', 'A200', 'A400', 'A700'])
@@ -74,19 +74,19 @@ class ThemeManager(Widget):
 			         'DeepPurple', 'Lime'])
 
 	accent_hue = OptionProperty(
-			'A200',
+			'500',
 			options=['50', '100', '200', '300', '400', '500', '600', '700',
 			         '800',
 			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	accent_light_hue = OptionProperty(
-			'A100',
+			'200',
 			options=['50', '100', '200', '300', '400', '500', '600', '700',
 			         '800',
 			         '900', 'A100', 'A200', 'A400', 'A700'])
 
 	accent_dark_hue = OptionProperty(
-			'A400',
+			'700',
 			options=['50', '100', '200', '300', '400', '500', '600', '700',
 			         '800',
 			         '900', 'A100', 'A200', 'A400', 'A700'])
