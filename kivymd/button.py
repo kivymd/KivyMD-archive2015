@@ -14,7 +14,8 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.utils import get_color_from_hex
 from kivy.properties import StringProperty, BoundedNumericProperty, \
-	ListProperty, AliasProperty, BooleanProperty, NumericProperty
+	ListProperty, AliasProperty, BooleanProperty, NumericProperty, \
+	OptionProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -35,12 +36,14 @@ Builder.load_string('''
 	size_hint: (None, None)
 	size: (dp(48), dp(48))
 	padding: dp(12)
+	theme_text_color: 'Primary'
 	MDLabel:
 		id: _label
 		font_style: 'Icon'
 		text: u"{}".format(md_icons[root.icon])
 		halign: 'center'
 		theme_text_color: root.theme_text_color
+		text_color: root.text_color
 		opposite_colors: root.opposite_colors
 		valign: 'middle'
 
@@ -55,6 +58,8 @@ Builder.load_string('''
 	height: dp(36)
 	width: _label.texture_size[0] + dp(16)
 	padding: (dp(8), 0)
+	theme_text_color: 'Custom'
+	text_color: root.theme_cls.primary_color
 	MDLabel:
 		id: _label
 		text: root._text
@@ -62,8 +67,8 @@ Builder.load_string('''
 		size_hint_x: None
 		text_size: (None, root.height)
 		height: self.texture_size[1]
-		theme_text_color: 'Custom'
-		text_color: root.theme_cls.primary_color
+		theme_text_color: root.theme_text_color
+		text_color: root.text_color
 		valign: 'middle'
 		halign: 'center'
 		opposite_colors: root.opposite_colors
@@ -83,6 +88,7 @@ Builder.load_string('''
 	background_color: root.theme_cls.primary_color
 	background_color_down: root.theme_cls.primary_dark
 	background_color_disabled: root.theme_cls.divider_color
+	theme_text_color: 'Primary'
 	MDLabel:
 		id: label
 		font_style: 		'Button'
@@ -91,7 +97,8 @@ Builder.load_string('''
 		width:				root.width
 		text_size:			self.width, None
 		height:				self.texture_size[1]
-		theme_text_color:	'Primary'
+		theme_text_color:	root.theme_text_color
+		text_color:         root.text_color
 		opposite_colors:	root.opposite_colors
 		disabled:			root.disabled
 		halign:				'center'
@@ -112,6 +119,7 @@ Builder.load_string('''
 	background_color: root.theme_cls.accent_color
 	background_color_down: root.theme_cls.accent_dark
 	background_color_disabled: root.theme_cls.divider_color
+	theme_text_color: 'Primary'
 	MDLabel:
 		id: label
 		font_style: 		'Icon'
@@ -119,7 +127,8 @@ Builder.load_string('''
 		size_hint:			None, None
 		size:				dp(24), dp(24)
 		text_size:			self.size
-		theme_text_color:	'Primary'
+		theme_text_color:	root.theme_text_color
+		text_color:         root.text_color
 		opposite_colors:	root.opposite_colors
 		disabled:			root.disabled
 		halign:				'center'
@@ -129,8 +138,11 @@ Builder.load_string('''
 
 class MDIconButton(CircularRippleBehavior, ButtonBehavior, BoxLayout):
 	icon = StringProperty('md-lens')
+	theme_text_color = OptionProperty(None, allownone=True,
+	                                  options=['Primary', 'Secondary', 'Hint',
+	                                           'Error', 'Custom'])
+	text_color = ListProperty(None, allownone=True)
 	opposite_colors = BooleanProperty(False)
-	theme_text_color = StringProperty('Primary')
 
 
 class MDFlatButton(ThemableBehavior, RectangularRippleBehavior,
@@ -141,6 +153,10 @@ class MDFlatButton(ThemableBehavior, RectangularRippleBehavior,
 	text_color = ListProperty()
 
 	text = StringProperty('')
+	theme_text_color = OptionProperty(None, allownone=True,
+	                                  options=['Primary', 'Secondary', 'Hint',
+	                                           'Error', 'Custom'])
+	text_color = ListProperty(None, allownone=True)
 
 	_text = StringProperty('')
 	_bg_color_down = ListProperty([0, 0, 0, 0])
@@ -167,6 +183,10 @@ class MDRaisedButton(ThemableBehavior, RectangularRippleBehavior,
 	background_color = ListProperty()
 	background_color_down = ListProperty()
 	background_color_disabled = ListProperty()
+	theme_text_color = OptionProperty(None, allownone=True,
+	                                  options=['Primary', 'Secondary', 'Hint',
+	                                           'Error', 'Custom'])
+	text_color = ListProperty(None, allownone=True)
 
 	def _get_bg_color_down(self):
 		return self._bg_color_down
@@ -283,6 +303,10 @@ class MDFloatingActionButton(ThemableBehavior, CircularRippleBehavior,
 	background_color = ListProperty()
 	background_color_down = ListProperty()
 	background_color_disabled = ListProperty()
+	theme_text_color = OptionProperty(None, allownone=True,
+	                                  options=['Primary', 'Secondary', 'Hint',
+	                                           'Error', 'Custom'])
+	text_color = ListProperty(None, allownone=True)
 
 	def _get_bg_color_down(self):
 		return self._bg_color_down
