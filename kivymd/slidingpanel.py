@@ -31,7 +31,9 @@ class SlidingPanel(RelativeLayout):
 			Window.add_widget(self)
 
 	def on_parent(self, instance, value):
-		if issubclass(value.__class__, RelativeLayout) or value == Window:
+		if value is None:
+			pass
+		elif issubclass(value.__class__, RelativeLayout) or value == Window:
 			self.y = 0
 			if self.side == 'left':
 				self.x = -self.nav_width
