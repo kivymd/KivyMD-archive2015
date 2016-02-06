@@ -3,44 +3,14 @@ KivyMD
 
 <img align="left" height="256" src="https://raw.githubusercontent.com/kivymd/KivyMD/master/assets/kivymd_logo.png"/>
 
-KivyMD is a collection of Material Design compliant widgets for use with [Kivy](http://kivy.org), a framework for cross-platform, touch-enabled graphical applications.
+TL;DR: KivyMD is no longer hosted on GitHub. [Find it on GitLab!](https://gitlab.com/kivymd/KivyMD)
 
-The project's goal is to approximate Google's [Material Design spec](https://www.google.com/design/spec/material-design/introduction.html) as close as possible without sacrificing ease of use or application performance.
+For some time now, GitHub has been abandoning its culture of sharing based on the principles of openness, meritocracy and equality for all contributors, regardless of race and gender; all aparently due to pressure from political groups.
 
-Currently we're in **early alpha** status, so things are changing all the time and we cannot promise any kind of API stability. However, we're using KivyMD for deploying commercial applications to production environments, so rest assured it is safe to vendor now and make use of what's currently available; giving you freedom to upgrade when you're ready to do the necessary refactoring.
+Hearing about the [internal restructuring](http://www.businessinsider.com/github-the-full-inside-story-2016-2) over at GitHub was the final nail in the coffin that pushed me to accept that GitHub has lost track of the values that made it grow.
 
-Our roadmap is available at [our wiki](https://github.com/kivymd/KivyMD/wiki/Roadmap).
+So with that, I (@mixedCase) will stop using GitHub for all my projects and will no longer recommend it for people looking to host theirs.
 
-If you wish to contribute, [the project's coding style](https://github.com/kivymd/KivyMD/wiki/Coding-style) is available there as well. Just fork the project, branch out and submit a pull request when your patch is ready. If any changes are necessary, we'll guide you through the steps that need to be done via PR comments.
+I will now use GitLab for hosting git repos and my profile can be found [here](https://gitlab.com/u/mixedCase).
 
-Documentation
-=============
-
-Some very early documentation can be found at our project's website, other than that we recommend checking the kitchen_sink.py file for examples.
-
-Installation and use with Buildozer
-===================================
-
-KivyMD currently depends on `recycleview` from the Kivy garden.
-
-To install it on your desktop run the following in a terminal:
-
-    pip install kivy-garden
-	garden install recycleview
-
-If you want to use KivyMD with buildozer, in your buildozer.spec's requirements line you should add the full git SSH address, like this example:
-
-    requirements = kivy==master,git+https://github.com/kivymd/KivyMD.git
-
-And add recycleview to your garden_requirements:
-
-    garden_requirements = recycleview
-
-License
-=======
-
-MIT, same as Kivy.
-
-[Material Design Iconic Font](https://github.com/zavoloklom/material-design-iconic-font) by [Sergey Kupletsky](https://twitter.com/zavoloklom) covered by the licenses described at https://zavoloklom.github.io/material-design-iconic-font/license.html.
-
-Icons by the materialdesignicons.com community covered by SIL OFL 1.1
+So long GitHub, and thanks for all the ~~fish~~git!
